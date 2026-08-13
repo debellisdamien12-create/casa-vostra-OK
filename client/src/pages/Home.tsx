@@ -103,6 +103,7 @@ export default function Home() {
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-[#424245]">
             <button onClick={() => scrollToSection("approche")} className="hover:text-[#1D1D1F] transition-colors">Notre approche</button>
             <button onClick={() => scrollToSection("expertises")} className="hover:text-[#1D1D1F] transition-colors">Expertises</button>
+            <button onClick={() => scrollToSection("galerie")} className="hover:text-[#1D1D1F] transition-colors">Galerie</button>
             <button onClick={() => scrollToSection("methode")} className="hover:text-[#1D1D1F] transition-colors">Déroulement</button>
             <button onClick={() => scrollToSection("brief")} className="hover:text-[#1D1D1F] transition-colors">Brief express</button>
           </nav>
@@ -130,6 +131,7 @@ export default function Home() {
           <div className="md:hidden absolute top-full left-0 w-full bg-[#FBFBFA] border-b border-[#1D1D1F]/10 py-6 px-6 shadow-xl flex flex-col gap-4 animate-in slide-in-from-top-2 duration-200">
             <button onClick={() => scrollToSection("approche")} className="text-left py-2 font-medium text-lg border-b border-[#1D1D1F]/5">Notre approche</button>
             <button onClick={() => scrollToSection("expertises")} className="text-left py-2 font-medium text-lg border-b border-[#1D1D1F]/5">Expertises</button>
+            <button onClick={() => scrollToSection("galerie")} className="text-left py-2 font-medium text-lg border-b border-[#1D1D1F]/5">Galerie</button>
             <button onClick={() => scrollToSection("methode")} className="text-left py-2 font-medium text-lg border-b border-[#1D1D1F]/5">Déroulement</button>
             <button onClick={() => scrollToSection("brief")} className="text-left py-2 font-medium text-lg text-[#8C6D53]">Brief express</button>
             <Button 
@@ -326,6 +328,30 @@ export default function Home() {
                 Intervention ciblée
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery Section */}
+      <section id="galerie" className="py-24 bg-[#EAE8E4]/45 border-y border-[#1D1D1F]/10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+            <div className="max-w-2xl">
+              <span className="text-xs font-mono uppercase tracking-widest text-[#8C6D53] block mb-3">03 / GALERIE CARRELAGE XXL</span>
+              <h2 className="font-serif text-3xl sm:text-5xl font-normal tracking-tight leading-tight">Des matières qui prennent toute leur place.</h2>
+              <p className="text-[#6E6E73] text-base leading-relaxed mt-5 max-w-xl">Découvrez l’univers de pose Casa Vostra : grands formats, lignes continues et détails de finition. Cette sélection sera remplacée par vos photos de chantiers réels.</p>
+            </div>
+            <a href="/carrelage-xxl#galerie" className="inline-flex items-center gap-2 text-sm font-semibold text-[#1D1D1F] underline decoration-[#8C6D53] decoration-2 underline-offset-8 hover:text-[#8C6D53] transition-colors whitespace-nowrap">Explorer la galerie complète <ArrowRight className="w-4 h-4" /></a>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <a href="/carrelage-xxl#galerie" className="group relative sm:col-span-2 lg:row-span-2 min-h-[320px] lg:min-h-[460px] overflow-hidden rounded-2xl bg-[#D8D2CA] shadow-[0_16px_40px_rgba(29,29,31,0.1)]">
+              <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=85" alt="Intérieur contemporain avec sol grand format" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+              <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+              <span className="absolute bottom-0 left-0 right-0 p-6 text-white"><span className="block text-xs font-mono uppercase tracking-widest text-[#E3D5C9]">Carrelage grand format</span><span className="block font-serif text-2xl mt-2">Lignes continues.</span></span>
+            </a>
+            <a href="/carrelage-xxl#galerie" className="group relative min-h-[220px] overflow-hidden rounded-2xl bg-[#D8D2CA]"><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1000&q=85" alt="Salle de bains contemporaine avec faïence" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" /><span className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" /><span className="absolute bottom-0 p-5 text-white"><span className="block text-xs font-mono uppercase tracking-widest text-[#E3D5C9]">Faïence</span><span className="block font-serif text-xl mt-2">Matière murale.</span></span></a>
+            <a href="/carrelage-xxl#galerie" className="group relative min-h-[220px] overflow-hidden rounded-2xl bg-[#D8D2CA]"><img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1000&q=85" alt="Détail d'une architecture contemporaine" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" /><span className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" /><span className="absolute bottom-0 p-5 text-white"><span className="block text-xs font-mono uppercase tracking-widest text-[#E3D5C9]">Finitions</span><span className="block font-serif text-xl mt-2">Le détail juste.</span></span></a>
           </div>
         </div>
       </section>

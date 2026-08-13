@@ -13,3 +13,5 @@
 - [ ] Ajouter la galerie photo dynamique des réalisations XXL.
 - [ ] Ajouter filtres, lightbox et CTA vers le brief.
 - [ ] Vérifier le rendu responsive et sauvegarder la version.
+- [ ] Intégrer la galerie visible sur la page d’accueil.
+- [ ] Vérifier le lien de navigation et le rendu mobile de la galerie d’accueil.
