@@ -10,3 +10,6 @@
 - [ ] Configurer l’envoi du brief qualifié vers contact@casavostra.corsica.
 - [ ] Tester la validation, le succès et l’échec de la prise de contact.
 - [ ] Sauvegarder la version prête à publier.
+- [ ] Ajouter la galerie photo dynamique des réalisations XXL.
+- [ ] Ajouter filtres, lightbox et CTA vers le brief.
+- [ ] Vérifier le rendu responsive et sauvegarder la version.

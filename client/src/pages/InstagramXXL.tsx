@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ArrowUpRight, Check, Clipboard, Instagram, MoveUpRight, Ruler, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowUpRight, Check, ChevronLeft, ChevronRight, Clipboard, Instagram, MoveUpRight, Ruler, Sparkles, X } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 
@@ -15,8 +15,71 @@ Chez Casa Vostra, chaque étape compte, en neuf comme en rénovation : préparat
 
 Vous avez un projet de carrelage XXL en Corse-du-Sud ? Qualifiez votre chantier en 2 minutes via le lien dans notre bio.`;
 
+type GalleryFilter = "Toutes" | "Sols" | "Salles d’eau" | "Détails";
+type GalleryItem = {
+  id: string;
+  title: string;
+  category: Exclude<GalleryFilter, "Toutes">;
+  label: string;
+  image: string;
+  alt: string;
+  featured?: boolean;
+};
+
+const galleryItems: GalleryItem[] = [
+  {
+    id: "sols-01",
+    title: "Lignes continues",
+    category: "Sols",
+    label: "Carrelage grand format · Visuel de référence",
+    image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=85",
+    alt: "Sol clair en grand format dans un intérieur contemporain",
+    featured: true,
+  },
+  {
+    id: "salle-eau-01",
+    title: "Matière murale",
+    category: "Salles d’eau",
+    label: "Faïence · Visuel de référence",
+    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1000&q=85",
+    alt: "Salle de bains contemporaine avec revêtement mural minéral",
+  },
+  {
+    id: "details-01",
+    title: "Le détail juste",
+    category: "Détails",
+    label: "Finition · Visuel de référence",
+    image: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1000&q=85",
+    alt: "Détail d'une architecture contemporaine et de ses finitions",
+  },
+  {
+    id: "sols-02",
+    title: "Un espace plus lisible",
+    category: "Sols",
+    label: "Pose grand format · Visuel de référence",
+    image: "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?auto=format&fit=crop&w=1000&q=85",
+    alt: "Pièce de vie lumineuse avec sol minéral",
+  },
+];
+
+const galleryFilters: GalleryFilter[] = ["Toutes", "Sols", "Salles d’eau", "Détails"];
+
 export default function InstagramXXL() {
   const [copied, setCopied] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<GalleryFilter>("Toutes");
+  const [selectedGalleryItem, setSelectedGalleryItem] = useState<GalleryItem | null>(null);
+
+  const visibleGalleryItems = activeFilter === "Toutes"
+    ? galleryItems
+    : galleryItems.filter((item) => item.category === activeFilter);
+
+  useEffect(() => {
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectedGalleryItem(null);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, []);
 
   const copyCaption = async () => {
     try {
@@ -26,6 +89,13 @@ export default function InstagramXXL() {
     } catch {
       setCopied(false);
     }
+  };
+
+  const moveGallerySelection = (offset: number) => {
+    if (!selectedGalleryItem || visibleGalleryItems.length < 2) return;
+    const currentIndex = visibleGalleryItems.findIndex((item) => item.id === selectedGalleryItem.id);
+    const nextIndex = (currentIndex + offset + visibleGalleryItems.length) % visibleGalleryItems.length;
+    setSelectedGalleryItem(visibleGalleryItems[nextIndex]);
   };
 
   return (
@@ -46,6 +116,7 @@ export default function InstagramXXL() {
 
           <nav className="hidden items-center gap-8 text-sm text-[#6e6e73] md:flex">
             <a className="transition-colors hover:text-[#1d1d1f]" href="#savoir-faire">Savoir-faire</a>
+            <a className="transition-colors hover:text-[#1d1d1f]" href="#galerie">Galerie</a>
             <a className="transition-colors hover:text-[#1d1d1f]" href="#publication">Le post</a>
             <a className="transition-colors hover:text-[#1d1d1f]" href="/#brief">Brief projet</a>
           </nav>
@@ -127,6 +198,56 @@ export default function InstagramXXL() {
         </div>
       </section>
 
+      <section id="galerie" className="border-y border-[#1d1d1f]/10 bg-[#f7f7f5] px-5 py-20 sm:px-8 sm:py-28">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-[10px] font-semibold tracking-[0.2em] text-[#a27758] uppercase">02 / La galerie</p>
+              <h2 className="mt-4 font-serif text-4xl leading-[1.02] tracking-[-0.05em] sm:text-6xl">Des matières qui prennent toute leur place.</h2>
+              <p className="mt-5 max-w-xl text-base leading-7 text-[#6e6e73]">Une sélection de visuels pour présenter vos univers de pose. Remplacez progressivement les images de référence par vos propres photos de chantiers.</p>
+            </div>
+            <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrer la galerie">
+              {galleryFilters.map((filter) => (
+                <button
+                  key={filter}
+                  type="button"
+                  onClick={() => setActiveFilter(filter)}
+                  className={`rounded-full border px-4 py-2 text-xs font-semibold transition-all duration-200 active:scale-[0.97] ${activeFilter === filter ? "border-[#1d1d1f] bg-[#1d1d1f] text-white" : "border-[#1d1d1f]/15 bg-transparent text-[#6e6e73] hover:border-[#1d1d1f]/40 hover:text-[#1d1d1f]"}`}
+                  aria-pressed={activeFilter === filter}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-12 grid auto-rows-[220px] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {visibleGalleryItems.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setSelectedGalleryItem(item)}
+                className={`group relative min-h-[220px] overflow-hidden rounded-[22px] bg-[#ded9d3] text-left shadow-[0_14px_35px_rgba(29,29,31,0.08)] transition-transform duration-300 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a27758] ${item.featured ? "sm:col-span-2 sm:row-span-2" : ""}`}
+                aria-label={`Ouvrir la réalisation ${item.title}`}
+              >
+                <img src={item.image} alt={item.alt} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                <span className="absolute inset-0 bg-gradient-to-t from-[#1d1d1f]/75 via-[#1d1d1f]/10 to-transparent" />
+                <span className="absolute bottom-0 left-0 right-0 p-5 text-white sm:p-6">
+                  <span className="block text-[10px] font-semibold tracking-[0.16em] text-[#e8d7c7] uppercase">{item.label}</span>
+                  <span className="mt-2 block font-serif text-2xl tracking-[-0.03em]">{item.title}</span>
+                  <span className="mt-3 inline-flex items-center gap-2 text-xs font-semibold opacity-0 transition-opacity duration-200 group-hover:opacity-100">Voir le détail <MoveUpRight className="h-3.5 w-3.5" /></span>
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-10 flex flex-col gap-5 border-t border-[#1d1d1f]/10 pt-7 sm:flex-row sm:items-center sm:justify-between">
+            <p className="max-w-xl text-sm leading-6 text-[#8a8a8f]">Galerie en cours de construction : envoyez vos photos de réalisations pour remplacer les visuels de référence et présenter des projets réellement exécutés par Casa Vostra.</p>
+            <a href="/#brief" className="group inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-[#1d1d1f] underline decoration-[#a27758] decoration-2 underline-offset-8 transition-colors hover:text-[#a27758]">Parler de mon projet <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></a>
+          </div>
+        </div>
+      </section>
+
       <section id="publication" className="border-y border-[#1d1d1f]/10 bg-[#ece9e5] px-5 py-20 sm:px-8 sm:py-28">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
           <div>
@@ -186,6 +307,32 @@ export default function InstagramXXL() {
           </a>
         </div>
       </section>
+
+      {selectedGalleryItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1d1d1f]/85 p-4 backdrop-blur-md sm:p-8" role="dialog" aria-modal="true" aria-label={selectedGalleryItem.title}>
+          <button type="button" className="absolute inset-0 cursor-default" onClick={() => setSelectedGalleryItem(null)} aria-label="Fermer la galerie" />
+          <div className="relative z-10 grid max-h-[92vh] w-full max-w-5xl overflow-hidden rounded-[24px] bg-[#f7f7f5] shadow-2xl lg:grid-cols-[1.2fr_0.8fr]">
+            <div className="relative min-h-[320px] bg-[#ded9d3] lg:min-h-[620px]">
+              <img src={selectedGalleryItem.image} alt={selectedGalleryItem.alt} className="h-full w-full object-cover" />
+              <button type="button" onClick={() => moveGallerySelection(-1)} className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-[#1d1d1f] shadow-lg transition-transform hover:scale-105 disabled:opacity-40" aria-label="Image précédente" disabled={visibleGalleryItems.length < 2}><ChevronLeft className="h-5 w-5" /></button>
+              <button type="button" onClick={() => moveGallerySelection(1)} className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-[#1d1d1f] shadow-lg transition-transform hover:scale-105 disabled:opacity-40" aria-label="Image suivante" disabled={visibleGalleryItems.length < 2}><ChevronRight className="h-5 w-5" /></button>
+            </div>
+            <div className="flex flex-col justify-between p-7 sm:p-10">
+              <div>
+                <div className="flex items-start justify-between gap-5">
+                  <div>
+                    <p className="text-[10px] font-semibold tracking-[0.2em] text-[#a27758] uppercase">{selectedGalleryItem.category}</p>
+                    <h3 className="mt-3 font-serif text-4xl leading-none tracking-[-0.05em]">{selectedGalleryItem.title}</h3>
+                  </div>
+                  <button type="button" onClick={() => setSelectedGalleryItem(null)} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#1d1d1f]/10 text-[#6e6e73] transition-colors hover:bg-[#1d1d1f] hover:text-white" aria-label="Fermer"><X className="h-4 w-4" /></button>
+                </div>
+                <p className="mt-6 text-sm leading-7 text-[#6e6e73]">Visuel de référence pour présenter l’univers de Casa Vostra. Cette carte est prête à accueillir une photo réelle de votre chantier, avec sa ville, sa surface et le détail technique que vous souhaitez mettre en avant.</p>
+              </div>
+              <a href="/#brief" onClick={() => setSelectedGalleryItem(null)} className="mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-[#1d1d1f] px-5 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]">Qualifier un projet similaire <ArrowUpRight className="h-4 w-4" /></a>
+            </div>
+          </div>
+        </div>
+      )}
 
       <footer className="bg-[#1d1d1f] px-5 pb-8 text-white/50 sm:px-8">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 border-t border-white/10 pt-6 text-xs sm:flex-row sm:items-center sm:justify-between">
