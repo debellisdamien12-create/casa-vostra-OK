@@ -189,7 +189,7 @@ export default function InstagramXXL() {
 
       <footer className="bg-[#1d1d1f] px-5 pb-8 text-white/50 sm:px-8">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 border-t border-white/10 pt-6 text-xs sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Casa Vostra SARL · Neuf & rénovation</p>
+          <p>© {new Date().getFullYear()} Casa Vostra SARL · 1 Résidence Padulella, 20137 Lecci · SIREN 918 824 921</p>
           <div className="flex items-center gap-5">
             <a href="mailto:contact@casavostra.corsica" className="transition-colors hover:text-white">contact@casavostra.corsica</a>
             <Link href="/" className="transition-colors hover:text-white">Retour à l'accueil</Link>

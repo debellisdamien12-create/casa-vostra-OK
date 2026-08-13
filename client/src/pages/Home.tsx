@@ -626,18 +626,22 @@ export default function Home() {
             </div>
 
             <div className="md:col-span-3 space-y-3">
-              <h4 className="text-xs font-mono uppercase tracking-widest text-[#8C6D53]">Contact Direct</h4>
-              <p className="text-sm text-[#A1A1A6]">Disponible pour vos chantiers neufs et rénovations.</p>
-              <p className="text-sm font-medium text-white">contact@casavostra-btp.fr</p>
-              <p className="text-xs text-[#8C6D53] font-mono">Devis qualifié sous 48h</p>
+              <h4 className="text-xs font-mono uppercase tracking-widest text-[#8C6D53]">Contact & siège</h4>
+              <p className="text-sm text-[#A1A1A6] leading-6">Disponible pour vos chantiers neufs et rénovations en Corse-du-Sud.</p>
+              <address className="not-italic text-sm leading-6 text-white">
+                1 Résidence Padulella<br />
+                20137 Lecci
+              </address>
+              <a href="mailto:contact@casavostra.corsica" className="block text-sm font-medium text-white transition-colors hover:text-[#E3D5C9]">contact@casavostra.corsica</a>
+              <p className="text-xs text-[#8C6D53] font-mono">SARL · SIREN 918 824 921</p>
             </div>
           </div>
 
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#A1A1A6]">
-            <p>© {new Date().getFullYear()} Casa Vostra SARL. Tous droits réservés.</p>
+            <p>© {new Date().getFullYear()} Casa Vostra SARL · SIREN 918 824 921. Tous droits réservés.</p>
             <div className="flex gap-6 mt-4 sm:mt-0">
-              <a href="#" className="hover:text-white transition-colors">Mentions légales</a>
-              <a href="#" className="hover:text-white transition-colors">Politique de confidentialité</a>
+              <a href="https://www.societe.com/societe/casa-vostra-918824921.html" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">Fiche entreprise</a>
+              <a href="mailto:contact@casavostra.corsica" className="hover:text-white transition-colors">Nous contacter</a>
             </div>
           </div>
         </div>
