@@ -7,3 +7,6 @@
 - [ ] Créer la page web minimaliste pour le post carrelage XXL.
 - [ ] Ajouter le CTA vers le brief de devis Casa Vostra.
 - [ ] Vérifier la responsivité et livrer le code complet.
+- [ ] Configurer l’envoi du brief qualifié vers contact@casavostra.corsica.
+- [ ] Tester la validation, le succès et l’échec de la prise de contact.
+- [ ] Sauvegarder la version prête à publier.

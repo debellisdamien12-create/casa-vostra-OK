@@ -20,6 +20,8 @@ import {
   Check
 } from "lucide-react";
 
+const CONTACT_EMAIL = "contact@casavostra.corsica";
+
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [briefSubmitted, setBriefSubmitted] = useState(false);
@@ -65,17 +67,11 @@ export default function Home() {
     setSummaryText(summary);
     setBriefSubmitted(true);
 
-    try {
-      await navigator.clipboard.writeText(summary);
-      setCopied(true);
-      toast.success("Brief structuré et copié avec succès !", {
-        description: "Transmettez-le directement pour un échange immédiat sans perte de temps."
-      });
-    } catch {
-      toast.success("Brief prêt pour transmission !", {
-        description: "Copiez le résumé ci-dessous."
-      });
-    }
+    const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Demande de devis — ${typeLabels[projectType] || projectType} — ${natureLabel}`)}&body=${encodeURIComponent(summary)}`;
+    window.location.href = mailto;
+    toast.success("Votre brief est prêt à être envoyé", {
+      description: `Votre messagerie va préparer un e-mail pour ${CONTACT_EMAIL}.`
+    });
   };
 
   const scrollToSection = (id: string) => {
@@ -96,15 +92,13 @@ export default function Home() {
       {/* Navigation */}
       <header className="sticky top-0 z-50 bg-[#FBFBFA]/90 backdrop-blur-md border-b border-[#1D1D1F]/10">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="w-10 h-10 bg-[#1D1D1F] text-[#FBFBFA] rounded-sm flex items-center justify-center font-bold text-lg tracking-tighter">
-              CV
-            </div>
-            <div>
-              <span className="font-serif text-xl tracking-tight font-semibold block leading-tight">CASA VOSTRA</span>
-              <span className="text-[10px] tracking-widest text-[#8C6D53] uppercase font-mono block">Neuf & Rénovation • Finitions</span>
-            </div>
-          </div>
+          <button className="flex items-center cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Retour en haut">
+            <img
+              src="/manus-storage/Logosvg_d684bd94.svg"
+              alt="Casa Vostra — votre projet, notre savoir-faire"
+              className="h-11 w-auto max-w-[210px] object-contain object-left sm:h-14 sm:max-w-[250px]"
+            />
+          </button>
 
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-[#424245]">
             <button onClick={() => scrollToSection("approche")} className="hover:text-[#1D1D1F] transition-colors">Notre approche</button>
@@ -561,7 +555,7 @@ export default function Home() {
                   Générer mon brief & valider <ArrowRight className="w-5 h-5" />
                 </Button>
                 <p className="text-center text-xs text-[#6E6E73] mt-3">
-                  Garantie zéro perte de temps : vos informations sont formatées nettes et sans artifice.
+                  Votre demande sera préparée pour {CONTACT_EMAIL} avec les informations essentielles du chantier.
                 </p>
               </div>
 
@@ -573,22 +567,24 @@ export default function Home() {
               </div>
               <h3 className="font-serif text-3xl font-normal">Votre brief est prêt.</h3>
               <p className="text-[#6E6E73] text-sm max-w-lg mx-auto">
-                Le résumé de votre chantier a été généré et copié dans votre presse-papiers. Vous pouvez nous l'envoyer directement ou nous contacter au <strong>06 00 00 00 00</strong>.
+                Votre demande est structurée. Votre messagerie peut maintenant préparer l’e-mail destiné à <strong>{CONTACT_EMAIL}</strong> avec toutes les informations de votre chantier.
               </p>
 
               <div className="bg-[#FBFBFA] p-6 rounded-2xl border border-[#1D1D1F]/10 text-left font-mono text-xs whitespace-pre-wrap text-[#1D1D1F] max-w-xl mx-auto overflow-x-auto">
                 {summaryText}
               </div>
 
+              <p className="text-center text-xs text-[#6E6E73] max-w-xl mx-auto">Si aucune messagerie ne s’ouvre, copiez le brief affiché ci-dessus et envoyez-le manuellement à {CONTACT_EMAIL}.</p>
+
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
                 <Button 
                   onClick={() => {
-                    navigator.clipboard.writeText(summaryText);
-                    toast.success("Copié à nouveau !");
+                    const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Demande de devis — Casa Vostra")}&body=${encodeURIComponent(summaryText)}`;
+                    window.location.href = mailto;
                   }}
                   className="bg-[#1D1D1F] text-white rounded-full px-8 py-3 text-sm font-medium w-full sm:w-auto"
                 >
-                  Copier le résumé
+                  Envoyer par e-mail
                 </Button>
                 <Button 
                   variant="outline"
@@ -609,12 +605,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-12 border-b border-white/10">
             <div className="md:col-span-6 space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-white text-[#1D1D1F] rounded-sm flex items-center justify-center font-bold text-sm">
-                  CV
-                </div>
-                <span className="font-serif text-xl tracking-tight font-semibold">CASA VOSTRA</span>
-              </div>
+              <img
+                src="/manus-storage/logo-casavostra_22a69d34.png"
+                alt="Casa Vostra — votre projet, notre savoir-faire"
+                className="h-16 w-auto max-w-[260px] object-contain object-left"
+              />
               <p className="text-[#A1A1A6] text-sm max-w-md leading-relaxed">
                 Entreprise spécialisée en neuf et rénovation : carrelage, faïence, chape, ragréage et petites rénovations d'exception. Zéro compromis sur la préparation et la finition.
               </p>
