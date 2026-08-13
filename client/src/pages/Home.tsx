@@ -192,7 +192,7 @@ export default function Home() {
             <div className="lg:col-span-5 relative">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/5] bg-[#EAE8E4]">
                 <img 
-                  src="/manus-storage/casa_vostra_hero_a1b2c3d4.jpg" 
+                  src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85" 
                   alt="Carrelage grand format et finitions haut de gamme Casa Vostra" 
                   className="w-full h-full object-cover"
                 />
@@ -256,9 +256,10 @@ export default function Home() {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
             <div className="max-w-2xl">
               <span className="text-xs font-mono uppercase tracking-widest text-[#8C6D53] block mb-3">02 / NOS DOMAINES D'INTERVENTION</span>
-              <h2 className="font-serif text-3xl sm:text-5xl font-normal tracking-tight leading-tight">
-                Du gros œuvre de finition aux détails de faïence.
-              </h2>
+                          <h2 className="font-serif text-3xl sm:text-5xl font-normal tracking-tight leading-tight">
+              De la préparation des supports aux détails de faïence.
+            </h2>
+
             </div>
             <p className="text-[#6E6E73] text-sm max-w-md mt-4 md:mt-0">
               Interventions soignées pour particuliers et professionnels exigeants, en neuf comme en rénovation.
