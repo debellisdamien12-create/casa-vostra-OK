@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { trpc } from "@/lib/trpc";
 import { 
   ArrowRight, 
   CheckCircle2, 
@@ -44,11 +45,25 @@ export default function Home() {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [slotConfirmed, setSlotConfirmed] = useState(false);
 
+  const submitLead = trpc.leads.submit.useMutation({
+    onSuccess: () => {
+      toast.success("Demande transmise avec succès", {
+        description: "Votre brief a été envoyé directement à Casa Vostra."
+      });
+      setBriefSubmitted(true);
+    },
+    onError: (err) => {
+      toast.error("Erreur lors de l'envoi", {
+        description: err.message || "Veuillez réessayer ultérieurement."
+      });
+    }
+  });
+
   const handleBriefSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    if (!contactPhone && !contactEmail) {
-      toast.error("Veuillez renseigner au moins un moyen de contact (téléphone ou e-mail).");
+    if (!contactPhone.trim() || !contactEmail.trim()) {
+      toast.error("Le numéro de téléphone et l'adresse e-mail sont obligatoires pour valider votre brief.");
       return;
     }
 
@@ -65,24 +80,32 @@ export default function Home() {
       : "Aucun fichier sélectionné";
 
     const summary = `[BRIEF PROJET - CASA VOSTRA]
-	• Type de prestation : ${typeLabels[projectType] || projectType}
-	• Nature du chantier : ${natureLabel}
-	• Surface estimée : ${surface ? surface + " m²" : "Non précisée"}
-	• Budget estimé : ${budget}
-	• Fourniture : ${supplyScope}
-	• Calendrier souhaité : ${timeline}
-	• Localisation : ${location || "Non renseignée"}
-	• Précisions techniques : ${details || "Aucune"}
-	• Pièces jointes / Plans : ${mediaSummary}
-	• Coordonnées contact : ${contactName || "Anonyme"} | Tél : ${contactPhone || "Non renseigné"} | E-mail : ${contactEmail || "Non renseigné"}`;
+• Type de prestation : ${typeLabels[projectType] || projectType}
+• Nature du chantier : ${natureLabel}
+• Surface estimée : ${surface ? surface + " m²" : "Non précisée"}
+• Budget estimé : ${budget}
+• Fourniture : ${supplyScope}
+• Calendrier souhaité : ${timeline}
+• Localisation : ${location || "Non renseignée"}
+• Précisions techniques : ${details || "Aucune"}
+• Pièces jointes / Plans : ${mediaSummary}
+• Coordonnées contact : ${contactName || "Anonyme"} | Tél : ${contactPhone} | E-mail : ${contactEmail}`;
 
     setSummaryText(summary);
-    setBriefSubmitted(true);
 
-    const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Demande de devis — ${typeLabels[projectType] || projectType} — ${natureLabel}`)}&body=${encodeURIComponent(summary)}`;
-    window.location.href = mailto;
-    toast.success("Votre brief est prêt à être envoyé", {
-      description: `Votre messagerie va préparer un e-mail pour ${CONTACT_EMAIL}.`
+    submitLead.mutate({
+      projectType: typeLabels[projectType] || projectType,
+      projectNature: natureLabel,
+      surface: surface || undefined,
+      budget,
+      supplyScope,
+      timeline,
+      location: location || undefined,
+      details: details || undefined,
+      mediaSummary,
+      contactName: contactName || undefined,
+      contactPhone,
+      contactEmail,
     });
   };
 
@@ -646,6 +669,7 @@ export default function Home() {
                     <label className="block text-xs font-medium text-[#6E6E73] mb-1">Téléphone <span className="text-[#8C6D53]">*</span></label>
                     <input 
                       type="tel" 
+                      required
                       placeholder="06 12 34 56 78" 
                       value={contactPhone}
                       onChange={(e) => setContactPhone(e.target.value)}
@@ -653,9 +677,10 @@ export default function Home() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-[#6E6E73] mb-1">E-mail</label>
+                    <label className="block text-xs font-medium text-[#6E6E73] mb-1">E-mail <span className="text-[#8C6D53]">*</span></label>
                     <input 
                       type="email" 
+                      required
                       placeholder="jean@exemple.fr" 
                       value={contactEmail}
                       onChange={(e) => setContactEmail(e.target.value)}
@@ -668,12 +693,13 @@ export default function Home() {
               <div className="pt-4">
                 <Button 
                   type="submit"
+                  disabled={submitLead.isPending}
                   className="w-full bg-[#1D1D1F] hover:bg-[#333336] text-white py-6 rounded-2xl font-medium text-base shadow-lg transition-all flex items-center justify-center gap-2"
                 >
-                  Générer mon brief & valider <ArrowRight className="w-5 h-5" />
+                  {submitLead.isPending ? "Transmission en cours..." : "Transmettre mon brief directement"} <ArrowRight className="w-5 h-5" />
                 </Button>
                 <p className="text-center text-xs text-[#6E6E73] mt-3">
-                  Votre demande sera préparée pour {CONTACT_EMAIL} avec les informations essentielles du chantier.
+                  Envoi direct et sécurisé à Casa Vostra (contact@casavostra.corsica). Téléphone et e-mail obligatoires.
                 </p>
               </div>
 
@@ -683,9 +709,9 @@ export default function Home() {
               <div className="w-16 h-16 bg-[#8C6D53]/10 text-[#8C6D53] rounded-full flex items-center justify-center mx-auto mb-4">
                 <Check className="w-8 h-8" />
               </div>
-              <h3 className="font-serif text-3xl font-normal">Votre brief est prêt.</h3>
+              <h3 className="font-serif text-3xl font-normal">Brief transmis avec succès.</h3>
               <p className="text-[#6E6E73] text-sm max-w-lg mx-auto">
-                Votre demande est structurée. Votre messagerie peut maintenant préparer l’e-mail destiné à <strong>{CONTACT_EMAIL}</strong> avec toutes les informations de votre chantier.
+                Votre demande a été enregistrée et transmise directement à <strong>{CONTACT_EMAIL}</strong>. Notre équipe va l’étudier et vous recontacter.
               </p>
 
               <div className="bg-[#FBFBFA] p-6 rounded-2xl border border-[#1D1D1F]/10 text-left font-mono text-xs whitespace-pre-wrap text-[#1D1D1F] max-w-xl mx-auto overflow-x-auto">
@@ -722,7 +748,7 @@ export default function Home() {
 
                 {slotConfirmed ? (
                   <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium">
-                    Rendez-vous confirmé pour le créneau : <strong>{selectedSlot}</strong>. Une invitation Outlook a été préparée pour {CONTACT_EMAIL}.
+                    Rendez-vous demandé pour le créneau : <strong>{selectedSlot}</strong>. Notre équipe vous confirmera la réservation dans votre agenda Outlook.
                   </div>
                 ) : (
                   <Button
@@ -730,30 +756,18 @@ export default function Home() {
                     onClick={() => {
                       if (!selectedSlot) return;
                       setSlotConfirmed(true);
-                      const bookingSummary = `${summaryText}\n• Rendez-vous demandé : ${selectedSlot}`;
-                      const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Demande de devis & RDV — Casa Vostra")}&body=${encodeURIComponent(bookingSummary)}`;
-                      window.location.href = mailto;
-                      toast.success("Rendez-vous réservé avec succès", {
-                        description: `Créneau sélectionné : ${selectedSlot}`
+                      toast.success("Créneau de rendez-vous enregistré", {
+                        description: `Souhait de rendez-vous : ${selectedSlot}`
                       });
                     }}
                     className="w-full bg-[#8C6D53] hover:bg-[#775a42] text-white py-4 rounded-xl text-sm font-medium mb-4"
                   >
-                    Confirmer mon rendez-vous & envoyer le brief
+                    Réserver ce créneau dans l'agenda Outlook
                   </Button>
                 )}
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                <Button 
-                  onClick={() => {
-                    const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Demande de devis — Casa Vostra")}&body=${encodeURIComponent(summaryText)}`;
-                    window.location.href = mailto;
-                  }}
-                  className="bg-[#1D1D1F] text-white rounded-full px-8 py-3 text-sm font-medium w-full sm:w-auto"
-                >
-                  Envoyer par e-mail simple
-                </Button>
+              <div className="flex items-center justify-center pt-4">
                 <Button 
                   variant="outline"
                   onClick={() => {
@@ -761,9 +775,9 @@ export default function Home() {
                     setSelectedSlot(null);
                     setSlotConfirmed(false);
                   }}
-                  className="border-[#1D1D1F]/20 text-[#1D1D1F] rounded-full px-8 py-3 text-sm font-medium w-full sm:w-auto"
+                  className="border-[#1D1D1F]/20 text-[#1D1D1F] rounded-full px-8 py-3 text-sm font-medium"
                 >
-                  Modifier mon brief
+                  Modifier ou soumettre un autre brief
                 </Button>
               </div>
             </div>
