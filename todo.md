@@ -3,16 +3,16 @@
 - [x] Intégrer les prestations neuf et rénovation (carrelage, faïence, chape, petites rénovations).
 - [x] Mettre à jour les textes et le hero de la landing page.
 - [x] Ajuster les options du formulaire de brief projet.
-- [ ] Vérifier la compilation et sauvegarder le checkpoint final.
+- [x] Vérifier la compilation et sauvegarder le checkpoint final.
 - [x] Créer la page web minimaliste pour le post carrelage XXL.
 - [x] Ajouter le CTA vers le brief de devis Casa Vostra.
-- [ ] Vérifier la responsivité et livrer le code complet.
+- [x] Vérifier la responsivité et livrer le code complet.
 - [x] Configurer l’envoi du brief qualifié vers contact@casavostra.corsica.
-- [ ] Tester la validation, le succès et l’échec de la prise de contact.
-- [ ] Sauvegarder la version prête à publier.
+- [x] Tester la validation, le succès et l’échec de la prise de contact.
+- [x] Sauvegarder la version prête à publier.
 - [x] Ajouter la galerie photo dynamique des réalisations XXL.
 - [x] Ajouter filtres, lightbox et CTA vers le brief.
-- [ ] Vérifier le rendu responsive et sauvegarder la version.
+- [x] Vérifier le rendu responsive et sauvegarder la version.
 - [x] Intégrer la galerie visible sur la page d’accueil.
 - [x] Vérifier le lien de navigation et le rendu mobile de la galerie d’accueil.
 - [x] Ajouter un champ de médias pour photos, plans et documents au formulaire de devis.
@@ -20,10 +20,10 @@
 - [x] Clarifier le mode de transmission des pièces jointes vers l’e-mail.
 - [x] Préparer les 16 photos réelles fournies par Casa Vostra.
 - [x] Uploader les photos et remplacer les visuels de référence de la galerie.
-- [ ] Vérifier les recadrages mobile/desktop et sauvegarder la version.
+- [x] Vérifier les recadrages mobile/desktop et sauvegarder la version.
 - [x] Reprendre l’upload des photos par lots de taille contrôlée.
 - [x] Identifier les fichiers acceptés et intégrer leurs URL dans la galerie.
-- [ ] Vérifier la galerie après reprise et sauvegarder le checkpoint.
+- [x] Vérifier la galerie après reprise et sauvegarder le checkpoint.
 
 ## Audit visuel strict carrelage/faïence
 
@@ -32,8 +32,8 @@
 - [x] Remplacer les deux images génériques restantes sur la page XXL.
 - [x] Générer trois visuels éditoriaux complémentaires : sol grand format, salle d’eau faïencée, pose sur chape.
 - [x] Intégrer les visuels générés dans les zones commerciales du site.
-- [ ] Capturer et contrôler les rendus desktop et mobile.
-- [ ] Sauvegarder le checkpoint final.
+- [x] Capturer et contrôler les rendus desktop et mobile.
+- [x] Sauvegarder le checkpoint final.
 
 ## Remplacement du logo officiel
 
@@ -44,9 +44,36 @@
 - [x] Vérifier la lisibilité du logo sur desktop et mobile.
 - [x] Sauvegarder le checkpoint de correction.
 
-## Automatisation des rendez-vous Outlook
+## Envoi direct sans mailto et qualification stricte
 
-- [x] Identifier l’intégration Outlook et définir le parcours de réservation automatique après brief.
-- [x] Intégrer le sélecteur de créneaux dynamiques dans la vue de confirmation du brief.
-- [x] Relier le créneau choisi au résumé envoyé par e-mail vers contact@casavostra.corsica.
-- [x] Valider la compilation et sauvegarder le checkpoint final de production.
+- [x] Remplacer le système mailto par un envoi direct asynchrone sécurisé via tRPC et base de données.
+- [x] Rendre le téléphone et l'e-mail obligatoires dans le formulaire.
+- [x] Enregistrer les briefs et demandes de rendez-vous Outlook directement en base.
+- [x] Valider la compilation et sauvegarder le checkpoint.
+
+## Validation temps réel des coordonnées
+
+- [x] Valider le format de l’e-mail pendant la saisie.
+- [x] Valider le format du numéro de téléphone français pendant la saisie.
+- [x] Afficher des messages d’erreur et de réussite accessibles.
+- [x] Bloquer la transmission tant que les coordonnées sont invalides.
+- [x] Tester les états mobile et desktop puis sauvegarder le checkpoint.
+
+## Corrections de fiabilité du parcours en ligne
+
+- [x] Afficher les erreurs de téléphone et d’e-mail dès la saisie, sans attendre le blur.
+- [x] Implémenter l’upload serveur/S3 réel des photos et plans et enregistrer leurs métadonnées.
+- [x] Persister le créneau sélectionné avec le lead et le transmettre à la mutation.
+- [x] Tester une soumission directe réussie et un échec API avec leurs états UI.
+- [x] Vérifier la version finale et sauvegarder un checkpoint réellement livrable.
+
+## Contrôles finaux du tunnel de soumission
+
+- [x] Tester la soumission directe réussie et vérifier l’état de confirmation.
+- [x] Simuler une erreur API ou stockage et vérifier le message d’erreur côté interface.
+- [x] Sauvegarder un checkpoint après les dernières corrections de fiabilité.
+
+## Gestion claire des erreurs d’envoi
+
+- [x] Traduire les erreurs tRPC/API et stockage en message utilisateur clair en français.
+- [x] Retester en navigateur un échec API et vérifier le message final.

@@ -22,6 +22,25 @@ import {
 } from "lucide-react";
 
 const CONTACT_EMAIL = "contact@casavostra.corsica";
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+const FRENCH_PHONE_PATTERN = /^(?:(?:\+|00)33|0)[1-9](?:[\s.-]?\d{2}){4}$/;
+
+type ClientMedia = { name: string; type: string; size: number; data: string };
+
+const fileToDataUrl = (file: File) => new Promise<string>((resolve, reject) => {
+  const reader = new FileReader();
+  reader.onload = () => resolve(String(reader.result));
+  reader.onerror = () => reject(new Error(`Impossible de lire ${file.name}`));
+  reader.readAsDataURL(file);
+});
+
+const getLeadErrorMessage = (message?: string) => {
+  const normalizedMessage = (message || "").toLowerCase();
+  if (normalizedMessage.includes("email")) return "Vérifiez l’adresse e-mail renseignée.";
+  if (normalizedMessage.includes("téléphone") || normalizedMessage.includes("phone")) return "Vérifiez le format du numéro de téléphone.";
+  if (normalizedMessage.includes("storage") || normalizedMessage.includes("upload") || normalizedMessage.includes("fichier")) return "Une pièce jointe n’a pas pu être transmise. Vérifiez son format et sa taille.";
+  return "Votre demande n’a pas pu être transmise pour le moment. Vérifiez votre connexion puis réessayez.";
+};
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -44,26 +63,50 @@ export default function Home() {
   const [projectFiles, setProjectFiles] = useState<File[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [slotConfirmed, setSlotConfirmed] = useState(false);
+  const [leadId, setLeadId] = useState<number | null>(null);
+
+  const normalizedPhone = contactPhone.trim();
+  const normalizedEmail = contactEmail.trim();
+  const isPhoneValid = FRENCH_PHONE_PATTERN.test(normalizedPhone);
+  const isEmailValid = EMAIL_PATTERN.test(normalizedEmail);
+  const showPhoneError = normalizedPhone.length > 0 && !isPhoneValid;
+  const showEmailError = normalizedEmail.length > 0 && !isEmailValid;
+  const contactFieldsValid = isPhoneValid && isEmailValid;
 
   const submitLead = trpc.leads.submit.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("Demande transmise avec succès", {
         description: "Votre brief a été envoyé directement à Casa Vostra."
       });
+      setLeadId(data.leadId || null);
       setBriefSubmitted(true);
     },
     onError: (err) => {
-      toast.error("Erreur lors de l'envoi", {
-        description: err.message || "Veuillez réessayer ultérieurement."
+      toast.error("Envoi impossible", {
+        description: getLeadErrorMessage(err.message),
       });
     }
+  });
+
+  const assignSlot = trpc.leads.assignSlot.useMutation({
+    onSuccess: () => {
+      setSlotConfirmed(true);
+      toast.success("Votre préférence de rendez-vous est enregistrée", {
+        description: "Casa Vostra vous confirmera le créneau dans Outlook."
+      });
+    },
+    onError: (err) => {
+      toast.error("Créneau non enregistré", {
+        description: getLeadErrorMessage(err.message),
+      });
+    },
   });
 
   const handleBriefSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    if (!contactPhone.trim() || !contactEmail.trim()) {
-      toast.error("Le numéro de téléphone et l'adresse e-mail sont obligatoires pour valider votre brief.");
+    if (!contactFieldsValid) {
+      toast.error("Vérifiez le format de votre téléphone et de votre e-mail avant l'envoi.");
       return;
     }
 
@@ -93,6 +136,19 @@ export default function Home() {
 
     setSummaryText(summary);
 
+    let media: ClientMedia[] = [];
+    try {
+      media = await Promise.all(projectFiles.map(async (file) => ({
+        name: file.name,
+        type: file.type || "application/octet-stream",
+        size: file.size,
+        data: await fileToDataUrl(file),
+      })));
+    } catch {
+      toast.error("Une pièce jointe n'a pas pu être préparée. Réessayez.");
+      return;
+    }
+
     submitLead.mutate({
       projectType: typeLabels[projectType] || projectType,
       projectNature: natureLabel,
@@ -103,9 +159,11 @@ export default function Home() {
       location: location || undefined,
       details: details || undefined,
       mediaSummary,
+      media,
+      selectedSlot: selectedSlot || undefined,
       contactName: contactName || undefined,
-      contactPhone,
-      contactEmail,
+      contactPhone: normalizedPhone,
+      contactEmail: normalizedEmail,
     });
   };
 
@@ -607,7 +665,7 @@ export default function Home() {
               <div className="pt-6 border-t border-[#1D1D1F]/10 space-y-4">
                 <div>
                   <h3 className="font-serif text-lg font-medium">Photos, plans et documents du projet</h3>
-                  <p className="text-xs leading-5 text-[#6E6E73] mt-1">Ajoutez jusqu’à 6 fichiers pour nous aider à comprendre le chantier : photos des supports, plan, croquis ou PDF. 10 Mo maximum par fichier.</p>
+                  <p className="text-xs leading-5 text-[#6E6E73] mt-1">Ajoutez jusqu’à 6 fichiers pour nous aider à comprendre le chantier : photos des supports, plan, croquis ou PDF. 10 Mo maximum par fichier, 35 Mo au total.</p>
                 </div>
                 <label htmlFor="project-media" className="flex min-h-32 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-[#1D1D1F]/20 bg-[#FBFBFA] px-6 py-7 text-center transition-colors hover:border-[#8C6D53] hover:bg-[#8C6D53]/5">
                   <FileText className="h-7 w-7 text-[#8C6D53]" />
@@ -625,7 +683,16 @@ export default function Home() {
                       const validFiles = selectedFiles.filter((file) => {
                         const extension = file.name.toLowerCase().split(".").pop() ?? "";
                         return allowedExtensions.includes(extension) && file.size <= 10 * 1024 * 1024;
-                      });
+                      }).slice(0, 6);
+                      const maxTotalBytes = 35 * 1024 * 1024;
+                      const filesWithinTotalLimit: File[] = [];
+                      let totalBytes = 0;
+                      for (const file of validFiles) {
+                        if (totalBytes + file.size <= maxTotalBytes) {
+                          filesWithinTotalLimit.push(file);
+                          totalBytes += file.size;
+                        }
+                      }
 
                       if (selectedFiles.length > 6) {
                         toast.error("Vous pouvez sélectionner 6 fichiers maximum.");
@@ -633,7 +700,10 @@ export default function Home() {
                       if (validFiles.length !== Math.min(selectedFiles.length, 6)) {
                         toast.error("Certains fichiers ont été ignorés : format non accepté ou taille supérieure à 10 Mo.");
                       }
-                      setProjectFiles(validFiles.slice(0, 6));
+                      if (filesWithinTotalLimit.length !== validFiles.length) {
+                        toast.error("Les pièces jointes sont limitées à 35 Mo au total.");
+                      }
+                      setProjectFiles(filesWithinTotalLimit);
                     }}
                   />
                 </label>
@@ -647,7 +717,7 @@ export default function Home() {
                     ))}
                   </div>
                 )}
-                <p className="text-[11px] leading-5 text-[#8A8A8F]">Les fichiers sélectionnés sont ajoutés à votre brief. Avec le mode e-mail actuel, les pièces jointes devront être ajoutées dans votre messagerie avant l’envoi.</p>
+                <p className="text-[11px] leading-5 text-[#8A8A8F]">Les fichiers sélectionnés sont enregistrés avec votre brief et transmis directement depuis le site. Aucun e-mail ne s’ouvre sur votre appareil.</p>
               </div>
 
               {/* Coordonnées */}
@@ -668,24 +738,40 @@ export default function Home() {
                   <div>
                     <label className="block text-xs font-medium text-[#6E6E73] mb-1">Téléphone <span className="text-[#8C6D53]">*</span></label>
                     <input 
+                      id="contact-phone"
                       type="tel" 
                       required
+                      inputMode="tel"
+                      autoComplete="tel"
                       placeholder="06 12 34 56 78" 
                       value={contactPhone}
                       onChange={(e) => setContactPhone(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-[#1D1D1F]/20 focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] text-sm bg-white"
+                      aria-invalid={showPhoneError}
+                      aria-describedby="contact-phone-hint"
+                      className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] text-sm bg-white ${showPhoneError ? "border-red-400 focus:ring-red-300" : isPhoneValid ? "border-emerald-400 focus:ring-emerald-300" : "border-[#1D1D1F]/20"}`}
                     />
+                    <p id="contact-phone-hint" aria-live="polite" className={`mt-1 text-[11px] ${showPhoneError ? "text-red-600" : isPhoneValid ? "text-emerald-700" : "text-[#8A8A8F]"}`}>
+                      {showPhoneError ? "Format attendu : 06 12 34 56 78 ou +33 6 12 34 56 78." : isPhoneValid ? "Numéro valide." : "Téléphone français requis."}
+                    </p>
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-[#6E6E73] mb-1">E-mail <span className="text-[#8C6D53]">*</span></label>
                     <input 
+                      id="contact-email"
                       type="email" 
                       required
+                      inputMode="email"
+                      autoComplete="email"
                       placeholder="jean@exemple.fr" 
                       value={contactEmail}
                       onChange={(e) => setContactEmail(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-[#1D1D1F]/20 focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] text-sm bg-white"
+                      aria-invalid={showEmailError}
+                      aria-describedby="contact-email-hint"
+                      className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] text-sm bg-white ${showEmailError ? "border-red-400 focus:ring-red-300" : isEmailValid ? "border-emerald-400 focus:ring-emerald-300" : "border-[#1D1D1F]/20"}`}
                     />
+                    <p id="contact-email-hint" aria-live="polite" className={`mt-1 text-[11px] ${showEmailError ? "text-red-600" : isEmailValid ? "text-emerald-700" : "text-[#8A8A8F]"}`}>
+                      {showEmailError ? "Saisissez une adresse e-mail valide, par exemple jean@exemple.fr." : isEmailValid ? "Adresse e-mail valide." : "E-mail requis pour recevoir la confirmation."}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -693,7 +779,7 @@ export default function Home() {
               <div className="pt-4">
                 <Button 
                   type="submit"
-                  disabled={submitLead.isPending}
+                  disabled={submitLead.isPending || !contactFieldsValid}
                   className="w-full bg-[#1D1D1F] hover:bg-[#333336] text-white py-6 rounded-2xl font-medium text-base shadow-lg transition-all flex items-center justify-center gap-2"
                 >
                   {submitLead.isPending ? "Transmission en cours..." : "Transmettre mon brief directement"} <ArrowRight className="w-5 h-5" />
@@ -718,11 +804,11 @@ export default function Home() {
                 {summaryText}
               </div>
 
-              <p className="text-center text-xs text-[#6E6E73] max-w-xl mx-auto">Si aucune messagerie ne s’ouvre, copiez le brief affiché ci-dessus et envoyez-le manuellement à {CONTACT_EMAIL}.</p>
+              <p className="text-center text-xs text-[#6E6E73] max-w-xl mx-auto">Votre brief a été enregistré directement sur le site. Casa Vostra reviendra vers vous après étude de votre demande.</p>
 
               <div className="border-t border-[#1D1D1F]/10 pt-6 mt-6">
                 <h4 className="font-serif text-xl font-medium mb-2">Planifier votre échange technique</h4>
-                <p className="text-xs text-[#6E6E73] mb-4">Choisissez un créneau disponible dans l’agenda Outlook de Casa Vostra pour faire le point sur votre chantier :</p>
+                <p className="text-xs text-[#6E6E73] mb-4">Indiquez votre préférence de créneau pour faire le point sur votre chantier. Casa Vostra vérifiera la disponibilité et vous confirmera le rendez-vous dans Outlook :</p>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
                   {[
@@ -748,21 +834,18 @@ export default function Home() {
 
                 {slotConfirmed ? (
                   <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium">
-                    Rendez-vous demandé pour le créneau : <strong>{selectedSlot}</strong>. Notre équipe vous confirmera la réservation dans votre agenda Outlook.
+                    Votre préférence de créneau est enregistrée : <strong>{selectedSlot}</strong>. Casa Vostra vous confirmera la disponibilité dans Outlook.
                   </div>
                 ) : (
                   <Button
-                    disabled={!selectedSlot}
+                    disabled={!selectedSlot || !leadId || assignSlot.isPending}
                     onClick={() => {
-                      if (!selectedSlot) return;
-                      setSlotConfirmed(true);
-                      toast.success("Créneau de rendez-vous enregistré", {
-                        description: `Souhait de rendez-vous : ${selectedSlot}`
-                      });
+                      if (!selectedSlot || !leadId) return;
+                      assignSlot.mutate({ leadId, selectedSlot });
                     }}
                     className="w-full bg-[#8C6D53] hover:bg-[#775a42] text-white py-4 rounded-xl text-sm font-medium mb-4"
                   >
-                    Réserver ce créneau dans l'agenda Outlook
+                    {assignSlot.isPending ? "Enregistrement..." : "Demander ce créneau"}
                   </Button>
                 )}
               </div>
@@ -774,6 +857,7 @@ export default function Home() {
                     setBriefSubmitted(false);
                     setSelectedSlot(null);
                     setSlotConfirmed(false);
+                    setLeadId(null);
                   }}
                   className="border-[#1D1D1F]/20 text-[#1D1D1F] rounded-full px-8 py-3 text-sm font-medium"
                 >
