@@ -27,39 +27,22 @@ type GalleryItem = {
 };
 
 const galleryItems: GalleryItem[] = [
-  {
-    id: "sols-01",
-    title: "Lignes continues",
-    category: "Sols",
-    label: "Carrelage grand format · Visuel de référence",
-    image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=85",
-    alt: "Sol clair en grand format dans un intérieur contemporain",
-    featured: true,
-  },
-  {
-    id: "salle-eau-01",
-    title: "Matière murale",
-    category: "Salles d’eau",
-    label: "Faïence · Visuel de référence",
-    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1000&q=85",
-    alt: "Salle de bains contemporaine avec revêtement mural minéral",
-  },
-  {
-    id: "details-01",
-    title: "Le détail juste",
-    category: "Détails",
-    label: "Finition · Visuel de référence",
-    image: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1000&q=85",
-    alt: "Détail d'une architecture contemporaine et de ses finitions",
-  },
-  {
-    id: "sols-02",
-    title: "Un espace plus lisible",
-    category: "Sols",
-    label: "Pose grand format · Visuel de référence",
-    image: "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?auto=format&fit=crop&w=1000&q=85",
-    alt: "Pièce de vie lumineuse avec sol minéral",
-  },
+  { id: "real-01", title: "Faïence et lignes fines", category: "Salles d’eau", label: "Salle d’eau · Réalisation Casa Vostra", image: "/manus-storage/7B14C597-3D1D-4F75-9D2E-B2CF772BACD4_4dd2cb62.jpg", alt: "Faïence murale fine et escalier intérieur habillé", featured: true },
+  { id: "real-02", title: "Terrasse minérale", category: "Sols", label: "Terrasse · Réalisation Casa Vostra", image: "/manus-storage/IMG_8803_56053e57.jpeg", alt: "Terrasse extérieure réalisée en dalles minérales" },
+  { id: "real-03", title: "Pose en cours", category: "Détails", label: "Étape de pose · Réalisation Casa Vostra", image: "/manus-storage/IMG_2588_b353d62f.PNG", alt: "Pose de grands carreaux au sol avec système de nivellement" },
+  { id: "real-04", title: "Effet pierre", category: "Détails", label: "Matière · Réalisation Casa Vostra", image: "/manus-storage/0CAC8079-AAF1-47AB-B32D-6DEA8CAFAE35_3ee53dd1.jpg", alt: "Détail d'une surface minérale effet pierre" },
+  { id: "real-05", title: "Douche grand format", category: "Salles d’eau", label: "Salle d’eau · Réalisation Casa Vostra", image: "/manus-storage/IMG_2204_428a3b72.jpeg", alt: "Salle d'eau avec revêtement mural effet marbre et niche" },
+  { id: "real-06", title: "Calepinage en chantier", category: "Détails", label: "Étape de pose · Réalisation Casa Vostra", image: "/manus-storage/IMG_2188_ead13daf.jpeg", alt: "Chantier en cours avec grands formats au sol" },
+  { id: "real-07", title: "Parois minérales", category: "Salles d’eau", label: "Douche · Réalisation Casa Vostra", image: "/manus-storage/IMG_1703_9572addd.jpeg", alt: "Douche en cours de réalisation avec grandes dalles murales" },
+  { id: "real-08", title: "Préparation des supports", category: "Détails", label: "Préparation · Réalisation Casa Vostra", image: "/manus-storage/IMG_1588_579f6eab.jpeg", alt: "Salle d'eau en préparation avec repères de pose" },
+  { id: "real-09", title: "Grand format au sol", category: "Sols", label: "Sol · Réalisation Casa Vostra", image: "/manus-storage/IMG_1542_ff1024d3.jpeg", alt: "Pose de grands carreaux au sol avec système de nivellement" },
+  { id: "real-10", title: "Matière bois et pierre", category: "Détails", label: "Revêtement · Réalisation Casa Vostra", image: "/manus-storage/IMG_1189_0f0d95ab.jpeg", alt: "Revêtement mural intérieur effet bois et pierre" },
+  { id: "real-11", title: "Finition bois", category: "Sols", label: "Sol · Réalisation Casa Vostra", image: "/manus-storage/IMG_1176_72bb79e5.jpeg", alt: "Sol intérieur avec finition bois" },
+  { id: "real-12", title: "Marches habillées", category: "Détails", label: "Escalier · Réalisation Casa Vostra", image: "/manus-storage/IMG_1154_0f40d56b.jpeg", alt: "Escalier intérieur avec marches habillées" },
+  { id: "real-13", title: "Vasque et plan minéral", category: "Salles d’eau", label: "Salle de bains · Réalisation Casa Vostra", image: "/manus-storage/IMG_1131_3753e78e.jpeg", alt: "Salle de bains avec vasque posée sur un plan minéral" },
+  { id: "real-14", title: "Salle de bains contemporaine", category: "Salles d’eau", label: "Salle de bains · Réalisation Casa Vostra", image: "/manus-storage/IMG_1117_c82aa625.jpeg", alt: "Salle de bains contemporaine avec revêtement mural" },
+  { id: "real-15", title: "Faïence en détail", category: "Détails", label: "Faïence · Réalisation Casa Vostra", image: "/manus-storage/IMG_1115_2a0da346.jpeg", alt: "Détail de faïence verticale associé à un grand format" },
+  { id: "real-16", title: "Sol finition bois", category: "Sols", label: "Sol · Réalisation Casa Vostra", image: "/manus-storage/IMG_0421_aefec0a9.jpeg", alt: "Sol intérieur avec finition bois" },
 ];
 
 const galleryFilters: GalleryFilter[] = ["Toutes", "Sols", "Salles d’eau", "Détails"];
@@ -158,8 +141,8 @@ export default function InstagramXXL() {
             <div className="absolute -right-5 -top-6 h-28 w-28 rounded-full bg-[#e2d4c7] blur-3xl sm:-right-10 sm:-top-10 sm:h-44 sm:w-44" aria-hidden="true" />
             <div className="relative aspect-[0.86] overflow-hidden rounded-[28px] bg-[#e2ded8] shadow-[0_28px_70px_rgba(29,29,31,0.18)]">
               <img
-                src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=85"
-                alt="Intérieur contemporain avec sol en carrelage grand format"
+                src="/manus-storage/casa-vostra-bathroom-faience_55499b2e.jpg"
+                alt="Salle d’eau contemporaine avec faïence grand format et niche habillée, Casa Vostra"
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1d1d1f]/70 via-transparent to-transparent" />
@@ -204,7 +187,7 @@ export default function InstagramXXL() {
             <div className="max-w-2xl">
               <p className="text-[10px] font-semibold tracking-[0.2em] text-[#a27758] uppercase">02 / La galerie</p>
               <h2 className="mt-4 font-serif text-4xl leading-[1.02] tracking-[-0.05em] sm:text-6xl">Des matières qui prennent toute leur place.</h2>
-              <p className="mt-5 max-w-xl text-base leading-7 text-[#6e6e73]">Une sélection de visuels pour présenter vos univers de pose. Remplacez progressivement les images de référence par vos propres photos de chantiers.</p>
+              <p className="mt-5 max-w-xl text-base leading-7 text-[#6e6e73]">Une sélection de réalisations Casa Vostra : grands formats, salles d’eau, sols et détails de pose. Ouvrez chaque image pour la voir en grand.</p>
             </div>
             <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrer la galerie">
               {galleryFilters.map((filter) => (
@@ -242,7 +225,7 @@ export default function InstagramXXL() {
           </div>
 
           <div className="mt-10 flex flex-col gap-5 border-t border-[#1d1d1f]/10 pt-7 sm:flex-row sm:items-center sm:justify-between">
-            <p className="max-w-xl text-sm leading-6 text-[#8a8a8f]">Galerie en cours de construction : envoyez vos photos de réalisations pour remplacer les visuels de référence et présenter des projets réellement exécutés par Casa Vostra.</p>
+            <p className="max-w-xl text-sm leading-6 text-[#8a8a8f]">Une sélection de réalisations réelles Casa Vostra. Nous pouvons ajouter la ville, la surface et les détails techniques de chaque chantier lorsque vous nous les transmettez.</p>
             <a href="/#brief" className="group inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-[#1d1d1f] underline decoration-[#a27758] decoration-2 underline-offset-8 transition-colors hover:text-[#a27758]">Parler de mon projet <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></a>
           </div>
         </div>
@@ -273,8 +256,8 @@ export default function InstagramXXL() {
             </div>
             <div className="aspect-[1.15] overflow-hidden bg-[#d9d2cb]">
               <img
-                src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=85"
-                alt="Détail d'un intérieur contemporain avec carrelage grand format"
+                src="/manus-storage/casa-vostra-pose-detail_e9bca9f2.jpg"
+                alt="Pose de carrelage grand format sur chape préparée avec système de nivellement, Casa Vostra"
                 className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
               />
             </div>
@@ -326,7 +309,7 @@ export default function InstagramXXL() {
                   </div>
                   <button type="button" onClick={() => setSelectedGalleryItem(null)} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#1d1d1f]/10 text-[#6e6e73] transition-colors hover:bg-[#1d1d1f] hover:text-white" aria-label="Fermer"><X className="h-4 w-4" /></button>
                 </div>
-                <p className="mt-6 text-sm leading-7 text-[#6e6e73]">Visuel de référence pour présenter l’univers de Casa Vostra. Cette carte est prête à accueillir une photo réelle de votre chantier, avec sa ville, sa surface et le détail technique que vous souhaitez mettre en avant.</p>
+                <p className="mt-6 text-sm leading-7 text-[#6e6e73]">Cette réalisation est présentée dans son contexte. Nous pouvons compléter la fiche avec la ville, la surface et le détail technique du chantier lorsque vous nous les transmettez.</p>
               </div>
               <a href="/#brief" onClick={() => setSelectedGalleryItem(null)} className="mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-[#1d1d1f] px-5 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]">Qualifier un projet similaire <ArrowUpRight className="h-4 w-4" /></a>
             </div>

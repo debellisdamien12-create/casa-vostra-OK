@@ -200,8 +200,8 @@ export default function Home() {
             <div className="lg:col-span-5 relative">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/5] bg-[#EAE8E4]">
                 <img 
-                  src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85" 
-                  alt="Carrelage grand format et finitions haut de gamme Casa Vostra" 
+                  src="/manus-storage/casa-vostra-hero-carrelage_8724129d.jpg" 
+                  alt="Sol en carrelage grand format avec joints précis dans un intérieur contemporain, Casa Vostra" 
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent flex flex-col justify-end p-8 text-white">
@@ -345,19 +345,19 @@ export default function Home() {
             <div className="max-w-2xl">
               <span className="text-xs font-mono uppercase tracking-widest text-[#8C6D53] block mb-3">03 / GALERIE CARRELAGE XXL</span>
               <h2 className="font-serif text-3xl sm:text-5xl font-normal tracking-tight leading-tight">Des matières qui prennent toute leur place.</h2>
-              <p className="text-[#6E6E73] text-base leading-relaxed mt-5 max-w-xl">Découvrez l’univers de pose Casa Vostra : grands formats, lignes continues et détails de finition. Cette sélection sera remplacée par vos photos de chantiers réels.</p>
+              <p className="text-[#6E6E73] text-base leading-relaxed mt-5 max-w-xl">Découvrez une sélection de réalisations réelles Casa Vostra : grands formats, salles d’eau et détails de finition.</p>
             </div>
             <a href="/carrelage-xxl#galerie" className="inline-flex items-center gap-2 text-sm font-semibold text-[#1D1D1F] underline decoration-[#8C6D53] decoration-2 underline-offset-8 hover:text-[#8C6D53] transition-colors whitespace-nowrap">Explorer la galerie complète <ArrowRight className="w-4 h-4" /></a>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <a href="/carrelage-xxl#galerie" className="group relative sm:col-span-2 lg:row-span-2 min-h-[320px] lg:min-h-[460px] overflow-hidden rounded-2xl bg-[#D8D2CA] shadow-[0_16px_40px_rgba(29,29,31,0.1)]">
-              <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=85" alt="Intérieur contemporain avec sol grand format" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+              <img src="/manus-storage/7B14C597-3D1D-4F75-9D2E-B2CF772BACD4_4dd2cb62.jpg" alt="Faïence murale fine et escalier intérieur habillé, réalisation Casa Vostra" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
               <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-              <span className="absolute bottom-0 left-0 right-0 p-6 text-white"><span className="block text-xs font-mono uppercase tracking-widest text-[#E3D5C9]">Carrelage grand format</span><span className="block font-serif text-2xl mt-2">Lignes continues.</span></span>
+              <span className="absolute bottom-0 left-0 right-0 p-6 text-white"><span className="block text-xs font-mono uppercase tracking-widest text-[#E3D5C9]">Faïence</span><span className="block font-serif text-2xl mt-2">Lignes fines.</span></span>
             </a>
-            <a href="/carrelage-xxl#galerie" className="group relative min-h-[220px] overflow-hidden rounded-2xl bg-[#D8D2CA]"><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1000&q=85" alt="Salle de bains contemporaine avec faïence" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" /><span className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" /><span className="absolute bottom-0 p-5 text-white"><span className="block text-xs font-mono uppercase tracking-widest text-[#E3D5C9]">Faïence</span><span className="block font-serif text-xl mt-2">Matière murale.</span></span></a>
-            <a href="/carrelage-xxl#galerie" className="group relative min-h-[220px] overflow-hidden rounded-2xl bg-[#D8D2CA]"><img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1000&q=85" alt="Détail d'une architecture contemporaine" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" /><span className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" /><span className="absolute bottom-0 p-5 text-white"><span className="block text-xs font-mono uppercase tracking-widest text-[#E3D5C9]">Finitions</span><span className="block font-serif text-xl mt-2">Le détail juste.</span></span></a>
+            <a href="/carrelage-xxl#galerie" className="group relative min-h-[220px] overflow-hidden rounded-2xl bg-[#D8D2CA]"><img src="/manus-storage/IMG_2204_428a3b72.jpeg" alt="Salle d’eau avec revêtement mural et niche, réalisation Casa Vostra" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" /><span className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" /><span className="absolute bottom-0 p-5 text-white"><span className="block text-xs font-mono uppercase tracking-widest text-[#E3D5C9]">Salle d’eau</span><span className="block font-serif text-xl mt-2">Matière murale.</span></span></a>
+            <a href="/carrelage-xxl#galerie" className="group relative min-h-[220px] overflow-hidden rounded-2xl bg-[#D8D2CA]"><img src="/manus-storage/IMG_1542_ff1024d3.jpeg" alt="Pose de grands carreaux au sol avec système de nivellement, réalisation Casa Vostra" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" /><span className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" /><span className="absolute bottom-0 p-5 text-white"><span className="block text-xs font-mono uppercase tracking-widest text-[#E3D5C9]">Pose grand format</span><span className="block font-serif text-xl mt-2">Le détail juste.</span></span></a>
           </div>
         </div>
       </section>
