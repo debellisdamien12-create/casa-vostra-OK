@@ -134,10 +134,12 @@ Sois direct, factuel et chaleureux.`;
           const validationUrl = `${appUrl}/?validateLead=${newLeadId}`;
           const mediaText = uploadedMedia.length > 0 ? uploadedMedia.map(m => `- ${m.name} (${(m.size/1024/1024).toFixed(1)}Mo): ${m.url}`).join("\n") : "Aucune pièce jointe";
 
-          await notifyOwner({
+          const notificationPayload = {
             title: `[Casa Vostra] Nouveau brief #${newLeadId} - ${input.contactName || input.contactEmail}`,
-            content: `Un nouveau brief client a été soumis sur le site !\n\nSynthèse IA :\n${aiSummary}\n\nClient : ${input.contactName || "Anonyme"}\nTél : ${input.contactPhone}\nE-mail : ${input.contactEmail}\nType : ${input.projectType} (${input.projectNature})\nSurface : ${input.surface || "N/C"} m²\nBudget : ${input.budget || "N/C"}\nFourniture : ${input.supplyScope || "N/C"}\nLocalisation : ${input.location || "N/C"}\nDélai : ${input.timeline || "N/C"}\n\nDétails :\n${input.details || "Aucun détail"}\n\nPièces jointes :\n${mediaText}\n\n---------------------------------------------\nVALIDER LA DEMANDE ET DONNER ACCÈS AUX CRÉneaux OUTLOOK :\n${validationUrl}\n---------------------------------------------`
-          });
+            content: `DESTINATAIRE: contact@casavostra.corsica\nUn nouveau brief client a été soumis sur le site !\n\nSynthèse IA :\n${aiSummary}\n\nClient : ${input.contactName || "Anonyme"}\nTél : ${input.contactPhone}\nE-mail : ${input.contactEmail}\nType : ${input.projectType} (${input.projectNature})\nSurface : ${input.surface || "N/C"} m²\nBudget : ${input.budget || "N/C"}\nFourniture : ${input.supplyScope || "N/C"}\nLocalisation : ${input.location || "N/C"}\nDélai : ${input.timeline || "N/C"}\n\nDétails :\n${input.details || "Aucun détail"}\n\nPièces jointes :\n${mediaText}\n\n---------------------------------------------\nVALIDER LA DEMANDE ET DONNER ACCÈS AUX CRÉneaux OUTLOOK :\n${validationUrl}\n---------------------------------------------`
+          };
+          console.log(`[LeadSubmission] Dispatching owner notification for lead #${newLeadId} to contact@casavostra.corsica`);
+          await notifyOwner(notificationPayload);
         } catch (err) {
           console.error("[OwnerNotification] Failed to send email:", err);
         }

@@ -103,9 +103,12 @@ export async function notifyOwner(
           detail ? `: ${detail}` : ""
         }`
       );
+      // Fallback print for direct inspection
+      console.log(`[Notification Fallback] TO: contact@casavostra.corsica | TITLE: ${title} | CONTENT:\n${content}`);
       return false;
     }
 
+    console.log(`[Notification Success] Sent notification for: ${title}`);
     return true;
   } catch (error) {
     console.warn("[Notification] Error calling notification service:", error);
