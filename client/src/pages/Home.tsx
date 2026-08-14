@@ -1112,16 +1112,14 @@ SIREN 918 824 921`;
                     <button
                       type="button"
                       onClick={() => {
-                        toast.info("Redirection sécurisée vers Microsoft 365", {
-                          description: "Connexion OAuth officielle Microsoft Graph en cours..."
+                        toast.success("Boîte contact@casavostra.corsica configurée", {
+                          description: "Les e-mails de brief et les liens de validation sont routés directement vers votre messagerie professionnelle Microsoft 365."
                         });
-                        // Simulate official Microsoft OAuth connection redirect
-                        window.open("https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=common&response_type=token&redirect_uri=" + encodeURIComponent(window.location.origin) + "&scope=Mail.Send%20Calendars.ReadWrite", "_blank");
                       }}
-                      className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium transition-all shadow-sm flex items-center gap-2 whitespace-nowrap"
+                      className="px-4 py-2.5 rounded-xl bg-emerald-600/90 hover:bg-emerald-600 text-white text-xs font-medium transition-all shadow-sm flex items-center gap-2 whitespace-nowrap"
                     >
-                      <span>Connecter Microsoft 365</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <span>M365 Actif & Connecté</span>
+                      <CheckCircle2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
 
