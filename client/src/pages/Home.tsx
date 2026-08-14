@@ -38,6 +38,7 @@ export default function Home() {
   const [contactName, setContactName] = useState("");
   const [contactPhone, setContactPhone] = useState("");
   const [contactEmail, setContactEmail] = useState("");
+  const [projectFiles, setProjectFiles] = useState<File[]>([]);
 
   const handleBriefSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,6 +56,10 @@ export default function Home() {
       complet: "Travaux multiples / Finitions"
     };
 
+    const mediaSummary = projectFiles.length > 0
+      ? projectFiles.map((file) => file.name).join(", ")
+      : "Aucun fichier sélectionné";
+
     const summary = `[BRIEF PROJET - CASA VOSTRA]
 • Type : ${typeLabels[projectType] || projectType}
 • Nature : ${natureLabel}
@@ -62,6 +67,7 @@ export default function Home() {
 • Calendrier : ${timeline}
 • Localisation : ${location || "Non renseignée"}
 • Précisions : ${details || "Aucune"}
+• Médias du projet : ${mediaSummary}
 • Contact : ${contactName || "Anonyme"} | Tél: ${contactPhone || "Non renseigné"} | Email: ${contactEmail || "Non renseigné"}`;
 
     setSummaryText(summary);
@@ -534,6 +540,53 @@ export default function Home() {
                     className="w-full px-4 py-3 rounded-xl border border-[#1D1D1F]/20 focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] text-sm bg-white"
                   />
                 </div>
+              </div>
+
+              {/* Médias du projet */}
+              <div className="pt-6 border-t border-[#1D1D1F]/10 space-y-4">
+                <div>
+                  <h3 className="font-serif text-lg font-medium">Photos, plans et documents du projet</h3>
+                  <p className="text-xs leading-5 text-[#6E6E73] mt-1">Ajoutez jusqu’à 6 fichiers pour nous aider à comprendre le chantier : photos des supports, plan, croquis ou PDF. 10 Mo maximum par fichier.</p>
+                </div>
+                <label htmlFor="project-media" className="flex min-h-32 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-[#1D1D1F]/20 bg-[#FBFBFA] px-6 py-7 text-center transition-colors hover:border-[#8C6D53] hover:bg-[#8C6D53]/5">
+                  <FileText className="h-7 w-7 text-[#8C6D53]" />
+                  <span className="mt-3 text-sm font-semibold text-[#1D1D1F]">Ajouter des photos ou un plan</span>
+                  <span className="mt-1 text-xs text-[#6E6E73]">JPG, PNG, WEBP, PDF, DWG ou DXF</span>
+                  <input
+                    id="project-media"
+                    type="file"
+                    multiple
+                    accept="image/*,.pdf,.dwg,.dxf"
+                    className="sr-only"
+                    onChange={(event) => {
+                      const selectedFiles = Array.from(event.currentTarget.files ?? []);
+                      const allowedExtensions = ["jpg", "jpeg", "png", "webp", "heic", "pdf", "dwg", "dxf"];
+                      const validFiles = selectedFiles.filter((file) => {
+                        const extension = file.name.toLowerCase().split(".").pop() ?? "";
+                        return allowedExtensions.includes(extension) && file.size <= 10 * 1024 * 1024;
+                      });
+
+                      if (selectedFiles.length > 6) {
+                        toast.error("Vous pouvez sélectionner 6 fichiers maximum.");
+                      }
+                      if (validFiles.length !== Math.min(selectedFiles.length, 6)) {
+                        toast.error("Certains fichiers ont été ignorés : format non accepté ou taille supérieure à 10 Mo.");
+                      }
+                      setProjectFiles(validFiles.slice(0, 6));
+                    }}
+                  />
+                </label>
+                {projectFiles.length > 0 && (
+                  <div className="grid gap-2 sm:grid-cols-2" aria-live="polite">
+                    {projectFiles.map((file) => (
+                      <div key={`${file.name}-${file.lastModified}`} className="flex items-center justify-between gap-3 rounded-xl border border-[#1D1D1F]/10 bg-white px-3 py-2 text-xs text-[#424245]">
+                        <span className="min-w-0 truncate">{file.name}</span>
+                        <span className="shrink-0 text-[#8C6D53]">{(file.size / 1024 / 1024).toFixed(1)} Mo</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <p className="text-[11px] leading-5 text-[#8A8A8F]">Les fichiers sélectionnés sont ajoutés à votre brief. Avec le mode e-mail actuel, les pièces jointes devront être ajoutées dans votre messagerie avant l’envoi.</p>
               </div>
 
               {/* Coordonnées */}

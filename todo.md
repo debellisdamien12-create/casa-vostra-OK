@@ -15,3 +15,6 @@
 - [ ] Vérifier le rendu responsive et sauvegarder la version.
 - [ ] Intégrer la galerie visible sur la page d’accueil.
 - [ ] Vérifier le lien de navigation et le rendu mobile de la galerie d’accueil.
+- [ ] Ajouter un champ de médias pour photos, plans et documents au formulaire de devis.
+- [ ] Afficher les fichiers sélectionnés et leurs formats avant le brief.
+- [ ] Clarifier le mode de transmission des pièces jointes vers l’e-mail.
