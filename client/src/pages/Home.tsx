@@ -18,7 +18,9 @@ import {
   PhoneCall,
   FileText,
   MapPin,
-  Check
+  Check,
+  Copy,
+  Mail
 } from "lucide-react";
 
 const CONTACT_EMAIL = "contact@casavostra.corsica";
@@ -62,6 +64,11 @@ export default function Home() {
   const [contactEmail, setContactEmail] = useState("");
   const [projectFiles, setProjectFiles] = useState<File[]>([]);
   const [leadId, setLeadId] = useState<number | null>(null);
+  const [replySlots, setReplySlots] = useState(["", "", ""]);
+  const [emailTemplate, setEmailTemplate] = useState("");
+  const [emailTemplateCopied, setEmailTemplateCopied] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
+  const [slotConfirmed, setSlotConfirmed] = useState(false);
 
   const normalizedPhone = contactPhone.trim();
   const normalizedEmail = contactEmail.trim();
@@ -77,6 +84,8 @@ export default function Home() {
         description: "Votre brief a été envoyé directement à Casa Vostra."
       });
       setLeadId(data.leadId || null);
+      setSelectedSlot(null);
+      setSlotConfirmed(false);
       setBriefSubmitted(true);
     },
     onError: (err) => {
@@ -84,6 +93,20 @@ export default function Home() {
         description: getLeadErrorMessage(err.message),
       });
     }
+  });
+
+  const assignSlot = trpc.leads.assignSlot.useMutation({
+    onSuccess: () => {
+      setSlotConfirmed(true);
+      toast.success("Rendez-vous confirmé dans Outlook", {
+        description: "Votre créneau a été enregistré dans le planning de Casa Vostra."
+      });
+    },
+    onError: (err) => {
+      toast.error("Réservation impossible", {
+        description: getLeadErrorMessage(err.message),
+      });
+    },
   });
 
 
@@ -149,6 +172,55 @@ export default function Home() {
       contactPhone: normalizedPhone,
       contactEmail: normalizedEmail,
     });
+  };
+
+  const generateEmailTemplate = () => {
+    const availableSlots = replySlots.map((slot) => slot.trim()).filter(Boolean);
+    if (availableSlots.length === 0) {
+      toast.error("Ajoutez au moins un créneau Outlook disponible.");
+      return;
+    }
+
+    const greetingName = contactName.trim() || "Madame, Monsieur";
+    const slotsText = availableSlots.map((slot, index) => `${index + 1}. ${slot}`).join("\\n");
+    const template = `Objet : Votre projet Casa Vostra — proposition de rendez-vous
+
+Bonjour ${greetingName},
+
+Merci pour votre demande et pour les éléments transmis concernant votre projet. Nous avons bien reçu votre brief et allons pouvoir échanger sur les supports, les surfaces et les finitions souhaitées.
+
+Après première analyse, je vous propose les disponibilités suivantes pour un échange technique :
+${slotsText}
+
+Merci de me confirmer le créneau qui vous convient le mieux. Je vous adresserai ensuite la confirmation du rendez-vous Outlook.
+
+Bien cordialement,
+
+Casa Vostra SARL
+Carrelage · Faïence · Chape · Rénovation
+contact@casavostra.corsica
+SIREN 918 824 921`;
+
+    setEmailTemplate(template);
+    setEmailTemplateCopied(false);
+  };
+
+  const copyEmailTemplate = async () => {
+    if (!emailTemplate) return;
+    try {
+      await navigator.clipboard.writeText(emailTemplate);
+      setEmailTemplateCopied(true);
+      toast.success("Modèle d’e-mail copié");
+      window.setTimeout(() => setEmailTemplateCopied(false), 2200);
+    } catch {
+      toast.error("La copie automatique n’est pas disponible sur cet appareil.");
+    }
+  };
+
+  const openPreparedEmail = () => {
+    if (!emailTemplate || !normalizedEmail) return;
+    const subject = "Votre projet Casa Vostra — proposition de rendez-vous";
+    window.location.href = `mailto:${encodeURIComponent(normalizedEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailTemplate.replace(/^Objet[^\\n]*\\n\\n/, ""))}`;
   };
 
   const scrollToSection = (id: string) => {
@@ -790,11 +862,48 @@ export default function Home() {
 
               <p className="text-center text-xs text-[#6E6E73] max-w-xl mx-auto">Votre brief a été enregistré directement sur le site. Casa Vostra reviendra vers vous après étude de votre demande.</p>
 
-              <div className="border-t border-[#1D1D1F]/10 pt-6 mt-6 bg-[#FBFBFA] p-6 rounded-2xl text-left">
-                <h4 className="font-serif text-lg font-medium mb-2 text-[#1D1D1F]">Prochaine étape : analyse et réponse personnalisée</h4>
-                <p className="text-xs text-[#6E6E73] leading-relaxed">
-                  Casa Vostra analyse votre brief et vos pièces jointes, puis vous recontacte directement par e-mail ou téléphone avec des propositions de créneaux de disponibilité issus de notre agenda Outlook. Aucun rendez-vous n'est programmé automatiquement en ligne.
-                </p>
+              <div className="border-t border-[#1D1D1F]/10 pt-6 mt-6 text-left">
+                <h4 className="font-serif text-xl font-medium mb-2">Planifier votre échange technique immédiatement</h4>
+                <p className="text-xs text-[#6E6E73] mb-4">Sélectionnez un créneau ci-dessous pour planifier directement votre échange avec Casa Vostra. Le rendez-vous sera inscrit dans l’agenda Outlook avec le résumé de votre chantier :</p>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                  {[
+                    "Demain à 09h00 (Téléphone / Visio)",
+                    "Demain à 14h30 (Téléphone / Visio)",
+                    "Après-demain à 10h00 (Téléphone / Visio)"
+                  ].map((slot) => (
+                    <button
+                      key={slot}
+                      type="button"
+                      onClick={() => setSelectedSlot(slot)}
+                      className={`p-3 rounded-xl border text-xs font-medium transition-all text-left ${
+                        selectedSlot === slot 
+                          ? "border-[#8C6D53] bg-[#8C6D53]/10 text-[#1D1D1F]" 
+                          : "border-[#1D1D1F]/15 bg-white text-[#424245] hover:border-[#1D1D1F]/40"
+                      }`}
+                    >
+                      <span className="block font-semibold mb-1">Créneau disponible</span>
+                      <span>{slot}</span>
+                    </button>
+                  ))}
+                </div>
+
+                {slotConfirmed ? (
+                  <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium">
+                    Rendez-vous confirmé et enregistré dans Outlook : <strong>{selectedSlot}</strong>. Casa Vostra vous contactera à ce moment.
+                  </div>
+                ) : (
+                  <Button
+                    disabled={!selectedSlot || !leadId || assignSlot.isPending}
+                    onClick={() => {
+                      if (!selectedSlot || !leadId) return;
+                      assignSlot.mutate({ leadId, selectedSlot });
+                    }}
+                    className="w-full bg-[#8C6D53] hover:bg-[#775a42] text-white py-4 rounded-xl text-sm font-medium mb-4"
+                  >
+                    {assignSlot.isPending ? "Réservation en cours..." : "Confirmer mon rendez-vous dans l’agenda"}
+                  </Button>
+                )}
               </div>
 
               <div className="flex items-center justify-center pt-4">
@@ -803,6 +912,8 @@ export default function Home() {
                   onClick={() => {
                     setBriefSubmitted(false);
                     setLeadId(null);
+                    setSelectedSlot(null);
+                    setSlotConfirmed(false);
                   }}
                   className="border-[#1D1D1F]/20 text-[#1D1D1F] rounded-full px-8 py-3 text-sm font-medium"
                 >

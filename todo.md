@@ -77,3 +77,11 @@
 
 - [x] Traduire les erreurs tRPC/API et stockage en message utilisateur clair en français.
 - [x] Retester en navigateur un échec API et vérifier le message final.
+
+## Modèle d’e-mail avec créneaux Outlook
+
+- [ ] Ajouter un bouton de génération de modèle d’e-mail dans la confirmation du brief.
+- [ ] Inclure automatiquement le nom, l’adresse e-mail et le résumé du chantier.
+- [ ] Ajouter des champs pour saisir ou coller les créneaux Outlook disponibles.
+- [ ] Permettre la copie du modèle et l’ouverture contrôlée du logiciel de messagerie.
+- [ ] Tester le modèle, la copie et le rendu responsive puis sauvegarder un checkpoint.
