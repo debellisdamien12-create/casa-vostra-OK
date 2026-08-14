@@ -7,6 +7,7 @@ import { getDb } from "./db";
 import { storagePut } from "./storage";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
+import { notifyOwner } from "./_core/notification";
 
 const mediaInput = z.object({
   name: z.string().min(1).max(255),
@@ -94,7 +95,23 @@ export const appRouter = router({
           status: input.selectedSlot ? "rdv_requested" : "new",
         });
 
-        return { success: true, leadId: Number(result[0]?.insertId ?? 0), media: uploadedMedia };
+        const newLeadId = Number(result[0]?.insertId ?? 0);
+
+        // Send owner notification email with direct validation link
+        try {
+          const appUrl = process.env.VITE_APP_URL || "https://3000-ifkg0zn3lyy3r3otfm1ko-870840ed.us4.manus.computer";
+          const validationUrl = `${appUrl}/?validateLead=${newLeadId}`;
+          const mediaText = uploadedMedia.length > 0 ? uploadedMedia.map(m => `- ${m.name} (${(m.size/1024/1024).toFixed(1)}Mo): ${m.url}`).join("\n") : "Aucune pièce jointe";
+
+          await notifyOwner({
+            title: `[Casa Vostra] Nouveau brief #${newLeadId} - ${input.contactName || input.contactEmail}`,
+            content: `Un nouveau brief client a été soumis sur le site !\n\nClient : ${input.contactName || "Anonyme"}\nTél : ${input.contactPhone}\nE-mail : ${input.contactEmail}\nType : ${input.projectType} (${input.projectNature})\nSurface : ${input.surface || "N/C"} m²\nBudget : ${input.budget || "N/C"}\nFourniture : ${input.supplyScope || "N/C"}\nLocalisation : ${input.location || "N/C"}\nDélai : ${input.timeline || "N/C"}\n\nDétails :\n${input.details || "Aucun détail"}\n\nPièces jointes :\n${mediaText}\n\n---------------------------------------------\nVALIDER LA DEMANDE ET DONNER ACCÈS AUX CRÉneaux OUTLOOK :\n${validationUrl}\n---------------------------------------------`
+          });
+        } catch (err) {
+          console.error("[OwnerNotification] Failed to send email:", err);
+        }
+
+        return { success: true, leadId: newLeadId, media: uploadedMedia };
       }),
 
     assignSlot: publicProcedure

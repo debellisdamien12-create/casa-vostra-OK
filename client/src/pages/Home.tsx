@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
@@ -70,6 +70,28 @@ export default function Home() {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [slotConfirmed, setSlotConfirmed] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
+  const [urlValidatedMsg, setUrlValidatedMsg] = useState<string | null>(null);
+
+  const validateLeadMutation = trpc.leads.validateLead.useMutation({
+    onSuccess: () => {
+      setUrlValidatedMsg("Demande validée avec succès ! Le client a désormais accès aux créneaux Outlook.");
+      toast.success("Demande validée par e-mail");
+    },
+    onError: () => {
+      toast.error("Échec de la validation");
+    }
+  });
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const validateId = params.get("validateLead");
+    if (validateId) {
+      const lid = parseInt(validateId, 10);
+      if (!isNaN(lid)) {
+        validateLeadMutation.mutate({ leadId: lid });
+      }
+    }
+  }, []);
 
   const leadsQuery = trpc.leads.list.useQuery(undefined, { enabled: adminOpen, refetchInterval: 5000 });
   const validateLead = trpc.leads.validateLead.useMutation({
@@ -573,6 +595,13 @@ SIREN 918 824 921`;
               Renseignez les détails ci-dessous. Le système générera un brief clair que vous pourrez nous transmettre instantanément pour un premier échange efficace.
             </p>
           </div>
+
+          {urlValidatedMsg && (
+            <div className="mb-8 p-6 rounded-3xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-center shadow-lg animate-in fade-in duration-300">
+              <h3 className="font-serif text-2xl font-medium mb-2">Validation propriétaire réussie !</h3>
+              <p className="text-sm">{urlValidatedMsg}</p>
+            </div>
+          )}
 
           {!briefSubmitted ? (
             <form onSubmit={handleBriefSubmit} className="bg-white p-8 sm:p-12 rounded-3xl border border-[#1D1D1F]/10 shadow-xl space-y-8">
