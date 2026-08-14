@@ -41,6 +41,8 @@ export default function Home() {
   const [contactPhone, setContactPhone] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [projectFiles, setProjectFiles] = useState<File[]>([]);
+  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
+  const [slotConfirmed, setSlotConfirmed] = useState(false);
 
   const handleBriefSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -692,6 +694,56 @@ export default function Home() {
 
               <p className="text-center text-xs text-[#6E6E73] max-w-xl mx-auto">Si aucune messagerie ne s’ouvre, copiez le brief affiché ci-dessus et envoyez-le manuellement à {CONTACT_EMAIL}.</p>
 
+              <div className="border-t border-[#1D1D1F]/10 pt-6 mt-6">
+                <h4 className="font-serif text-xl font-medium mb-2">Planifier votre échange technique</h4>
+                <p className="text-xs text-[#6E6E73] mb-4">Choisissez un créneau disponible dans l’agenda Outlook de Casa Vostra pour faire le point sur votre chantier :</p>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                  {[
+                    "Demain à 09h00 (Téléphone / Visio)",
+                    "Demain à 14h30 (Téléphone / Visio)",
+                    "Après-demain à 10h00 (Téléphone / Visio)"
+                  ].map((slot) => (
+                    <button
+                      key={slot}
+                      type="button"
+                      onClick={() => setSelectedSlot(slot)}
+                      className={`p-3 rounded-xl border text-xs font-medium transition-all text-left ${
+                        selectedSlot === slot 
+                          ? "border-[#8C6D53] bg-[#8C6D53]/10 text-[#1D1D1F]" 
+                          : "border-[#1D1D1F]/15 bg-white text-[#424245] hover:border-[#1D1D1F]/40"
+                      }`}
+                    >
+                      <span className="block font-semibold mb-1">Créneau proposé</span>
+                      <span>{slot}</span>
+                    </button>
+                  ))}
+                </div>
+
+                {slotConfirmed ? (
+                  <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium">
+                    Rendez-vous confirmé pour le créneau : <strong>{selectedSlot}</strong>. Une invitation Outlook a été préparée pour {CONTACT_EMAIL}.
+                  </div>
+                ) : (
+                  <Button
+                    disabled={!selectedSlot}
+                    onClick={() => {
+                      if (!selectedSlot) return;
+                      setSlotConfirmed(true);
+                      const bookingSummary = `${summaryText}\n• Rendez-vous demandé : ${selectedSlot}`;
+                      const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Demande de devis & RDV — Casa Vostra")}&body=${encodeURIComponent(bookingSummary)}`;
+                      window.location.href = mailto;
+                      toast.success("Rendez-vous réservé avec succès", {
+                        description: `Créneau sélectionné : ${selectedSlot}`
+                      });
+                    }}
+                    className="w-full bg-[#8C6D53] hover:bg-[#775a42] text-white py-4 rounded-xl text-sm font-medium mb-4"
+                  >
+                    Confirmer mon rendez-vous & envoyer le brief
+                  </Button>
+                )}
+              </div>
+
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
                 <Button 
                   onClick={() => {
@@ -700,11 +752,15 @@ export default function Home() {
                   }}
                   className="bg-[#1D1D1F] text-white rounded-full px-8 py-3 text-sm font-medium w-full sm:w-auto"
                 >
-                  Envoyer par e-mail
+                  Envoyer par e-mail simple
                 </Button>
                 <Button 
                   variant="outline"
-                  onClick={() => setBriefSubmitted(false)}
+                  onClick={() => {
+                    setBriefSubmitted(false);
+                    setSelectedSlot(null);
+                    setSlotConfirmed(false);
+                  }}
                   className="border-[#1D1D1F]/20 text-[#1D1D1F] rounded-full px-8 py-3 text-sm font-medium w-full sm:w-auto"
                 >
                   Modifier mon brief

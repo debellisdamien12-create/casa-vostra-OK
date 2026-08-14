@@ -43,3 +43,10 @@
 - [x] Remplacer le logo d’en-tête de la page Carrelage XXL.
 - [x] Vérifier la lisibilité du logo sur desktop et mobile.
 - [x] Sauvegarder le checkpoint de correction.
+
+## Automatisation des rendez-vous Outlook
+
+- [x] Identifier l’intégration Outlook et définir le parcours de réservation automatique après brief.
+- [x] Intégrer le sélecteur de créneaux dynamiques dans la vue de confirmation du brief.
+- [x] Relier le créneau choisi au résumé envoyé par e-mail vers contact@casavostra.corsica.
+- [x] Valider la compilation et sauvegarder le checkpoint final de production.
