@@ -42,4 +42,4 @@
 - [x] Remplacer le logo du pied de page.
 - [x] Remplacer le logo d’en-tête de la page Carrelage XXL.
 - [x] Vérifier la lisibilité du logo sur desktop et mobile.
-- [ ] Sauvegarder le checkpoint de correction.
+- [x] Sauvegarder le checkpoint de correction.

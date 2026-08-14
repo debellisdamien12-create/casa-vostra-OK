@@ -32,8 +32,10 @@ export default function Home() {
   const [projectType, setProjectType] = useState("carrelage");
   const [projectNature, setProjectNature] = useState("renovation");
   const [surface, setSurface] = useState("");
-  const [timeline, setTimeline] = useState("prochainement");
+  const [timeline, setTimeline] = useState("Immédiat / Urgent");
   const [location, setLocation] = useState("");
+  const [budget, setBudget] = useState("5 000 € à 15 000 €");
+  const [supplyScope, setSupplyScope] = useState("Fourniture par le client");
   const [details, setDetails] = useState("");
   const [contactName, setContactName] = useState("");
   const [contactPhone, setContactPhone] = useState("");
@@ -61,14 +63,16 @@ export default function Home() {
       : "Aucun fichier sélectionné";
 
     const summary = `[BRIEF PROJET - CASA VOSTRA]
-• Type : ${typeLabels[projectType] || projectType}
-• Nature : ${natureLabel}
-• Surface estimée : ${surface || "Non précisée"} m²
-• Calendrier : ${timeline}
-• Localisation : ${location || "Non renseignée"}
-• Précisions : ${details || "Aucune"}
-• Médias du projet : ${mediaSummary}
-• Contact : ${contactName || "Anonyme"} | Tél: ${contactPhone || "Non renseigné"} | Email: ${contactEmail || "Non renseigné"}`;
+	• Type de prestation : ${typeLabels[projectType] || projectType}
+	• Nature du chantier : ${natureLabel}
+	• Surface estimée : ${surface ? surface + " m²" : "Non précisée"}
+	• Budget estimé : ${budget}
+	• Fourniture : ${supplyScope}
+	• Calendrier souhaité : ${timeline}
+	• Localisation : ${location || "Non renseignée"}
+	• Précisions techniques : ${details || "Aucune"}
+	• Pièces jointes / Plans : ${mediaSummary}
+	• Coordonnées contact : ${contactName || "Anonyme"} | Tél : ${contactPhone || "Non renseigné"} | E-mail : ${contactEmail || "Non renseigné"}`;
 
     setSummaryText(summary);
     setBriefSubmitted(true);
@@ -513,15 +517,15 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Localisation et détails */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Localisation et budget / fourniture */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-[#1D1D1F]">
-                    Localisation du chantier (Ville / Code Postal)
+                    Localisation (Ville / Code Postal)
                   </label>
                   <input 
                     type="text" 
-                    placeholder="Ex: 75008 ou Lyon..." 
+                    placeholder="Ex: Porto-Vecchio, Lecci..." 
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     className="w-full px-4 py-3 rounded-xl border border-[#1D1D1F]/20 focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] text-sm bg-white"
@@ -530,16 +534,48 @@ export default function Home() {
 
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-[#1D1D1F]">
-                    Précisions utiles (matériaux, dépose...)
+                    Budget estimé des travaux
                   </label>
-                  <input 
-                    type="text" 
-                    placeholder="Ex: Dépose ancien carrelage, carrelage 60x60 fourni..." 
-                    value={details}
-                    onChange={(e) => setDetails(e.target.value)}
+                  <select 
+                    value={budget}
+                    onChange={(e) => setBudget(e.target.value)}
                     className="w-full px-4 py-3 rounded-xl border border-[#1D1D1F]/20 focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] text-sm bg-white"
-                  />
+                  >
+                    <option value="Moins de 5 000 €">Moins de 5 000 €</option>
+                    <option value="5 000 € à 15 000 €">5 000 € à 15 000 €</option>
+                    <option value="15 000 € à 30 000 €">15 000 € à 30 000 €</option>
+                    <option value="Plus de 30 000 €">Plus de 30 000 €</option>
+                  </select>
                 </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-[#1D1D1F]">
+                    Fourniture des matériaux
+                  </label>
+                  <select 
+                    value={supplyScope}
+                    onChange={(e) => setSupplyScope(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl border border-[#1D1D1F]/20 focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] text-sm bg-white"
+                  >
+                    <option value="Fourniture par le client">Fourniture par le client</option>
+                    <option value="Fourniture & Pose (Clé en main)">Fourniture & Pose (Clé en main)</option>
+                    <option value="Conseil + Pose">Conseil + Pose</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Précisions libres */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-[#1D1D1F]">
+                  Précisions techniques (dépose, contraintes d'accès, types de carreaux...)
+                </label>
+                <textarea 
+                  rows={3}
+                  placeholder="Ex: Dépose ancien carrelage sur 50m², préparation de chape fluide, carreaux grand format 120x120 fournis..." 
+                  value={details}
+                  onChange={(e) => setDetails(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-[#1D1D1F]/20 focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] text-sm bg-white"
+                />
               </div>
 
               {/* Médias du projet */}
