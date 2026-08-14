@@ -42,6 +42,7 @@ export const leads = mysqlTable("leads", {
   contactPhone: varchar("contactPhone", { length: 64 }).notNull(),
   contactEmail: varchar("contactEmail", { length: 320 }).notNull(),
   selectedSlot: varchar("selectedSlot", { length: 128 }),
+  aiSummary: text("aiSummary"),
   status: varchar("status", { length: 32 }).default("new").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });

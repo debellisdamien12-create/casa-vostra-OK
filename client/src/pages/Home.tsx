@@ -555,6 +555,19 @@ SIREN 918 824 921`;
             </h2>
           </div>
 
+          {/* Visuel graphique du parcours étape par étape */}
+          <div className="mb-12 bg-white p-6 sm:p-8 rounded-3xl border border-[#1D1D1F]/10 shadow-sm overflow-hidden text-center">
+            <h3 className="font-serif text-xl font-medium mb-2">Schéma synoptique du parcours client & entreprise</h3>
+            <p className="text-xs text-[#6E6E73] mb-6">De la transmission du brief sur le site jusqu'à l'intégration dans votre planning Outlook.</p>
+            <div className="rounded-2xl overflow-hidden border border-[#1D1D1F]/10 bg-[#FBFBFA] p-4 flex justify-center">
+              <img 
+                src="/manus-storage/process-workflow_000d60ed.png" 
+                alt="Schéma étape par étape du parcours Casa Vostra" 
+                className="max-w-full h-auto object-contain rounded-xl shadow-inner"
+              />
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white p-8 rounded-2xl border border-[#1D1D1F]/10">
               <span className="text-4xl font-serif text-[#8C6D53]/40 font-bold block mb-4">01</span>

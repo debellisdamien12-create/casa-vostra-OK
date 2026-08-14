@@ -1,0 +1,11 @@
+graph TD
+    classDef client fill:#FBFBFA,stroke:#1D1D1F,stroke-width:1px,color:#1D1D1F,rx:12;
+    classDef company fill:#8C6D53,stroke:#775a42,stroke-width:1px,color:#FFFFFF,rx:12;
+    classDef system fill:#FFFFFF,stroke:#8C6D53,stroke-width:2px,color:#1D1D1F,rx:12;
+
+    E1["1. Le Client remplit le Brief<br/>• Surface, neuf/rénov, budget<br/>• Téléphone & e-mail obligatoires<br/>• Dépôt de photos/plans"]:::client --> E2["2. Envoi direct instantané<br/>• Notification e-mail à contact@casavostra.corsica<br/>• Résumé IA & pièces jointes transmises"]:::system
+    E2 --> E3["3. Validation en 1 clic par Casa Vostra<br/>• Réception de l'e-mail d'alerte<br/>• Clic sur le lien « Valider la demande »"]:::company
+    E3 --> E4["4. Choix du créneau Outlook<br/>• Déblocage instantané de l'accès client<br/>• Sélection de l'heure d'échange technique"]:::client
+    E4 --> E5["5. Rendez-vous confirmé<br/>• Enregistré dans votre agenda Outlook<br/>• Animation de succès & récapitulatif envoyé"]:::system
+
+    linkStyle default stroke:#8C6D53,stroke-width:2px,fill:none;
