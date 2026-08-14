@@ -123,3 +123,11 @@
 - [x] Créer une fonction de repli (fallback) élégante et déterministe si l’IA met du temps à répondre.
 - [x] Générer un visuel graphique ou éditorial clair des étapes du parcours Casa Vostra.
 - [x] Tester la compilation, les tests et le build de production.
+
+## Intégration e-mail Brevo
+
+- [x] Brancher la clé Brevo à l’envoi réel des briefs vers contact@casavostra.corsica.
+- [x] Effectuer un test de délivrabilité Brevo et vérifier le retour serveur.
+- [x] Conserver la notification Manus comme canal de secours.
+- [ ] Effectuer un test de réception réel Brevo vers contact@casavostra.corsica et confirmer la présence du message dans Outlook ou les indésirables.
+- [ ] Documenter la différence entre acceptation par Brevo (messageId) et réception effective en boîte.

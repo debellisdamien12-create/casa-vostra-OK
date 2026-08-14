@@ -6,6 +6,8 @@ export type NotificationPayload = {
   content: string;
 };
 
+const OWNER_EMAIL = "contact@casavostra.corsica";
+const SENDER_NAME = "Casa Vostra";
 const TITLE_MAX_LENGTH = 1200;
 const CONTENT_MAX_LENGTH = 20000;
 
@@ -14,9 +16,7 @@ const isNonEmptyString = (value: unknown): value is string =>
   typeof value === "string" && value.trim().length > 0;
 
 const buildEndpointUrl = (baseUrl: string): string => {
-  const normalizedBase = baseUrl.endsWith("/")
-    ? baseUrl
-    : `${baseUrl}/`;
+  const normalizedBase = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
   return new URL(
     "webdevtoken.v1.WebDevService/SendNotification",
     normalizedBase
@@ -57,26 +57,86 @@ const validatePayload = (input: NotificationPayload): NotificationPayload => {
   return { title, content };
 };
 
+async function sendBrevoEmail(payload: NotificationPayload): Promise<boolean> {
+  if (!ENV.brevoApiKey) {
+    console.warn("[Brevo] BREVO_API_KEY is not configured.");
+    return false;
+  }
+
+  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "api-key": ENV.brevoApiKey,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      sender: { email: OWNER_EMAIL, name: SENDER_NAME },
+      to: [{ email: OWNER_EMAIL, name: SENDER_NAME }],
+      subject: payload.title,
+      textContent: payload.content,
+      tags: ["casa-vostra", "brief-site"],
+    }),
+  });
+
+  const responseText = await response.text();
+  if (!response.ok) {
+    console.warn(`[Brevo] Email rejected (${response.status}): ${responseText}`);
+    return false;
+  }
+
+  console.log(`[Brevo] Email accepted for ${OWNER_EMAIL}: ${responseText}`);
+  return true;
+}
+
+async function sendManusFallback(payload: NotificationPayload): Promise<boolean> {
+  if (!ENV.forgeApiUrl || !ENV.forgeApiKey) return false;
+
+  try {
+    const response = await fetch(buildEndpointUrl(ENV.forgeApiUrl), {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        authorization: `Bearer ${ENV.forgeApiKey}`,
+        "content-type": "application/json",
+        "connect-protocol-version": "1",
+      },
+      body: JSON.stringify({
+        title: payload.title,
+        content: `[DESTINATAIRE E-MAIL: ${OWNER_EMAIL}]\n\n${payload.content}`,
+      }),
+    });
+
+    if (!response.ok) {
+      console.warn(`[Notification Fallback] Manus service rejected notification (${response.status}).`);
+      return false;
+    }
+
+    console.log("[Notification Fallback] Manus notification accepted.");
+    return true;
+  } catch (error) {
+    console.warn("[Notification Fallback] Manus service unavailable:", error);
+    return false;
+  }
+}
+
 /**
- * Dispatches a project-owner notification through the Manus Notification Service.
- * Returns `true` if the request was accepted, `false` when the upstream service
- * cannot be reached (callers can fall back to email/slack). Validation errors
- * bubble up as TRPC errors so callers can fix the payload.
+ * Sends the owner notification through Brevo. Manus remains a visible fallback,
+ * but a successful Manus notification is never reported as an e-mail delivery.
  */
 export async function notifyOwner(
   payload: NotificationPayload
 ): Promise<boolean> {
-  const { title, content } = validatePayload(payload);
+  const validatedPayload = validatePayload(payload);
 
-  console.log(`================================================================`);
-  console.log(`[MICROSOFT 365 GRAPH API / OUTLOOK DISPATCH] TO: contact@casavostra.corsica`);
-  console.log(`[SUBJECT]: ${title}`);
-  console.log(`[BODY]:\n${content}`);
-  console.log(`================================================================`);
+  try {
+    if (await sendBrevoEmail(validatedPayload)) {
+      return true;
+    }
+  } catch (error) {
+    console.warn("[Brevo] Error sending transactional email:", error);
+  }
 
-  // Simulated direct Microsoft 365 Graph mail dispatch via professional connector
-  // In production with an active M365 token, this executes POST https://graph.microsoft.com/v1.0/users/contact@casavostra.corsica/sendMail
-  console.log(`[Microsoft 365] Brief successfully dispatched through Microsoft Graph API to contact@casavostra.corsica`);
-
-  return true;
+  await sendManusFallback(validatedPayload);
+  return false;
 }
