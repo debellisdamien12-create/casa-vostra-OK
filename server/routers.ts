@@ -130,7 +130,7 @@ Sois direct, factuel et chaleureux.`;
 
         // Send owner notification email with direct validation link
         try {
-          const appUrl = process.env.VITE_APP_URL || "https://3000-ifkg0zn3lyy3r3otfm1ko-870840ed.us4.manus.computer";
+          const appUrl = "https://casavostra-487kvsl6.manus.space";
           const validationUrl = `${appUrl}/?validateLead=${newLeadId}`;
           const mediaText = uploadedMedia.length > 0 ? uploadedMedia.map(m => `- ${m.name} (${(m.size/1024/1024).toFixed(1)}Mo): ${m.url}`).join("\n") : "Aucune pièce jointe";
 
@@ -175,9 +175,28 @@ Sois direct, factuel et chaleureux.`;
       .mutation(async ({ input }) => {
         const db = await getDb();
         if (!db) throw new Error("Base de données indisponible");
+        
+        const found = await db.select().from(leads).where(eq(leads.id, input.leadId)).limit(1);
+        const lead = found[0];
+
         await db.update(leads)
           .set({ status: "validated" })
           .where(eq(leads.id, input.leadId));
+
+        // Send confirmation email to owner that lead was validated and client can now book
+        try {
+          if (lead) {
+            const appUrl = process.env.VITE_APP_URL || "https://3000-ifkg0zn3lyy3r3otfm1ko-870840ed.us4.manus.computer";
+            const clientLink = `${appUrl}/?lead=${lead.id}`;
+            await notifyOwner({
+              title: `[Casa Vostra] Brief #${lead.id} validé ! Accès créneaux débloqué pour ${lead.contactName || lead.contactEmail}`,
+              content: `Vous avez validé le brief #${lead.id}.\n\nClient : ${lead.contactName || "Anonyme"} (${lead.contactEmail}, ${lead.contactPhone})\nProjet : ${lead.projectType} (${lead.projectNature})\n\nLe client peut désormais choisir son créneau de rendez-vous en ligne sur le site de Casa Vostra.`
+            });
+          }
+        } catch (err) {
+          console.error("[ValidateLead] Failed to notify owner:", err);
+        }
+
         return { success: true };
       }),
 
