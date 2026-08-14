@@ -111,3 +111,8 @@
 
 - [x] Sauvegarder un checkpoint après les contrôles mobiles finaux de la confirmation animée.
 - [x] Publier un checkpoint dédié après le test réel du parcours mobile.
+
+## Vidéo de démonstration du parcours
+
+- [x] Générer la vidéo de démonstration du parcours Casa Vostra.
+- [x] Enregistrer le checkpoint final avec la vidéo intégrée.
