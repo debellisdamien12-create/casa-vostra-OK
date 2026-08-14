@@ -195,14 +195,15 @@ Sois direct, factuel et chaleureux.`;
               content: `Vous avez validé le brief #${lead.id}.\n\nClient : ${lead.contactName || "Anonyme"} (${lead.contactEmail}, ${lead.contactPhone})\nProjet : ${lead.projectType} (${lead.projectNature})\n\nLe client a reçu son accès direct au planning Outlook.`
             });
 
-            // 2. Notify client with direct access to schedule a slot
+            // 2. Notify client with direct access to schedule a slot via Outlook Bookings
             if (lead.contactEmail) {
+              const outlookBookingUrl = "https://outlook.office.com/bookwithme/user/04c7a9fd021d40db8160275606058dab@casavostra.corsica/meetingtype/A0XVrKrIGkC8uiftM5IXDQ2?bookingcode=fede475a-d342-4441-b3f0-b44bd1d1bf8e&anonymous&ismsaljsauthenabled&ep=mlink";
               await notifyClient(
                 lead.contactEmail,
                 lead.contactName || "Client Casa Vostra",
                 {
                   title: `[Casa Vostra] Votre projet a été validé — Choisissez votre créneau de rendez-vous`,
-                  content: `Bonjour ${lead.contactName || ""},\n\nExcellente nouvelle ! Votre projet de ${lead.projectType} a été examiné et validé par l'équipe Casa Vostra SARL.\n\nVous pouvez désormais choisir votre créneau de rendez-vous en un clic sans attente :\n${clientAccessLink}\n\nÀ très bientôt,\nCasa Vostra SARL — BTP, Carrelage & Faïence haut de gamme\nhttps://casavostra.corsica`
+                  content: `Bonjour ${lead.contactName || ""},\n\nExcellente nouvelle ! Votre projet de ${lead.projectType} a été examiné et validé par l'équipe Casa Vostra SARL.\n\nVous pouvez désormais choisir votre créneau de rendez-vous en un clic dans notre agenda Outlook :\n${outlookBookingUrl}\n\nÀ très bientôt,\nCasa Vostra SARL — BTP, Carrelage & Faïence haut de gamme\nhttps://casavostra.corsica`
                 }
               );
             }
