@@ -91,7 +91,7 @@ export default function InstagramXXL() {
         <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
           <Link href="/" className="flex items-center" aria-label="Retour à l'accueil Casa Vostra">
             <img
-              src="/manus-storage/Logosvg_d684bd94.svg"
+              src="/manus-storage/Logosvg(1)_a625f43d.png"
               alt="Casa Vostra — votre projet, notre savoir-faire"
               className="h-10 w-auto max-w-[190px] object-contain object-left sm:h-12 sm:max-w-[230px]"
             />

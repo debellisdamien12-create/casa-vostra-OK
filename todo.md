@@ -34,3 +34,12 @@
 - [x] Intégrer les visuels générés dans les zones commerciales du site.
 - [ ] Capturer et contrôler les rendus desktop et mobile.
 - [ ] Sauvegarder le checkpoint final.
+
+## Remplacement du logo officiel
+
+- [x] Recevoir et uploader le logo officiel fourni par l’utilisateur.
+- [x] Remplacer le logo d’en-tête sur la page d’accueil.
+- [x] Remplacer le logo du pied de page.
+- [x] Remplacer le logo d’en-tête de la page Carrelage XXL.
+- [x] Vérifier la lisibilité du logo sur desktop et mobile.
+- [ ] Sauvegarder le checkpoint de correction.
