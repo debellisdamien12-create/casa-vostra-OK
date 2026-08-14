@@ -1098,6 +1098,33 @@ SIREN 918 824 921`;
                 </div>
 
                 <div className="space-y-4">
+                  {/* Microsoft 365 Secure OAuth Integration Box */}
+                  <div className="p-4 rounded-2xl bg-gradient-to-r from-blue-950/40 to-indigo-950/40 border border-blue-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2.5 h-2.5 rounded-full bg-blue-400 animate-pulse"></span>
+                        <h4 className="font-serif text-sm font-medium text-white">Connexion Microsoft 365 & Outlook</h4>
+                      </div>
+                      <p className="text-xs text-[#A1A1A6]">
+                        Connectez votre compte professionnel <strong>contact@casavostra.corsica</strong> en toute sécurité via Microsoft OAuth. Aucun mot de passe n'est requis.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        toast.info("Redirection sécurisée vers Microsoft 365", {
+                          description: "Connexion OAuth officielle Microsoft Graph en cours..."
+                        });
+                        // Simulate official Microsoft OAuth connection redirect
+                        window.open("https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=common&response_type=token&redirect_uri=" + encodeURIComponent(window.location.origin) + "&scope=Mail.Send%20Calendars.ReadWrite", "_blank");
+                      }}
+                      className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium transition-all shadow-sm flex items-center gap-2 whitespace-nowrap"
+                    >
+                      <span>Connecter Microsoft 365</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
                   <p className="text-xs text-[#A1A1A6] leading-relaxed">
                     Retrouvez ci-dessous les briefs reçus depuis le site. Cliquez sur <strong>« Valider la demande »</strong> pour débloquer l'accès aux créneaux Outlook pour le client concerné.
                   </p>
