@@ -83,3 +83,31 @@
 - [x] Permettre au client de sélectionner un créneau disponible immédiatement après l’envoi de son brief.
 - [x] Enregistrer la réservation dans la base de données et lier le rendez-vous au planning Outlook.
 - [x] Valider par des tests unitaires et un build de production réussi.
+
+## Confirmation après réservation
+
+- [x] Ajouter une animation de succès accessible après blocage du créneau.
+- [x] Afficher un remerciement personnalisé avec le prénom, le créneau et la prochaine étape.
+- [x] Respecter prefers-reduced-motion et vérifier le rendu mobile.
+- [x] Tester puis sauvegarder un checkpoint.
+
+## Contrôle final de la confirmation animée
+
+- [x] Vérifier le rendu mobile de l’état de confirmation après réservation.
+- [x] Sauvegarder un nouveau checkpoint après le contrôle mobile.
+
+## Validation ciblée du succès mobile
+
+- [x] Tester sur mobile le parcours complet jusqu’à slotConfirmed.
+- [x] Vérifier la lisibilité du prénom, du créneau et de la prochaine étape dans la confirmation mobile.
+- [x] Capturer l’état final mobile puis sauvegarder le checkpoint.
+
+## Vérification du vrai parcours mobile
+
+- [x] Tester le parcours réel mobile : brief, validation, accès aux créneaux et confirmation.
+- [x] Capturer l’état final mobile issu du vrai flux puis sauvegarder un checkpoint dédié.
+
+## Checkpoint après validation mobile réelle
+
+- [x] Sauvegarder un checkpoint après les contrôles mobiles finaux de la confirmation animée.
+- [x] Publier un checkpoint dédié après le test réel du parcours mobile.

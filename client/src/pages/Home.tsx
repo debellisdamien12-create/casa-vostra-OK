@@ -939,8 +939,23 @@ SIREN 918 824 921`;
                     </div>
 
                     {slotConfirmed ? (
-                      <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium">
-                        Rendez-vous confirmé et enregistré dans Outlook : <strong>{selectedSlot}</strong>. Casa Vostra vous contactera à ce moment.
+                      <div
+                        role="status"
+                        aria-live="polite"
+                        className="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95 duration-500 rounded-2xl bg-emerald-50 border border-emerald-200 p-6 text-emerald-900 text-center shadow-sm"
+                      >
+                        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-600 text-white motion-safe:animate-in motion-safe:zoom-in-95 duration-500">
+                          <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
+                        </div>
+                        <h4 className="font-serif text-2xl font-medium mb-2">
+                          Merci{contactName.trim() ? ` ${contactName.trim().split(/\\s+/)[0]}` : ""}, votre rendez-vous est confirmé.
+                        </h4>
+                        <p className="text-sm leading-relaxed mb-3">
+                          Votre créneau du <strong>{selectedSlot}</strong> est bien enregistré dans le planning Casa Vostra.
+                        </p>
+                        <p className="text-xs text-emerald-800/80 leading-relaxed">
+                          Un récapitulatif sera envoyé à <strong>{contactEmail}</strong>. Prochaine étape : nous préparerons votre échange technique à partir du brief transmis.
+                        </p>
                       </div>
                     ) : (
                       <Button
