@@ -7,7 +7,7 @@ import { getDb } from "./db";
 import { storagePut } from "./storage";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
-import { notifyOwner } from "./_core/notification";
+import { notifyOwner, notifyClient } from "./_core/notification";
 import { invokeLLM } from "./_core/llm";
 
 const mediaInput = z.object({
@@ -183,18 +183,32 @@ Sois direct, factuel et chaleureux.`;
           .set({ status: "validated" })
           .where(eq(leads.id, input.leadId));
 
-        // Send confirmation email to owner that lead was validated and client can now book
+        // Send confirmation to owner and calendar access link to client
         try {
           if (lead) {
-            const appUrl = process.env.VITE_APP_URL || "https://3000-ifkg0zn3lyy3r3otfm1ko-870840ed.us4.manus.computer";
-            const clientLink = `${appUrl}/?lead=${lead.id}`;
+            const prodUrl = "https://casavostra-487kvsl6.manus.space";
+            const clientAccessLink = `${prodUrl}/?lead=${lead.id}`;
+
+            // 1. Notify owner
             await notifyOwner({
               title: `[Casa Vostra] Brief #${lead.id} validé ! Accès créneaux débloqué pour ${lead.contactName || lead.contactEmail}`,
-              content: `Vous avez validé le brief #${lead.id}.\n\nClient : ${lead.contactName || "Anonyme"} (${lead.contactEmail}, ${lead.contactPhone})\nProjet : ${lead.projectType} (${lead.projectNature})\n\nLe client peut désormais choisir son créneau de rendez-vous en ligne sur le site de Casa Vostra.`
+              content: `Vous avez validé le brief #${lead.id}.\n\nClient : ${lead.contactName || "Anonyme"} (${lead.contactEmail}, ${lead.contactPhone})\nProjet : ${lead.projectType} (${lead.projectNature})\n\nLe client a reçu son accès direct au planning Outlook.`
             });
+
+            // 2. Notify client with direct access to schedule a slot
+            if (lead.contactEmail) {
+              await notifyClient(
+                lead.contactEmail,
+                lead.contactName || "Client Casa Vostra",
+                {
+                  title: `[Casa Vostra] Votre projet a été validé — Choisissez votre créneau de rendez-vous`,
+                  content: `Bonjour ${lead.contactName || ""},\n\nExcellente nouvelle ! Votre projet de ${lead.projectType} a été examiné et validé par l'équipe Casa Vostra SARL.\n\nVous pouvez désormais choisir votre créneau de rendez-vous en un clic sans attente :\n${clientAccessLink}\n\nÀ très bientôt,\nCasa Vostra SARL — BTP, Carrelage & Faïence haut de gamme\nhttps://casavostra.corsica`
+                }
+              );
+            }
           }
         } catch (err) {
-          console.error("[ValidateLead] Failed to notify owner:", err);
+          console.error("[ValidateLead] Failed to send validation emails:", err);
         }
 
         return { success: true };

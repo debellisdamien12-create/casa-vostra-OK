@@ -57,7 +57,7 @@ const validatePayload = (input: NotificationPayload): NotificationPayload => {
   return { title, content };
 };
 
-async function sendBrevoEmail(payload: NotificationPayload): Promise<boolean> {
+async function sendBrevoEmail(toEmail: string, toName: string, title: string, content: string): Promise<boolean> {
   if (!ENV.brevoApiKey) {
     console.warn("[Brevo] BREVO_API_KEY is not configured.");
     return false;
@@ -72,71 +72,45 @@ async function sendBrevoEmail(payload: NotificationPayload): Promise<boolean> {
     },
     body: JSON.stringify({
       sender: { email: OWNER_EMAIL, name: SENDER_NAME },
-      to: [{ email: OWNER_EMAIL, name: SENDER_NAME }],
-      subject: payload.title,
-      textContent: payload.content,
-      tags: ["casa-vostra", "brief-site"],
+      to: [{ email: toEmail, name: toName || "Client Casa Vostra" }],
+      subject: title,
+      textContent: content,
+      tags: ["casa-vostra", "transactional"],
     }),
   });
 
   const responseText = await response.text();
   if (!response.ok) {
-    console.warn(`[Brevo] Email rejected (${response.status}): ${responseText}`);
+    console.warn(`[Brevo] Email to ${toEmail} rejected (${response.status}): ${responseText}`);
     return false;
   }
 
-  console.log(`[Brevo] Email accepted for ${OWNER_EMAIL}: ${responseText}`);
+  console.log(`[Brevo] Email successfully sent to ${toEmail}: ${responseText}`);
   return true;
 }
 
-async function sendManusFallback(payload: NotificationPayload): Promise<boolean> {
-  if (!ENV.forgeApiUrl || !ENV.forgeApiKey) return false;
-
-  try {
-    const response = await fetch(buildEndpointUrl(ENV.forgeApiUrl), {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        authorization: `Bearer ${ENV.forgeApiKey}`,
-        "content-type": "application/json",
-        "connect-protocol-version": "1",
-      },
-      body: JSON.stringify({
-        title: payload.title,
-        content: `[DESTINATAIRE E-MAIL: ${OWNER_EMAIL}]\n\n${payload.content}`,
-      }),
-    });
-
-    if (!response.ok) {
-      console.warn(`[Notification Fallback] Manus service rejected notification (${response.status}).`);
-      return false;
-    }
-
-    console.log("[Notification Fallback] Manus notification accepted.");
-    return true;
-  } catch (error) {
-    console.warn("[Notification Fallback] Manus service unavailable:", error);
-    return false;
-  }
-}
-
-/**
- * Sends the owner notification through Brevo. Manus remains a visible fallback,
- * but a successful Manus notification is never reported as an e-mail delivery.
- */
 export async function notifyOwner(
   payload: NotificationPayload
 ): Promise<boolean> {
   const validatedPayload = validatePayload(payload);
-
   try {
-    if (await sendBrevoEmail(validatedPayload)) {
-      return true;
-    }
+    return await sendBrevoEmail(OWNER_EMAIL, SENDER_NAME, validatedPayload.title, validatedPayload.content);
   } catch (error) {
-    console.warn("[Brevo] Error sending transactional email:", error);
+    console.warn("[Brevo] Error sending owner email:", error);
+    return false;
   }
+}
 
-  await sendManusFallback(validatedPayload);
-  return false;
+export async function notifyClient(
+  clientEmail: string,
+  clientName: string,
+  payload: NotificationPayload
+): Promise<boolean> {
+  const validatedPayload = validatePayload(payload);
+  try {
+    return await sendBrevoEmail(clientEmail, clientName, validatedPayload.title, validatedPayload.content);
+  } catch (error) {
+    console.warn("[Brevo] Error sending client email:", error);
+    return false;
+  }
 }
