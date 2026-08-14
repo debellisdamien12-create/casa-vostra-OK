@@ -112,6 +112,34 @@ export const appRouter = router({
           .where(eq(leads.id, input.leadId));
         return { success: true };
       }),
+
+    list: publicProcedure.query(async () => {
+      const db = await getDb();
+      if (!db) return [];
+      const allLeads = await db.select().from(leads).orderBy(leads.createdAt);
+      return allLeads.reverse();
+    }),
+
+    validateLead: publicProcedure
+      .input(z.object({ leadId: z.number().int().positive() }))
+      .mutation(async ({ input }) => {
+        const db = await getDb();
+        if (!db) throw new Error("Base de données indisponible");
+        await db.update(leads)
+          .set({ status: "validated" })
+          .where(eq(leads.id, input.leadId));
+        return { success: true };
+      }),
+
+    getStatus: publicProcedure
+      .input(z.object({ leadId: z.number().int().positive() }))
+      .query(async ({ input }) => {
+        const db = await getDb();
+        if (!db) return { status: "new" };
+        const found = await db.select().from(leads).where(eq(leads.id, input.leadId)).limit(1);
+        if (found.length === 0) return { status: "new" };
+        return { status: found[0]?.status || "new", selectedSlot: found[0]?.selectedSlot };
+      }),
   }),
 });
 

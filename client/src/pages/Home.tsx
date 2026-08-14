@@ -69,6 +69,24 @@ export default function Home() {
   const [emailTemplateCopied, setEmailTemplateCopied] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [slotConfirmed, setSlotConfirmed] = useState(false);
+  const [adminOpen, setAdminOpen] = useState(false);
+
+  const leadsQuery = trpc.leads.list.useQuery(undefined, { enabled: adminOpen, refetchInterval: 5000 });
+  const validateLead = trpc.leads.validateLead.useMutation({
+    onSuccess: () => {
+      toast.success("Demande validée", { description: "Le client a désormais accès aux créneaux Outlook." });
+      leadsQuery.refetch();
+    },
+    onError: () => {
+      toast.error("Échec de la validation");
+    }
+  });
+
+  const leadStatusQuery = trpc.leads.getStatus.useQuery(
+    { leadId: leadId || 0 },
+    { enabled: briefSubmitted && leadId !== null, refetchInterval: 4000 }
+  );
+  const isLeadValidated = leadStatusQuery.data?.status === "validated" || leadStatusQuery.data?.status === "rdv_requested";
 
   const normalizedPhone = contactPhone.trim();
   const normalizedEmail = contactEmail.trim();
@@ -863,46 +881,61 @@ SIREN 918 824 921`;
               <p className="text-center text-xs text-[#6E6E73] max-w-xl mx-auto">Votre brief a été enregistré directement sur le site. Casa Vostra reviendra vers vous après étude de votre demande.</p>
 
               <div className="border-t border-[#1D1D1F]/10 pt-6 mt-6 text-left">
-                <h4 className="font-serif text-xl font-medium mb-2">Planifier votre échange technique immédiatement</h4>
-                <p className="text-xs text-[#6E6E73] mb-4">Sélectionnez un créneau ci-dessous pour planifier directement votre échange avec Casa Vostra. Le rendez-vous sera inscrit dans l’agenda Outlook avec le résumé de votre chantier :</p>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-                  {[
-                    "Demain à 09h00 (Téléphone / Visio)",
-                    "Demain à 14h30 (Téléphone / Visio)",
-                    "Après-demain à 10h00 (Téléphone / Visio)"
-                  ].map((slot) => (
-                    <button
-                      key={slot}
-                      type="button"
-                      onClick={() => setSelectedSlot(slot)}
-                      className={`p-3 rounded-xl border text-xs font-medium transition-all text-left ${
-                        selectedSlot === slot 
-                          ? "border-[#8C6D53] bg-[#8C6D53]/10 text-[#1D1D1F]" 
-                          : "border-[#1D1D1F]/15 bg-white text-[#424245] hover:border-[#1D1D1F]/40"
-                      }`}
-                    >
-                      <span className="block font-semibold mb-1">Créneau disponible</span>
-                      <span>{slot}</span>
-                    </button>
-                  ))}
-                </div>
+                {isLeadValidated ? (
+                  <div>
+                    <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-medium mb-4">
+                      ✓ Votre demande a été validée par Casa Vostra. Vous pouvez désormais sélectionner votre créneau d'échange technique ci-dessous :
+                    </div>
+                    <h4 className="font-serif text-xl font-medium mb-2">Choisissez votre créneau Outlook</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                      {[
+                        "Demain à 09h00 (Téléphone / Visio)",
+                        "Demain à 14h30 (Téléphone / Visio)",
+                        "Après-demain à 10h00 (Téléphone / Visio)"
+                      ].map((slot) => (
+                        <button
+                          key={slot}
+                          type="button"
+                          onClick={() => setSelectedSlot(slot)}
+                          className={`p-3 rounded-xl border text-xs font-medium transition-all text-left ${
+                            selectedSlot === slot 
+                              ? "border-[#8C6D53] bg-[#8C6D53]/10 text-[#1D1D1F]" 
+                              : "border-[#1D1D1F]/15 bg-white text-[#424245] hover:border-[#1D1D1F]/40"
+                          }`}
+                        >
+                          <span className="block font-semibold mb-1">Créneau disponible</span>
+                          <span>{slot}</span>
+                        </button>
+                      ))}
+                    </div>
 
-                {slotConfirmed ? (
-                  <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium">
-                    Rendez-vous confirmé et enregistré dans Outlook : <strong>{selectedSlot}</strong>. Casa Vostra vous contactera à ce moment.
+                    {slotConfirmed ? (
+                      <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium">
+                        Rendez-vous confirmé et enregistré dans Outlook : <strong>{selectedSlot}</strong>. Casa Vostra vous contactera à ce moment.
+                      </div>
+                    ) : (
+                      <Button
+                        disabled={!selectedSlot || !leadId || assignSlot.isPending}
+                        onClick={() => {
+                          if (!selectedSlot || !leadId) return;
+                          assignSlot.mutate({ leadId, selectedSlot });
+                        }}
+                        className="w-full bg-[#8C6D53] hover:bg-[#775a42] text-white py-4 rounded-xl text-sm font-medium mb-4"
+                      >
+                        {assignSlot.isPending ? "Réservation en cours..." : "Confirmer mon rendez-vous dans l’agenda"}
+                      </Button>
+                    )}
                   </div>
                 ) : (
-                  <Button
-                    disabled={!selectedSlot || !leadId || assignSlot.isPending}
-                    onClick={() => {
-                      if (!selectedSlot || !leadId) return;
-                      assignSlot.mutate({ leadId, selectedSlot });
-                    }}
-                    className="w-full bg-[#8C6D53] hover:bg-[#775a42] text-white py-4 rounded-xl text-sm font-medium mb-4"
-                  >
-                    {assignSlot.isPending ? "Réservation en cours..." : "Confirmer mon rendez-vous dans l’agenda"}
-                  </Button>
+                  <div className="p-5 rounded-2xl bg-[#FBFBFA] border border-[#1D1D1F]/10 text-center space-y-2">
+                    <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#8C6D53]/10 text-[#8C6D53] mb-1">
+                      <Clock className="w-5 h-5 animate-pulse" />
+                    </div>
+                    <h4 className="font-serif text-base font-medium text-[#1D1D1F]">Demande transmise — En attente d'analyse</h4>
+                    <p className="text-xs text-[#6E6E73] max-w-md mx-auto leading-relaxed">
+                      Votre brief a bien été reçu. Casa Vostra analyse votre projet et vos pièces jointes. Dès validation de votre dossier, vos accès aux créneaux Outlook s'activeront automatiquement ici.
+                    </p>
+                  </div>
                 )}
               </div>
 
@@ -965,11 +998,133 @@ SIREN 918 824 921`;
 
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#A1A1A6]">
             <p>© {new Date().getFullYear()} Casa Vostra SARL · SIREN 918 824 921. Tous droits réservés.</p>
-            <div className="flex gap-6 mt-4 sm:mt-0">
+            <div className="flex gap-6 mt-4 sm:mt-0 items-center">
+              <button 
+                onClick={() => setAdminOpen(true)}
+                className="text-[#8C6D53] hover:text-white transition-colors font-medium underline underline-offset-4"
+              >
+                Espace Gestion Casa Vostra
+              </button>
               <a href="https://www.societe.com/societe/casa-vostra-918824921.html" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">Fiche entreprise</a>
               <a href="mailto:contact@casavostra.corsica" className="hover:text-white transition-colors">Nous contacter</a>
             </div>
           </div>
+
+          {/* Admin Modal for Casa Vostra */}
+          {adminOpen && (
+            <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-[#1D1D1F] border border-white/10 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 text-[#FBFBFA] shadow-2xl">
+                <div className="flex items-center justify-between pb-6 border-b border-white/10 mb-6">
+                  <div>
+                    <span className="text-xs font-mono uppercase tracking-widest text-[#8C6D53] block mb-1">Administration interne</span>
+                    <h3 className="font-serif text-2xl font-medium">Gestion des briefs & Validation</h3>
+                  </div>
+                  <button 
+                    onClick={() => setAdminOpen(false)}
+                    className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  <p className="text-xs text-[#A1A1A6] leading-relaxed">
+                    Retrouvez ci-dessous les briefs reçus depuis le site. Cliquez sur <strong>« Valider la demande »</strong> pour débloquer l'accès aux créneaux Outlook pour le client concerné.
+                  </p>
+
+                  {leadsQuery.isLoading ? (
+                    <div className="py-12 text-center text-sm text-[#A1A1A6]">Chargement des briefs...</div>
+                  ) : leadsQuery.data && leadsQuery.data.length > 0 ? (
+                    <div className="space-y-4">
+                      {leadsQuery.data.map((lead: any) => {
+                        let parsedMedia: any[] = [];
+                        try {
+                          parsedMedia = lead.mediaSummary ? JSON.parse(lead.mediaSummary) : [];
+                        } catch {
+                          parsedMedia = [];
+                        }
+
+                        return (
+                          <div key={lead.id} className="p-5 rounded-2xl bg-white/[0.04] border border-white/10 space-y-3">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-white/10 text-xs">
+                              <div>
+                                <span className="font-semibold text-white">#{lead.id} — {lead.contactName || "Anonyme"}</span>
+                                <span className="ml-3 text-[#A1A1A6]">{lead.contactPhone} | {lead.contactEmail}</span>
+                              </div>
+                              <span className={`px-3 py-1 rounded-full text-[11px] font-medium uppercase tracking-wider ${
+                                lead.status === 'validated' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
+                                lead.status === 'rdv_requested' ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' :
+                                'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                              }`}>
+                                {lead.status === 'validated' ? 'Validé (Créneaux débloqués)' : lead.status === 'rdv_requested' ? 'Rendez-vous planifié' : 'Nouveau (À valider)'}
+                              </span>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-[#A1A1A6]">
+                              <div>
+                                <strong className="text-white">Prestation :</strong> {lead.projectType} ({lead.projectNature})<br />
+                                <strong className="text-white">Surface / Budget :</strong> {lead.surface || "N/C"} m² | {lead.budget || "N/C"}<br />
+                                <strong className="text-white">Fourniture :</strong> {lead.supplyScope || "N/C"}
+                              </div>
+                              <div>
+                                <strong className="text-white">Localisation :</strong> {lead.location || "Non renseignée"}<br />
+                                <strong className="text-white">Calendrier :</strong> {lead.timeline || "N/C"}<br />
+                                {lead.selectedSlot && <strong className="text-emerald-400">Créneau choisi : {lead.selectedSlot}</strong>}
+                              </div>
+                            </div>
+
+                            {lead.details && (
+                              <p className="text-xs bg-black/30 p-3 rounded-xl text-[#D1D1D6] italic">
+                                "{lead.details}"
+                              </p>
+                            )}
+
+                            {parsedMedia.length > 0 && (
+                              <div className="pt-2">
+                                <span className="text-[11px] font-mono uppercase tracking-widest text-[#8C6D53] block mb-1">Pièces jointes / Plans ({parsedMedia.length})</span>
+                                <div className="flex flex-wrap gap-2">
+                                  {parsedMedia.map((m: any, idx: number) => (
+                                    <a
+                                      key={idx}
+                                      href={m.url}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs text-white flex items-center gap-1.5 transition-colors"
+                                    >
+                                      📄 {m.name} ({(m.size / 1024 / 1024).toFixed(1)} Mo)
+                                    </a>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            <div className="pt-3 flex justify-end gap-3">
+                              {lead.status === 'new' && (
+                                <Button
+                                  onClick={() => validateLead.mutate({ leadId: lead.id })}
+                                  disabled={validateLead.isPending}
+                                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-xl text-xs font-medium"
+                                >
+                                  Valider la demande et donner accès aux créneaux Outlook
+                                </Button>
+                              )}
+                              {lead.status !== 'new' && (
+                                <span className="text-xs text-emerald-400 flex items-center gap-1 font-medium">
+                                  ✓ Demande validée et active
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="py-12 text-center text-sm text-[#A1A1A6]">Aucun brief enregistré pour le moment.</div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </footer>
     </div>
