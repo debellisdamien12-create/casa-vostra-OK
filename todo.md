@@ -78,10 +78,8 @@
 - [x] Traduire les erreurs tRPC/API et stockage en message utilisateur clair en français.
 - [x] Retester en navigateur un échec API et vérifier le message final.
 
-## Modèle d’e-mail avec créneaux Outlook
+## Réservation autonome Outlook (parcours validé)
 
-- [ ] Ajouter un bouton de génération de modèle d’e-mail dans la confirmation du brief.
-- [ ] Inclure automatiquement le nom, l’adresse e-mail et le résumé du chantier.
-- [ ] Ajouter des champs pour saisir ou coller les créneaux Outlook disponibles.
-- [ ] Permettre la copie du modèle et l’ouverture contrôlée du logiciel de messagerie.
-- [ ] Tester le modèle, la copie et le rendu responsive puis sauvegarder un checkpoint.
+- [x] Permettre au client de sélectionner un créneau disponible immédiatement après l’envoi de son brief.
+- [x] Enregistrer la réservation dans la base de données et lier le rendez-vous au planning Outlook.
+- [x] Valider par des tests unitaires et un build de production réussi.
