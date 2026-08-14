@@ -916,6 +916,19 @@ SIREN 918 824 921`;
                 Votre demande a été enregistrée et transmise directement à <strong>{CONTACT_EMAIL}</strong>. Notre équipe va l’étudier et vous recontacter.
               </p>
 
+              {/* Synthèse IA du projet */}
+              <div className="bg-[#F4EFEA] p-6 rounded-2xl border border-[#8C6D53]/20 text-left max-w-xl mx-auto space-y-2">
+                <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#8C6D53]">
+                  <Sparkles className="w-4 h-4" /> Synthèse IA de votre besoin
+                </div>
+                <p className="text-sm text-[#1D1D1F] font-serif leading-relaxed italic">
+                  "{leadStatusQuery.data?.aiSummary || "Analyse de votre projet de pose et finitions par Casa Vostra en cours..."}"
+                </p>
+                <p className="text-[11px] text-[#6E6E73]">
+                  Cette synthèse résume vos critères pour valider rapidement vos attentes dès notre premier échange.
+                </p>
+              </div>
+
               <div className="bg-[#FBFBFA] p-6 rounded-2xl border border-[#1D1D1F]/10 text-left font-mono text-xs whitespace-pre-wrap text-[#1D1D1F] max-w-xl mx-auto overflow-x-auto">
                 {summaryText}
               </div>

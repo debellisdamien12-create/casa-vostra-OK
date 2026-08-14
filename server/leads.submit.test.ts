@@ -26,10 +26,11 @@ describe("leads.submit success flow", () => {
       key: "leads/plan_abc123.pdf",
       url: "/manus-storage/leads/plan_abc123.pdf",
     });
-    const values = vi.fn().mockResolvedValue([{ insertId: 42 }]);
-    mocks.getDb.mockResolvedValue({
-      insert: vi.fn().mockReturnValue({ values }),
-    });
+            const values = vi.fn().mockResolvedValue([{ insertId: 42 }]);
+        mocks.getDb.mockResolvedValue({
+          insert: vi.fn().mockReturnValue({ values }),
+        });
+
   });
 
   it("stores a valid lead, uploads its media, and returns a lead id", async () => {

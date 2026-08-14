@@ -119,7 +119,7 @@
 
 ## Synthèse IA et visuel des étapes
 
-- [ ] Ajouter un appel de synthèse structurée dans la soumission du lead et son affichage de confirmation.
-- [ ] Créer une fonction de repli (fallback) élégante et déterministe si l’IA met du temps à répondre.
-- [ ] Générer un visuel graphique ou éditorial clair des étapes du parcours Casa Vostra.
-- [ ] Tester la compilation, les tests et le build de production.
+- [x] Ajouter un appel de synthèse structurée dans la soumission du lead et son affichage de confirmation.
+- [x] Créer une fonction de repli (fallback) élégante et déterministe si l’IA met du temps à répondre.
+- [x] Générer un visuel graphique ou éditorial clair des étapes du parcours Casa Vostra.
+- [x] Tester la compilation, les tests et le build de production.
