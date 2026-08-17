@@ -299,6 +299,7 @@ SIREN 918 824 921`;
             <button onClick={() => scrollToSection("approche")} className="hover:text-[#1D1D1F] transition-colors">Notre approche</button>
             <button onClick={() => scrollToSection("expertises")} className="hover:text-[#1D1D1F] transition-colors">Expertises</button>
             <button onClick={() => scrollToSection("galerie")} className="hover:text-[#1D1D1F] transition-colors">Galerie</button>
+            <button onClick={() => scrollToSection("instagram")} className="hover:text-[#1D1D1F] transition-colors">Instagram</button>
             <button onClick={() => scrollToSection("methode")} className="hover:text-[#1D1D1F] transition-colors">Déroulement</button>
             <button onClick={() => scrollToSection("brief")} className="hover:text-[#1D1D1F] transition-colors">Brief express</button>
           </nav>
@@ -327,6 +328,7 @@ SIREN 918 824 921`;
             <button onClick={() => scrollToSection("approche")} className="text-left py-2 font-medium text-lg border-b border-[#1D1D1F]/5">Notre approche</button>
             <button onClick={() => scrollToSection("expertises")} className="text-left py-2 font-medium text-lg border-b border-[#1D1D1F]/5">Expertises</button>
             <button onClick={() => scrollToSection("galerie")} className="text-left py-2 font-medium text-lg border-b border-[#1D1D1F]/5">Galerie</button>
+            <button onClick={() => scrollToSection("instagram")} className="text-left py-2 font-medium text-lg border-b border-[#1D1D1F]/5">Instagram</button>
             <button onClick={() => scrollToSection("methode")} className="text-left py-2 font-medium text-lg border-b border-[#1D1D1F]/5">Déroulement</button>
             <button onClick={() => scrollToSection("brief")} className="text-left py-2 font-medium text-lg text-[#8C6D53]">Brief express</button>
             <Button 
@@ -521,6 +523,104 @@ SIREN 918 824 921`;
               </div>
               <div className="mt-8 pt-4 border-t border-[#1D1D1F]/5 text-xs font-mono uppercase tracking-wider text-[#8C6D53]">
                 Intervention ciblée
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Instagram Feed Section */}
+      <section id="instagram" className="py-24 bg-[#1D1D1F] text-[#FBFBFA]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
+            <div className="max-w-2xl">
+              <span className="text-xs font-mono uppercase tracking-widest text-[#8C6D53] block mb-3">04 / RÉSEAUX & RÉALISATIONS</span>
+              <h2 className="font-serif text-3xl sm:text-5xl font-normal tracking-tight leading-tight">Suivez nos chantiers en direct sur Instagram.</h2>
+              <p className="text-[#A1A1A6] text-base leading-relaxed mt-5">
+                Retrouvez nos dernières poses de carrelage XXL, nos réalisations de faïence et nos chantiers de rénovation en Corse-du-Sud sur notre compte <strong className="text-white">@casavostra.corsica</strong> (817 abonnés).
+              </p>
+            </div>
+            <a 
+              href="https://www.instagram.com/casavostra.corsica" 
+              target="_blank" 
+              rel="noreferrer"
+              className="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-6 py-3.5 rounded-full text-sm font-medium transition-all border border-white/10 whitespace-nowrap self-start lg:self-auto"
+            >
+              <span>Voir le profil Instagram</span>
+              <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Post 1 */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden p-6 flex flex-col justify-between hover:border-[#8C6D53]/50 transition-colors">
+              <div>
+                <div className="flex items-center justify-between mb-4 text-xs text-[#A1A1A6]">
+                  <span className="font-mono text-[#8C6D53]">@casavostra.corsica</span>
+                  <span>Mai 2026</span>
+                </div>
+                <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-black/40">
+                  <img 
+                    src="/manus-storage/IMG_1542_ff1024d3.jpeg" 
+                    alt="Carrelage grand format posé en Corse-du-Sud" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <p className="text-sm text-[#E3D5C9] font-serif italic mb-3">
+                  "Carrelage grand format posé en Corse-du-Sud. Du travail propre et soigné pour un rendu moderne."
+                </p>
+              </div>
+              <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#A1A1A6]">
+                <span>❤️ 62 j'aime</span>
+                <a href="https://www.instagram.com/p/DX3r-WLDJQm/" target="_blank" rel="noreferrer" className="text-[#8C6D53] hover:underline font-medium">Voir sur Instagram →</a>
+              </div>
+            </div>
+
+            {/* Post 2 */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden p-6 flex flex-col justify-between hover:border-[#8C6D53]/50 transition-colors">
+              <div>
+                <div className="flex items-center justify-between mb-4 text-xs text-[#A1A1A6]">
+                  <span className="font-mono text-[#8C6D53]">@casavostra.corsica</span>
+                  <span>Mars 2026</span>
+                </div>
+                <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-black/40">
+                  <img 
+                    src="/manus-storage/7B14C597-3D1D-4F75-9D2E-B2CF772BACD4_4dd2cb62.jpg" 
+                    alt="Pose de grands formats effet marbre naturel" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <p className="text-sm text-[#E3D5C9] font-serif italic mb-3">
+                  "✨ Réalisation en cours ✨ Pose de grands formats avec calepinage soigné pour un rendu haut de gamme 💎"
+                </p>
+              </div>
+              <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#A1A1A6]">
+                <span>❤️ 56 j'aime</span>
+                <a href="https://www.instagram.com/p/DWZo1oHjfTf/" target="_blank" rel="noreferrer" className="text-[#8C6D53] hover:underline font-medium">Voir sur Instagram →</a>
+              </div>
+            </div>
+
+            {/* Post 3 */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden p-6 flex flex-col justify-between hover:border-[#8C6D53]/50 transition-colors">
+              <div>
+                <div className="flex items-center justify-between mb-4 text-xs text-[#A1A1A6]">
+                  <span className="font-mono text-[#8C6D53]">@casavostra.corsica</span>
+                  <span>Mars 2025</span>
+                </div>
+                <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-black/40">
+                  <img 
+                    src="/manus-storage/IMG_2204_428a3b72.jpeg" 
+                    alt="Pièce créée de A à Z par Casa Vostra" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <p className="text-sm text-[#E3D5C9] font-serif italic mb-3">
+                  "✨ Nous avons créé cette pièce de A à Z ! Faïence ✔️ Carrelage ✔️ Placo ✔️ Peinture ✔️"
+                </p>
+              </div>
+              <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#A1A1A6]">
+                <span>❤️ 80 j'aime</span>
+                <a href="https://www.instagram.com/p/DHaT_ZmNC37/" target="_blank" rel="noreferrer" className="text-[#8C6D53] hover:underline font-medium">Voir sur Instagram →</a>
               </div>
             </div>
           </div>
