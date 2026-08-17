@@ -137,5 +137,6 @@
 - [x] Tester l’URL personnalisée, le formulaire de brief, les notifications e-mail, la validation et l’accès Outlook avant bascule.
 - [x] Remplacer les chemins `/manus-storage` par des URL publiques stables pour afficher les visuels sur Render.
 - [x] Renseigner les variables de production Render et retester les flux dépendant de Brevo et de la base de données.
-- [ ] Ajouter la clé API REST Brevo dans Render sous `BREVO_API_KEY`, redéployer et vérifier la réception dans contact@casavostra.corsica.
-- [ ] Confirmer par un test réel que `BREVO_API_KEY` fonctionne sur Render en envoyant un brief depuis `casavostra.corsica` et en vérifiant l'e-mail dans `contact@casavostra.corsica`.
+- [x] Ajouter la clé API REST Brevo dans Render sous `BREVO_API_KEY`, redéployer et vérifier la réception dans contact@casavostra.corsica.
+- [ ] Déclencher un vrai test de brief sur `https://casavostra.corsica` après redéploiement et vérifier l’affichage de la confirmation sans timeout.
+- [ ] Vérifier la réception effective de la notification dans `contact@casavostra.corsica`.
