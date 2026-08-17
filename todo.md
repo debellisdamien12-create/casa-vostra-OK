@@ -140,3 +140,8 @@
 - [x] Ajouter la clé API REST Brevo dans Render sous `BREVO_API_KEY`, redéployer et vérifier la réception dans contact@casavostra.corsica.
 - [x] Déclencher un vrai test de brief sur `https://casavostra.corsica` après redéploiement et vérifier l’affichage de la confirmation sans timeout.
 - [x] Vérifier la réception effective de la notification dans `contact@casavostra.corsica`.
+- [ ] Créer et pousser sur GitHub un commit distinct contenant les corrections de pièces jointes Brevo et de validation client.
+- [ ] Vérifier que Render déploie ce nouveau commit avant de demander un unique test final.
+- [ ] Analyser les logs Render du dernier brief et de la dernière validation afin d’identifier la cause exacte de l’absence de pièces jointes et d’e-mail client.
+- [ ] Vérifier et configurer DATABASE_URL sur Render afin que chaque brief soit enregistré avant la génération du lien de validation.
+- [ ] Remplacer le lien de validation dépendant de la base de données par un jeton signé et expirant, compatible avec Render sans DATABASE_URL.

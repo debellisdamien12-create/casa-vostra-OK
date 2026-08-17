@@ -78,33 +78,23 @@ export default function Home() {
       setUrlValidatedMsg("Demande validée avec succès ! Le client a désormais accès aux créneaux Outlook.");
       toast.success("Demande validée par e-mail");
     },
-    onError: () => {
+    onError: (error) => {
+      setUrlValidatedMsg(`La validation n’a pas pu aboutir : ${error.message}`);
       toast.error("Échec de la validation");
     }
   });
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const validateId = params.get("validateLead");
-    if (validateId) {
-      const lid = parseInt(validateId, 10);
-      if (!isNaN(lid)) {
-        validateLeadMutation.mutate({ leadId: lid });
-      }
+    const validationToken = params.get("validationToken");
+    if (validationToken) {
+      validateLeadMutation.mutate({ validationToken });
+    } else if (params.get("validateLead")) {
+      setUrlValidatedMsg("Ce lien de validation est ancien. Veuillez utiliser le nouveau lien reçu dans le dernier e-mail de brief.");
     }
   }, []);
 
   const leadsQuery = trpc.leads.list.useQuery(undefined, { enabled: adminOpen, refetchInterval: 5000 });
-  const validateLead = trpc.leads.validateLead.useMutation({
-    onSuccess: () => {
-      toast.success("Demande validée", { description: "Le client a désormais accès aux créneaux Outlook." });
-      leadsQuery.refetch();
-    },
-    onError: () => {
-      toast.error("Échec de la validation");
-    }
-  });
-
   const leadStatusQuery = trpc.leads.getStatus.useQuery(
     { leadId: leadId || 0 },
     { enabled: briefSubmitted && leadId !== null, refetchInterval: 4000 }
@@ -1367,19 +1357,13 @@ SIREN 918 824 921`;
                             )}
 
                             <div className="pt-3 flex justify-end gap-3">
-                              {lead.status === 'new' && (
-                                <Button
-                                  onClick={() => validateLead.mutate({ leadId: lead.id })}
-                                  disabled={validateLead.isPending}
-                                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-xl text-xs font-medium"
-                                >
-                                  Valider la demande et donner accès aux créneaux Outlook
-                                </Button>
-                              )}
                               {lead.status !== 'new' && (
                                 <span className="text-xs text-emerald-400 flex items-center gap-1 font-medium">
                                   ✓ Demande validée et active
                                 </span>
+                              )}
+                              {lead.status === 'new' && (
+                                <span className="text-xs text-slate-300">Validation disponible via le lien sécurisé reçu par e-mail.</span>
                               )}
                             </div>
                           </div>

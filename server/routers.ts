@@ -9,6 +9,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { notifyOwner, notifyClient } from "./_core/notification";
 import { invokeLLM } from "./_core/llm";
+import { createHmac, timingSafeEqual } from "node:crypto";
 
 const mediaInput = z.object({
   name: z.string().min(1).max(255),
@@ -19,6 +20,58 @@ const mediaInput = z.object({
 
 function safeFileName(name: string) {
   return name.replace(/[^a-zA-Z0-9._-]/g, "-").slice(0, 160) || "piece-jointe";
+}
+
+type ValidationTokenPayload = {
+  email: string;
+  name: string;
+  projectType: string;
+  projectNature: string;
+  exp: number;
+};
+
+const VALIDATION_TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+
+function validationSigningKey() {
+  const key = process.env.BREVO_API_KEY;
+  if (!key) throw new Error("Clé de signature indisponible");
+  return key;
+}
+
+function base64UrlEncode(value: string) {
+  return Buffer.from(value, "utf8").toString("base64url");
+}
+
+function base64UrlDecode(value: string) {
+  return Buffer.from(value, "base64url").toString("utf8");
+}
+
+function createValidationToken(payload: Omit<ValidationTokenPayload, "exp">) {
+  const tokenPayload: ValidationTokenPayload = {
+    ...payload,
+    exp: Date.now() + VALIDATION_TOKEN_TTL_MS,
+  };
+  const encodedPayload = base64UrlEncode(JSON.stringify(tokenPayload));
+  const signature = createHmac("sha256", validationSigningKey()).update(encodedPayload).digest("base64url");
+  return `${encodedPayload}.${signature}`;
+}
+
+function verifyValidationToken(token: string): ValidationTokenPayload {
+  const [encodedPayload, receivedSignature] = token.split(".");
+  if (!encodedPayload || !receivedSignature) throw new Error("Lien de validation invalide");
+
+  const expectedSignature = createHmac("sha256", validationSigningKey()).update(encodedPayload).digest("base64url");
+  const receivedBuffer = Buffer.from(receivedSignature);
+  const expectedBuffer = Buffer.from(expectedSignature);
+  if (receivedBuffer.length !== expectedBuffer.length || !timingSafeEqual(receivedBuffer, expectedBuffer)) {
+    throw new Error("Lien de validation invalide");
+  }
+
+  const payload = JSON.parse(base64UrlDecode(encodedPayload)) as ValidationTokenPayload;
+  if (!payload.email || !payload.projectType || !Number.isFinite(payload.exp) || Date.now() > payload.exp) {
+    throw new Error("Lien de validation expiré");
+  }
+  return payload;
 }
 
 export const appRouter = router({
@@ -134,8 +187,17 @@ Sois direct, factuel et chaleureux.`;
 
         try {
           const appUrl = "https://casavostra.corsica";
-          const validationUrl = `${appUrl}/?validateLead=${newLeadId}`;
-          const mediaText = uploadedMedia.length > 0 ? uploadedMedia.map(m => `- ${m.name} (${(m.size/1024/1024).toFixed(1)}Mo): ${m.url}`).join("\n") : "Aucune pièce jointe";
+          const validationToken = createValidationToken({
+            email: input.contactEmail,
+            name: input.contactName || "Client Casa Vostra",
+            projectType: input.projectType,
+            projectNature: input.projectNature,
+          });
+          const validationUrl = `${appUrl}/?validationToken=${encodeURIComponent(validationToken)}`;
+          const attachedFiles = input.media ?? [];
+          const mediaText = attachedFiles.length > 0
+            ? attachedFiles.map(file => `- ${safeFileName(file.name)} (${(file.size / 1024 / 1024).toFixed(1)} Mo) : joint à cet e-mail`).join("\n")
+            : "Aucune pièce jointe";
 
           const brevoAttachments = (input.media ?? []).map(file => {
             const pureBase64 = file.data.includes(",") ? file.data.slice(file.data.indexOf(",") + 1) : file.data;
@@ -147,7 +209,7 @@ Sois direct, factuel et chaleureux.`;
 
           const notificationPayload = {
             title: `[Casa Vostra] Nouveau brief #${newLeadId} - ${input.contactName || input.contactEmail}`,
-            content: `DESTINATAIRE: contact@casavostra.corsica\nUn nouveau brief client a été soumis sur le site !\n\nSynthèse IA :\n${aiSummary}\n\nClient : ${input.contactName || "Anonyme"}\nTél : ${input.contactPhone}\nE-mail : ${input.contactEmail}\nType : ${input.projectType} (${input.projectNature})\nSurface : ${input.surface || "N/C"} m²\nBudget : ${input.budget || "N/C"}\nFourniture : ${input.supplyScope || "N/C"}\nLocalisation : ${input.location || "N/C"}\nDélai : ${input.timeline || "N/C"}\n\nDétails :\n${input.details || "Aucun détail"}\n\nPièces jointes (${uploadedMedia.length}) :\n${mediaText}\n\n---------------------------------------------\nVALIDER LA DEMANDE ET DONNER ACCÈS AUX CRÉneaux OUTLOOK :\n${validationUrl}\n---------------------------------------------`
+            content: `DESTINATAIRE: contact@casavostra.corsica\nUn nouveau brief client a été soumis sur le site !\n\nSynthèse IA :\n${aiSummary}\n\nClient : ${input.contactName || "Anonyme"}\nTél : ${input.contactPhone}\nE-mail : ${input.contactEmail}\nType : ${input.projectType} (${input.projectNature})\nSurface : ${input.surface || "N/C"} m²\nBudget : ${input.budget || "N/C"}\nFourniture : ${input.supplyScope || "N/C"}\nLocalisation : ${input.location || "N/C"}\nDélai : ${input.timeline || "N/C"}\n\nDétails :\n${input.details || "Aucun détail"}\n\nPièces jointes (${brevoAttachments.length}) :\n${mediaText}\n\n---------------------------------------------\nVALIDER LA DEMANDE ET DONNER ACCÈS AUX CRÉneaux OUTLOOK :\n${validationUrl}\n---------------------------------------------`
           };
           console.log(`[LeadSubmission] Dispatching owner notification for lead #${newLeadId} to contact@casavostra.corsica with ${brevoAttachments.length} attachments`);
           await notifyOwner(notificationPayload, brevoAttachments);
@@ -182,48 +244,30 @@ Sois direct, factuel et chaleureux.`;
     }),
 
     validateLead: publicProcedure
-      .input(z.object({ leadId: z.number().int().positive() }))
+      .input(z.object({ validationToken: z.string().min(20).max(2048) }))
       .mutation(async ({ input }) => {
-        const db = await getDb();
-        if (!db) throw new Error("Base de données indisponible");
-        
-        const found = await db.select().from(leads).where(eq(leads.id, input.leadId)).limit(1);
-        const lead = found[0];
+        const lead = verifyValidationToken(input.validationToken);
+        const outlookBookingUrl = "https://outlook.office.com/bookwithme/user/04c7a9fd021d40db8160275606058dab@casavostra.corsica/meetingtype/A0XVrKrIGkC8uiftM5IXDQ2?bookingcode=fede475a-d342-4441-b3f0-b44bd1d1bf8e&anonymous&ismsaljsauthenabled&ep=mlink";
 
-        await db.update(leads)
-          .set({ status: "validated" })
-          .where(eq(leads.id, input.leadId));
-
-        // Send confirmation to owner and calendar access link to client
-        try {
-          if (lead) {
-            const prodUrl = "https://casavostra.corsica";
-            const clientAccessLink = `${prodUrl}/?lead=${lead.id}`;
-
-            // 1. Notify owner
-            await notifyOwner({
-              title: `[Casa Vostra] Brief #${lead.id} validé ! Accès créneaux débloqué pour ${lead.contactName || lead.contactEmail}`,
-              content: `Vous avez validé le brief #${lead.id}.\n\nClient : ${lead.contactName || "Anonyme"} (${lead.contactEmail}, ${lead.contactPhone})\nProjet : ${lead.projectType} (${lead.projectNature})\n\nLe client a reçu son accès direct au planning Outlook.`
-            });
-
-            // 2. Notify client with direct access to schedule a slot via Outlook Bookings
-            if (lead.contactEmail) {
-              const outlookBookingUrl = "https://outlook.office.com/bookwithme/user/04c7a9fd021d40db8160275606058dab@casavostra.corsica/meetingtype/A0XVrKrIGkC8uiftM5IXDQ2?bookingcode=fede475a-d342-4441-b3f0-b44bd1d1bf8e&anonymous&ismsaljsauthenabled&ep=mlink";
-              await notifyClient(
-                lead.contactEmail,
-                lead.contactName || "Client Casa Vostra",
-                {
-                  title: `[Casa Vostra] Votre projet a été validé — Choisissez votre créneau de rendez-vous`,
-                  content: `Bonjour ${lead.contactName || ""},\n\nExcellente nouvelle ! Votre projet de ${lead.projectType} a été examiné et validé par l'équipe Casa Vostra SARL.\n\nVous pouvez désormais choisir votre créneau de rendez-vous en un clic dans notre agenda Outlook :\n${outlookBookingUrl}\n\nÀ très bientôt,\nCasa Vostra SARL — BTP, Carrelage & Faïence haut de gamme\nhttps://casavostra.corsica`
-                }
-              );
-            }
+        const clientSent = await notifyClient(
+          lead.email,
+          lead.name,
+          {
+            title: `[Casa Vostra] Votre projet a été validé — Choisissez votre créneau de rendez-vous`,
+            content: `Bonjour ${lead.name},\n\nExcellente nouvelle ! Votre projet de ${lead.projectType} (${lead.projectNature}) a été examiné et validé par l'équipe Casa Vostra SARL.\n\nVous pouvez désormais choisir votre créneau de rendez-vous en un clic dans notre agenda Outlook :\n${outlookBookingUrl}\n\nÀ très bientôt,\nCasa Vostra SARL — BTP, Carrelage & Faïence haut de gamme\nhttps://casavostra.corsica`,
           }
-        } catch (err) {
-          console.error("[ValidateLead] Failed to send validation emails:", err);
+        );
+
+        if (!clientSent) {
+          throw new Error("L’e-mail client n’a pas pu être envoyé. Vérifiez BREVO_API_KEY dans Render.");
         }
 
-        return { success: true };
+        await notifyOwner({
+          title: `[Casa Vostra] Brief validé — accès Outlook envoyé à ${lead.email}`,
+          content: `Vous avez validé le brief de ${lead.name} (${lead.email}).\n\nLe client a reçu l’accès direct au planning Outlook pour son projet : ${lead.projectType} (${lead.projectNature}).`,
+        });
+
+        return { success: true, clientEmail: lead.email };
       }),
 
     getStatus: publicProcedure
