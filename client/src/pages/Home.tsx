@@ -287,11 +287,11 @@ SIREN 918 824 921`;
       {/* Navigation */}
       <header className="sticky top-0 z-50 bg-[#FBFBFA]/90 backdrop-blur-md border-b border-[#1D1D1F]/10">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <button className="flex items-center cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Retour en haut">
+          <button className="flex items-center cursor-pointer group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Retour en haut">
             <img
               src="/manus-storage/casa-vostra-logo-hd_022938b1.png"
               alt="Casa Vostra — votre projet, notre savoir-faire"
-              className="h-11 w-auto max-w-[210px] object-contain object-left sm:h-14 sm:max-w-[250px]"
+              className="h-11 w-auto max-w-[210px] object-contain object-left sm:h-14 sm:max-w-[250px] transition-all duration-300 ease-out group-hover:scale-105 motion-safe:hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
             />
           </button>
 
