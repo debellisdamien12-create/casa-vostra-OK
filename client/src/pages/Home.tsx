@@ -567,7 +567,7 @@ SIREN 918 824 921`;
             <p className="text-xs text-[#6E6E73] mb-6">De la transmission du brief sur le site jusqu'à l'intégration dans votre planning Outlook.</p>
             <div className="rounded-2xl overflow-hidden border border-[#1D1D1F]/10 bg-[#FBFBFA] p-4 flex justify-center">
               <img 
-                src="/manus-storage/process-workflow_000d60ed.png" 
+                src="/manus-storage/process-workflow_92180bef.png" 
                 alt="Schéma étape par étape du parcours Casa Vostra" 
                 className="max-w-full h-auto object-contain rounded-xl shadow-inner"
               />
