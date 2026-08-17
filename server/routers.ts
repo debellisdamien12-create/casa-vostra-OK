@@ -130,7 +130,7 @@ Sois direct, factuel et chaleureux.`;
 
         // Send owner notification email with direct validation link
         try {
-          const appUrl = "https://casavostra-487kvsl6.manus.space";
+          const appUrl = "https://casavostra.corsica";
           const validationUrl = `${appUrl}/?validateLead=${newLeadId}`;
           const mediaText = uploadedMedia.length > 0 ? uploadedMedia.map(m => `- ${m.name} (${(m.size/1024/1024).toFixed(1)}Mo): ${m.url}`).join("\n") : "Aucune pièce jointe";
 
@@ -186,7 +186,7 @@ Sois direct, factuel et chaleureux.`;
         // Send confirmation to owner and calendar access link to client
         try {
           if (lead) {
-            const prodUrl = "https://casavostra-487kvsl6.manus.space";
+            const prodUrl = "https://casavostra.corsica";
             const clientAccessLink = `${prodUrl}/?lead=${lead.id}`;
 
             // 1. Notify owner
