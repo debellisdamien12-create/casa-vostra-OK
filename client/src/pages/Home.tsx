@@ -561,16 +561,78 @@ SIREN 918 824 921`;
             </h2>
           </div>
 
-          {/* Visuel graphique du parcours étape par étape */}
-          <div className="mb-12 bg-white p-6 sm:p-8 rounded-3xl border border-[#1D1D1F]/10 shadow-sm overflow-hidden text-center">
-            <h3 className="font-serif text-xl font-medium mb-2">Schéma synoptique du parcours client & entreprise</h3>
-            <p className="text-xs text-[#6E6E73] mb-6">De la transmission du brief sur le site jusqu'à l'intégration dans votre planning Outlook.</p>
-            <div className="rounded-2xl overflow-hidden border border-[#1D1D1F]/10 bg-[#FBFBFA] p-4 flex justify-center">
-              <img 
-                src="/manus-storage/process-workflow_92180bef.png" 
-                alt="Schéma étape par étape du parcours Casa Vostra" 
-                className="max-w-full h-auto object-contain rounded-xl shadow-inner"
-              />
+          {/* Nouveau schéma synoptique interactif en cartes HTML style Apple */}
+          <div className="mb-16 bg-white p-6 sm:p-10 rounded-3xl border border-[#1D1D1F]/10 shadow-sm">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <h3 className="font-serif text-2xl font-normal mb-2">Schéma synoptique du parcours client & entreprise</h3>
+              <p className="text-sm text-[#6E6E73]">De la transmission du brief sur le site jusqu'à l'intégration dans votre planning Outlook.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+              {/* Étape 1 */}
+              <div className="bg-[#FBFBFA] p-5 rounded-2xl border border-[#1D1D1F]/10 flex flex-col justify-between relative group hover:border-[#8C6D53] transition-colors">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[10px] font-mono uppercase tracking-widest px-2.5 py-1 rounded-full bg-[#1D1D1F] text-white">01. Client</span>
+                    <span className="w-2 h-2 rounded-full bg-[#8C6D53]"></span>
+                  </div>
+                  <h4 className="font-serif font-medium text-base mb-2">Transmission du Brief</h4>
+                  <p className="text-xs text-[#6E6E73] leading-relaxed">Surface, budget, localisation, coordonnées obligatoires et pièces jointes (photos/plans).</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-[#1D1D1F]/5 text-[11px] font-mono text-[#8C6D53]">Action sur le site</div>
+              </div>
+
+              {/* Étape 2 */}
+              <div className="bg-[#FBFBFA] p-5 rounded-2xl border border-[#1D1D1F]/10 flex flex-col justify-between relative group hover:border-[#8C6D53] transition-colors">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[10px] font-mono uppercase tracking-widest px-2.5 py-1 rounded-full bg-[#8C6D53] text-white">02. Système</span>
+                    <span className="w-2 h-2 rounded-full bg-[#8C6D53]"></span>
+                  </div>
+                  <h4 className="font-serif font-medium text-base mb-2">Sécurisation & Synthèse</h4>
+                  <p className="text-xs text-[#6E6E73] leading-relaxed">Notification immédiate par e-mail à contact@casavostra.corsica et génération d'une synthèse IA.</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-[#1D1D1F]/5 text-[11px] font-mono text-[#8C6D53]">Traitement auto</div>
+              </div>
+
+              {/* Étape 3 */}
+              <div className="bg-[#1D1D1F] text-white p-5 rounded-2xl border border-[#1D1D1F] flex flex-col justify-between relative shadow-md">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[10px] font-mono uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/20 text-white">03. Artisan</span>
+                    <span className="w-2 h-2 rounded-full bg-[#8C6D53]"></span>
+                  </div>
+                  <h4 className="font-serif font-medium text-base mb-2 text-white">Validation en 1 Clic</h4>
+                  <p className="text-xs text-[#A1A1A6] leading-relaxed">L'artisan contrôle le chantier depuis son e-mail et clique sur le lien pour valider le projet.</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-white/10 text-[11px] font-mono text-[#E3D5C9]">Décision clé</div>
+              </div>
+
+              {/* Étape 4 */}
+              <div className="bg-[#FBFBFA] p-5 rounded-2xl border border-[#1D1D1F]/10 flex flex-col justify-between relative group hover:border-[#8C6D53] transition-colors">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[10px] font-mono uppercase tracking-widest px-2.5 py-1 rounded-full bg-[#8C6D53] text-white">04. Client</span>
+                    <span className="w-2 h-2 rounded-full bg-[#8C6D53]"></span>
+                  </div>
+                  <h4 className="font-serif font-medium text-base mb-2">Accès Planning</h4>
+                  <p className="text-xs text-[#6E6E73] leading-relaxed">Le client reçoit un e-mail avec son accès sécurisé pour choisir son créneau d'échange.</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-[#1D1D1F]/5 text-[11px] font-mono text-[#8C6D53]">Réservation</div>
+              </div>
+
+              {/* Étape 5 */}
+              <div className="bg-[#FBFBFA] p-5 rounded-2xl border border-[#1D1D1F]/10 flex flex-col justify-between relative group hover:border-[#8C6D53] transition-colors">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[10px] font-mono uppercase tracking-widest px-2.5 py-1 rounded-full bg-[#1D1D1F] text-white">05. Planning</span>
+                    <span className="w-2 h-2 rounded-full bg-[#8C6D53]"></span>
+                  </div>
+                  <h4 className="font-serif font-medium text-base mb-2">Agenda Outlook</h4>
+                  <p className="text-xs text-[#6E6E73] leading-relaxed">Le rendez-vous s'inscrit automatiquement dans votre calendrier Outlook sans échange inutile.</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-[#1D1D1F]/5 text-[11px] font-mono text-[#8C6D53]">Synchronisé</div>
+              </div>
             </div>
           </div>
 
