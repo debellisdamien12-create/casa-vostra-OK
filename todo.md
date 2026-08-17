@@ -131,3 +131,4 @@
 - [x] Conserver la notification Manus comme canal de secours.
 - [x] Effectuer un test de réception réel Brevo vers contact@casavostra.corsica et confirmer la présence du message dans Outlook ou les indésirables.
 - [x] Documenter la différence entre acceptation par Brevo (messageId) et réception effective en boîte.
+- [x] Rendre obligatoires toutes les zones du formulaire de brief (surface, localisation, précisions, nom, téléphone, e-mail et au moins une pièce jointe).

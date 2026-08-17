@@ -116,7 +116,13 @@ export default function Home() {
   const isEmailValid = EMAIL_PATTERN.test(normalizedEmail);
   const showPhoneError = normalizedPhone.length > 0 && !isPhoneValid;
   const showEmailError = normalizedEmail.length > 0 && !isEmailValid;
-  const contactFieldsValid = isPhoneValid && isEmailValid;
+  const isSurfaceValid = surface.trim().length > 0;
+  const isLocationValid = location.trim().length > 0;
+  const isDetailsValid = details.trim().length > 0;
+  const isNameValid = contactName.trim().length > 0;
+  const hasFiles = projectFiles.length > 0;
+
+  const contactFieldsValid = isPhoneValid && isEmailValid && isSurfaceValid && isLocationValid && isDetailsValid && isNameValid && hasFiles;
 
   const submitLead = trpc.leads.submit.useMutation({
     onSuccess: (data) => {
@@ -154,7 +160,7 @@ export default function Home() {
     e.preventDefault();
     
     if (!contactFieldsValid) {
-      toast.error("Vérifiez le format de votre téléphone et de votre e-mail avant l'envoi.");
+      toast.error("Veuillez remplir tous les champs obligatoires (surface, localisation, précisions, nom, téléphone, e-mail) et joindre au moins une photo ou un plan.");
       return;
     }
 
@@ -688,10 +694,11 @@ SIREN 918 824 921`;
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-[#1D1D1F]">
-                    Surface estimée (en m²)
+                    Surface estimée (en m²) <span className="text-[#8C6D53]">*</span>
                   </label>
                   <input 
                     type="text" 
+                    required
                     placeholder="Ex: 45 m², ou SDB 8 m²..." 
                     value={surface}
                     onChange={(e) => setSurface(e.target.value)}
@@ -720,10 +727,11 @@ SIREN 918 824 921`;
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-[#1D1D1F]">
-                    Localisation (Ville / Code Postal)
+                    Localisation (Ville / Code Postal) <span className="text-[#8C6D53]">*</span>
                   </label>
                   <input 
                     type="text" 
+                    required
                     placeholder="Ex: Porto-Vecchio, Lecci..." 
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
@@ -766,10 +774,11 @@ SIREN 918 824 921`;
               {/* Précisions libres */}
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-[#1D1D1F]">
-                  Précisions techniques (dépose, contraintes d'accès, types de carreaux...)
+                  Précisions techniques (dépose, contraintes d'accès, types de carreaux...) <span className="text-[#8C6D53]">*</span>
                 </label>
                 <textarea 
                   rows={3}
+                  required
                   placeholder="Ex: Dépose ancien carrelage sur 50m², préparation de chape fluide, carreaux grand format 120x120 fournis..." 
                   value={details}
                   onChange={(e) => setDetails(e.target.value)}
@@ -842,9 +851,10 @@ SIREN 918 824 921`;
                 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-xs font-medium text-[#6E6E73] mb-1">Votre nom</label>
+                    <label className="block text-xs font-medium text-[#6E6E73] mb-1">Votre nom <span className="text-[#8C6D53]">*</span></label>
                     <input 
                       type="text" 
+                      required
                       placeholder="Jean Dupont" 
                       value={contactName}
                       onChange={(e) => setContactName(e.target.value)}

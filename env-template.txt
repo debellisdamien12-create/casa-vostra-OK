@@ -1,0 +1,10 @@
+# ==============================================================================
+# Casa Vostra SARL — Modèle des variables d'environnement
+# Copiez ce modèle pour configurer votre nouvel hébergement
+# ==============================================================================
+
+DATABASE_URL=mysql://utilisateur:motdepasse@hote:3306/nom_de_base
+JWT_SECRET=votre_jwt_secret_aleatoire_et_securise
+BREVO_API_KEY=xkeysib-votre-cle-api-brevo
+PORT=3000
+NODE_ENV=production
