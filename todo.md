@@ -132,8 +132,8 @@
 - [x] Effectuer un test de réception réel Brevo vers contact@casavostra.corsica et confirmer la présence du message dans Outlook ou les indésirables.
 - [x] Documenter la différence entre acceptation par Brevo (messageId) et réception effective en boîte.
 - [x] Rendre obligatoires toutes les zones du formulaire de brief (surface, localisation, précisions, nom, téléphone, e-mail et au moins une pièce jointe).
-- [ ] Migrer le Web Service Casa Vostra vers Render en conservant le backend, la base de données, les médias S3, Brevo et Microsoft 365.
-- [ ] Rattacher casavostra.corsica au nouvel hébergement sans modifier les enregistrements Microsoft 365.
-- [ ] Tester l’URL personnalisée, le formulaire de brief, les notifications e-mail, la validation et l’accès Outlook avant bascule.
+- [x] Migrer le Web Service Casa Vostra vers Render en conservant le backend, la base de données, les médias S3, Brevo et Microsoft 365.
+- [x] Rattacher casavostra.corsica au nouvel hébergement sans modifier les enregistrements Microsoft 365.
+- [x] Tester l’URL personnalisée, le formulaire de brief, les notifications e-mail, la validation et l’accès Outlook avant bascule.
 - [x] Remplacer les chemins `/manus-storage` par des URL publiques stables pour afficher les visuels sur Render.
-- [ ] Renseigner les variables de production Render et retester les flux dépendant de Brevo et de la base de données.
+- [x] Renseigner les variables de production Render et retester les flux dépendant de Brevo et de la base de données.
