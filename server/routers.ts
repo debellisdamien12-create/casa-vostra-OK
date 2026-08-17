@@ -209,9 +209,9 @@ Sois direct, factuel et chaleureux.`;
 
           const notificationPayload = {
             title: `[Casa Vostra] Nouveau brief #${newLeadId} - ${input.contactName || input.contactEmail}`,
-            content: `DESTINATAIRE: contact@casavostra.corsica\nUn nouveau brief client a été soumis sur le site !\n\nSynthèse IA :\n${aiSummary}\n\nClient : ${input.contactName || "Anonyme"}\nTél : ${input.contactPhone}\nE-mail : ${input.contactEmail}\nType : ${input.projectType} (${input.projectNature})\nSurface : ${input.surface || "N/C"} m²\nBudget : ${input.budget || "N/C"}\nFourniture : ${input.supplyScope || "N/C"}\nLocalisation : ${input.location || "N/C"}\nDélai : ${input.timeline || "N/C"}\n\nDétails :\n${input.details || "Aucun détail"}\n\nPièces jointes (${brevoAttachments.length}) :\n${mediaText}\n\n---------------------------------------------\nVALIDER LA DEMANDE ET DONNER ACCÈS AUX CRÉneaux OUTLOOK :\n${validationUrl}\n---------------------------------------------`
+            content: `DESTINATAIRE OPÉRATIONNEL : gestion@casavostra.corsica\nAdresse publique : contact@casavostra.corsica\n\nUn nouveau brief client a été soumis sur le site !\n\nSynthèse IA :\n${aiSummary}\n\nClient : ${input.contactName || "Anonyme"}\nTél : ${input.contactPhone}\nE-mail : ${input.contactEmail}\nType : ${input.projectType} (${input.projectNature})\nSurface : ${input.surface || "N/C"} m²\nBudget : ${input.budget || "N/C"}\nFourniture : ${input.supplyScope || "N/C"}\nLocalisation : ${input.location || "N/C"}\nDélai : ${input.timeline || "N/C"}\n\nDétails :\n${input.details || "Aucun détail"}\n\nPièces jointes (${brevoAttachments.length}) :\n${mediaText}\n\n---------------------------------------------\nVALIDER LA DEMANDE ET DONNER ACCÈS AUX CRÉneaux OUTLOOK :\n${validationUrl}\n---------------------------------------------`
           };
-          console.log(`[LeadSubmission] Dispatching owner notification for lead #${newLeadId} to contact@casavostra.corsica with ${brevoAttachments.length} attachments`);
+          console.log(`[LeadSubmission] Dispatching owner notification for lead #${newLeadId} to gestion@casavostra.corsica with ${brevoAttachments.length} attachments`);
           await notifyOwner(notificationPayload, brevoAttachments);
         } catch (err) {
           console.error("[OwnerNotification] Failed to send email:", err);

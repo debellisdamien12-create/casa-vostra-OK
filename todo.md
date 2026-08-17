@@ -145,3 +145,8 @@
 - [ ] Analyser les logs Render du dernier brief et de la dernière validation afin d’identifier la cause exacte de l’absence de pièces jointes et d’e-mail client.
 - [ ] Vérifier et configurer DATABASE_URL sur Render afin que chaque brief soit enregistré avant la génération du lien de validation.
 - [ ] Remplacer le lien de validation dépendant de la base de données par un jeton signé et expirant, compatible avec Render sans DATABASE_URL.
+- [ ] Diagnostiquer et corriger l’absence d’e-mail Brevo après le déploiement Render du commit 41e58c7.
+- [ ] Relever dans Render le résultat Brevo du brief de test signalé comme non reçu par le propriétaire.
+- [ ] Acheminer les notifications Brevo vers Gestion@casavostra.corsica, boîte principale de l’alias contact@casavostra.corsica.
+- [ ] Comparer le brief reçu #270884 aux briefs non visibles #406350 et #467108 afin d’isoler l’impact des pièces jointes Brevo.
+- [ ] Remplacer le destinataire opérationnel des briefs par Gestion@casavostra.corsica et conserver contact@casavostra.corsica comme adresse publique.

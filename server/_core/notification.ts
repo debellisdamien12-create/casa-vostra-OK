@@ -6,7 +6,11 @@ export type NotificationPayload = {
   content: string;
 };
 
-const OWNER_EMAIL = "contact@casavostra.corsica";
+// `contact@` est l’adresse publique de Casa Vostra et un alias Microsoft 365.
+// Les brief doivent être routés directement vers la boîte principale, afin de
+// ne pas dépendre du traitement d’un message envoyé de l’alias vers lui-même.
+export const OWNER_EMAIL = "gestion@casavostra.corsica";
+export const SENDER_EMAIL = "contact@casavostra.corsica";
 const SENDER_NAME = "Casa Vostra";
 const TITLE_MAX_LENGTH = 1200;
 const CONTENT_MAX_LENGTH = 20000;
@@ -70,7 +74,7 @@ async function sendBrevoEmail(
   }
 
   const payload: Record<string, unknown> = {
-    sender: { email: OWNER_EMAIL, name: SENDER_NAME },
+    sender: { email: SENDER_EMAIL, name: SENDER_NAME },
     to: [{ email: toEmail, name: toName || "Client Casa Vostra" }],
     subject: title,
     textContent: content,
