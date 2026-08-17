@@ -39,3 +39,23 @@ Pour faire fonctionner l’application ailleurs qu’sur Manus, l’hébergeur c
 
 ---
 *Généré pour Casa Vostra SARL — Rénovation, carrelage et faïence haut de gamme.*
+
+## 4. Déploiement Render et domaine personnalisé
+
+Le projet Casa Vostra doit être déployé comme **Web Service**, et non comme Static Site, car il utilise un serveur Node.js/tRPC, une base de données et des appels serveur pour les briefs.
+
+Dans Render, utilisez les commandes suivantes :
+
+```text
+Build Command: pnpm install --frozen-lockfile && pnpm run build
+Start Command: pnpm start
+Root Directory: laisser vide
+```
+
+Après le premier déploiement, ouvrez le service Render, puis **Settings → Custom Domains → Add Custom Domain** et ajoutez `casavostra.corsica`. Render ajoutera également le sous-domaine `www` associé. Il faut ensuite copier dans la zone DNS Netim exactement les valeurs affichées par Render.
+
+Pour le domaine racine, Render recommande un enregistrement **A** vers `216.24.57.1` si Netim ne propose pas de type ANAME/ALIAS. Pour `www`, utilisez un enregistrement **CNAME** vers le sous-domaine `casa-vostra-ok.onrender.com` ou la cible exacte indiquée par Render. Supprimez les éventuels enregistrements **AAAA** pendant la vérification, car Render utilise IPv4. Les modifications DNS peuvent nécessiter un délai de propagation.
+
+Les enregistrements **MX, TXT et SRV** qui servent à Microsoft 365 doivent rester inchangés. Seuls les enregistrements web du domaine racine et de `www` doivent être ajustés. Une fois le DNS configuré, revenez dans Render et cliquez sur **Verify**. Render émet automatiquement le certificat TLS et redirige les connexions HTTP vers HTTPS.
+
+Références officielles : [Render — Custom Domains](https://render.com/docs/custom-domains) et [Render — Configuring DNS Providers](https://render.com/docs/configure-other-dns).
