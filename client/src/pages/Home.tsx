@@ -289,7 +289,7 @@ SIREN 918 824 921`;
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <button className="flex items-center cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Retour en haut">
             <img
-              src="/manus-storage/Logosvg(1)_a625f43d.png"
+              src="/manus-storage/casa-vostra-logo-hd_022938b1.png"
               alt="Casa Vostra — votre projet, notre savoir-faire"
               className="h-11 w-auto max-w-[210px] object-contain object-left sm:h-14 sm:max-w-[250px]"
             />
@@ -1107,7 +1107,7 @@ SIREN 918 824 921`;
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-12 border-b border-white/10">
             <div className="md:col-span-6 space-y-4">
               <img
-                src="/manus-storage/Logosvg(1)_a625f43d.png"
+                src="/manus-storage/casa-vostra-logo-hd_022938b1.png"
                 alt="Casa Vostra — votre projet, notre savoir-faire"
                 className="h-16 w-auto max-w-[260px] object-contain object-left"
               />
