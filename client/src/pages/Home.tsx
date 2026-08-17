@@ -289,7 +289,7 @@ SIREN 918 824 921`;
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <button className="flex items-center cursor-pointer group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Retour en haut">
             <img
-              src="/manus-storage/casa-vostra-logo-hd_022938b1.png"
+              src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/sySKezAPlBbrenkg.png"
               alt="Casa Vostra — votre projet, notre savoir-faire"
               className="h-11 w-auto max-w-[210px] object-contain object-left sm:h-14 sm:max-w-[250px] transition-all duration-300 ease-out group-hover:scale-105 motion-safe:hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
             />
@@ -391,7 +391,7 @@ SIREN 918 824 921`;
             <div className="lg:col-span-5 relative">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/5] bg-[#EAE8E4]">
                 <img 
-                  src="/manus-storage/casa-vostra-hero-carrelage_8724129d.jpg" 
+                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/umgkHwsbASkauzQb.jpg" 
                   alt="Sol en carrelage grand format avec joints précis dans un intérieur contemporain, Casa Vostra" 
                   className="w-full h-full object-cover"
                 />
@@ -561,7 +561,7 @@ SIREN 918 824 921`;
                 </div>
                 <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-black/40">
                   <img 
-                    src="/manus-storage/IMG_1542_ff1024d3.jpeg" 
+                    src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/lknFzUOgsDZmjCDY.jpeg" 
                     alt="Carrelage grand format posé en Corse-du-Sud" 
                     className="w-full h-full object-cover"
                   />
@@ -585,7 +585,7 @@ SIREN 918 824 921`;
                 </div>
                 <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-black/40">
                   <img 
-                    src="/manus-storage/7B14C597-3D1D-4F75-9D2E-B2CF772BACD4_4dd2cb62.jpg" 
+                    src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/MqnTLHZZAJMsjDNr.jpg" 
                     alt="Pose de grands formats effet marbre naturel" 
                     className="w-full h-full object-cover"
                   />
@@ -609,7 +609,7 @@ SIREN 918 824 921`;
                 </div>
                 <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-black/40">
                   <img 
-                    src="/manus-storage/IMG_2204_428a3b72.jpeg" 
+                    src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/ZpOxxNMGFQJCEmCZ.jpeg" 
                     alt="Pièce créée de A à Z par Casa Vostra" 
                     className="w-full h-full object-cover"
                   />
@@ -641,12 +641,12 @@ SIREN 918 824 921`;
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <a href="/carrelage-xxl#galerie" className="group relative sm:col-span-2 lg:row-span-2 min-h-[320px] lg:min-h-[460px] overflow-hidden rounded-2xl bg-[#D8D2CA] shadow-[0_16px_40px_rgba(29,29,31,0.1)]">
-              <img src="/manus-storage/7B14C597-3D1D-4F75-9D2E-B2CF772BACD4_4dd2cb62.jpg" alt="Faïence murale fine et escalier intérieur habillé, réalisation Casa Vostra" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+              <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/MqnTLHZZAJMsjDNr.jpg" alt="Faïence murale fine et escalier intérieur habillé, réalisation Casa Vostra" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
               <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
               <span className="absolute bottom-0 left-0 right-0 p-6 text-white"><span className="block text-xs font-mono uppercase tracking-widest text-[#E3D5C9]">Faïence</span><span className="block font-serif text-2xl mt-2">Lignes fines.</span></span>
             </a>
-            <a href="/carrelage-xxl#galerie" className="group relative min-h-[220px] overflow-hidden rounded-2xl bg-[#D8D2CA]"><img src="/manus-storage/IMG_2204_428a3b72.jpeg" alt="Salle d’eau avec revêtement mural et niche, réalisation Casa Vostra" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" /><span className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" /><span className="absolute bottom-0 p-5 text-white"><span className="block text-xs font-mono uppercase tracking-widest text-[#E3D5C9]">Salle d’eau</span><span className="block font-serif text-xl mt-2">Matière murale.</span></span></a>
-            <a href="/carrelage-xxl#galerie" className="group relative min-h-[220px] overflow-hidden rounded-2xl bg-[#D8D2CA]"><img src="/manus-storage/IMG_1542_ff1024d3.jpeg" alt="Pose de grands carreaux au sol avec système de nivellement, réalisation Casa Vostra" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" /><span className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" /><span className="absolute bottom-0 p-5 text-white"><span className="block text-xs font-mono uppercase tracking-widest text-[#E3D5C9]">Pose grand format</span><span className="block font-serif text-xl mt-2">Le détail juste.</span></span></a>
+            <a href="/carrelage-xxl#galerie" className="group relative min-h-[220px] overflow-hidden rounded-2xl bg-[#D8D2CA]"><img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/ZpOxxNMGFQJCEmCZ.jpeg" alt="Salle d’eau avec revêtement mural et niche, réalisation Casa Vostra" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" /><span className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" /><span className="absolute bottom-0 p-5 text-white"><span className="block text-xs font-mono uppercase tracking-widest text-[#E3D5C9]">Salle d’eau</span><span className="block font-serif text-xl mt-2">Matière murale.</span></span></a>
+            <a href="/carrelage-xxl#galerie" className="group relative min-h-[220px] overflow-hidden rounded-2xl bg-[#D8D2CA]"><img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/lknFzUOgsDZmjCDY.jpeg" alt="Pose de grands carreaux au sol avec système de nivellement, réalisation Casa Vostra" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" /><span className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" /><span className="absolute bottom-0 p-5 text-white"><span className="block text-xs font-mono uppercase tracking-widest text-[#E3D5C9]">Pose grand format</span><span className="block font-serif text-xl mt-2">Le détail juste.</span></span></a>
           </div>
         </div>
       </section>
@@ -1207,7 +1207,7 @@ SIREN 918 824 921`;
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-12 border-b border-white/10">
             <div className="md:col-span-6 space-y-4">
               <img
-                src="/manus-storage/casa-vostra-logo-hd_022938b1.png"
+                src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/sySKezAPlBbrenkg.png"
                 alt="Casa Vostra — votre projet, notre savoir-faire"
                 className="h-16 w-auto max-w-[260px] object-contain object-left"
               />

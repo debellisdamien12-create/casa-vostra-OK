@@ -27,22 +27,22 @@ type GalleryItem = {
 };
 
 const galleryItems: GalleryItem[] = [
-  { id: "real-01", title: "Faïence et lignes fines", category: "Salles d’eau", label: "Salle d’eau · Réalisation Casa Vostra", image: "/manus-storage/7B14C597-3D1D-4F75-9D2E-B2CF772BACD4_4dd2cb62.jpg", alt: "Faïence murale fine et escalier intérieur habillé", featured: true },
-  { id: "real-02", title: "Terrasse minérale", category: "Sols", label: "Terrasse · Réalisation Casa Vostra", image: "/manus-storage/IMG_8803_56053e57.jpeg", alt: "Terrasse extérieure réalisée en dalles minérales" },
-  { id: "real-03", title: "Pose en cours", category: "Détails", label: "Étape de pose · Réalisation Casa Vostra", image: "/manus-storage/IMG_2588_b353d62f.PNG", alt: "Pose de grands carreaux au sol avec système de nivellement" },
-  { id: "real-04", title: "Effet pierre", category: "Détails", label: "Matière · Réalisation Casa Vostra", image: "/manus-storage/0CAC8079-AAF1-47AB-B32D-6DEA8CAFAE35_3ee53dd1.jpg", alt: "Détail d'une surface minérale effet pierre" },
-  { id: "real-05", title: "Douche grand format", category: "Salles d’eau", label: "Salle d’eau · Réalisation Casa Vostra", image: "/manus-storage/IMG_2204_428a3b72.jpeg", alt: "Salle d'eau avec revêtement mural effet marbre et niche" },
-  { id: "real-06", title: "Calepinage en chantier", category: "Détails", label: "Étape de pose · Réalisation Casa Vostra", image: "/manus-storage/IMG_2188_ead13daf.jpeg", alt: "Chantier en cours avec grands formats au sol" },
-  { id: "real-07", title: "Parois minérales", category: "Salles d’eau", label: "Douche · Réalisation Casa Vostra", image: "/manus-storage/IMG_1703_9572addd.jpeg", alt: "Douche en cours de réalisation avec grandes dalles murales" },
-  { id: "real-08", title: "Préparation des supports", category: "Détails", label: "Préparation · Réalisation Casa Vostra", image: "/manus-storage/IMG_1588_579f6eab.jpeg", alt: "Salle d'eau en préparation avec repères de pose" },
-  { id: "real-09", title: "Grand format au sol", category: "Sols", label: "Sol · Réalisation Casa Vostra", image: "/manus-storage/IMG_1542_ff1024d3.jpeg", alt: "Pose de grands carreaux au sol avec système de nivellement" },
-  { id: "real-10", title: "Matière bois et pierre", category: "Détails", label: "Revêtement · Réalisation Casa Vostra", image: "/manus-storage/IMG_1189_0f0d95ab.jpeg", alt: "Revêtement mural intérieur effet bois et pierre" },
-  { id: "real-11", title: "Finition bois", category: "Sols", label: "Sol · Réalisation Casa Vostra", image: "/manus-storage/IMG_1176_72bb79e5.jpeg", alt: "Sol intérieur avec finition bois" },
-  { id: "real-12", title: "Marches habillées", category: "Détails", label: "Escalier · Réalisation Casa Vostra", image: "/manus-storage/IMG_1154_0f40d56b.jpeg", alt: "Escalier intérieur avec marches habillées" },
-  { id: "real-13", title: "Vasque et plan minéral", category: "Salles d’eau", label: "Salle de bains · Réalisation Casa Vostra", image: "/manus-storage/IMG_1131_3753e78e.jpeg", alt: "Salle de bains avec vasque posée sur un plan minéral" },
-  { id: "real-14", title: "Salle de bains contemporaine", category: "Salles d’eau", label: "Salle de bains · Réalisation Casa Vostra", image: "/manus-storage/IMG_1117_c82aa625.jpeg", alt: "Salle de bains contemporaine avec revêtement mural" },
-  { id: "real-15", title: "Faïence en détail", category: "Détails", label: "Faïence · Réalisation Casa Vostra", image: "/manus-storage/IMG_1115_2a0da346.jpeg", alt: "Détail de faïence verticale associé à un grand format" },
-  { id: "real-16", title: "Sol finition bois", category: "Sols", label: "Sol · Réalisation Casa Vostra", image: "/manus-storage/IMG_0421_aefec0a9.jpeg", alt: "Sol intérieur avec finition bois" },
+  { id: "real-01", title: "Faïence et lignes fines", category: "Salles d’eau", label: "Salle d’eau · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/MqnTLHZZAJMsjDNr.jpg", alt: "Faïence murale fine et escalier intérieur habillé", featured: true },
+  { id: "real-02", title: "Terrasse minérale", category: "Sols", label: "Terrasse · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/zMAqduVZRLYEUkRm.jpeg", alt: "Terrasse extérieure réalisée en dalles minérales" },
+  { id: "real-03", title: "Pose en cours", category: "Détails", label: "Étape de pose · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/QrNUBHnNzVPwtRTI.PNG", alt: "Pose de grands carreaux au sol avec système de nivellement" },
+  { id: "real-04", title: "Effet pierre", category: "Détails", label: "Matière · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/EhAAtJKFjBJdmCUk.jpg", alt: "Détail d'une surface minérale effet pierre" },
+  { id: "real-05", title: "Douche grand format", category: "Salles d’eau", label: "Salle d’eau · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/ZpOxxNMGFQJCEmCZ.jpeg", alt: "Salle d'eau avec revêtement mural effet marbre et niche" },
+  { id: "real-06", title: "Calepinage en chantier", category: "Détails", label: "Étape de pose · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/JprLfSCvyMKARrnA.jpeg", alt: "Chantier en cours avec grands formats au sol" },
+  { id: "real-07", title: "Parois minérales", category: "Salles d’eau", label: "Douche · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/pNAYYETKmrVZBICk.jpeg", alt: "Douche en cours de réalisation avec grandes dalles murales" },
+  { id: "real-08", title: "Préparation des supports", category: "Détails", label: "Préparation · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/PErDDdLILeVNuEvW.jpeg", alt: "Salle d'eau en préparation avec repères de pose" },
+  { id: "real-09", title: "Grand format au sol", category: "Sols", label: "Sol · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/lknFzUOgsDZmjCDY.jpeg", alt: "Pose de grands carreaux au sol avec système de nivellement" },
+  { id: "real-10", title: "Matière bois et pierre", category: "Détails", label: "Revêtement · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/lIghrSIqjeeqkNkD.jpeg", alt: "Revêtement mural intérieur effet bois et pierre" },
+  { id: "real-11", title: "Finition bois", category: "Sols", label: "Sol · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/qTouulYcQPclsNUw.jpeg", alt: "Sol intérieur avec finition bois" },
+  { id: "real-12", title: "Marches habillées", category: "Détails", label: "Escalier · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/exxkHACupSQadseS.jpeg", alt: "Escalier intérieur avec marches habillées" },
+  { id: "real-13", title: "Vasque et plan minéral", category: "Salles d’eau", label: "Salle de bains · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/uGswmYxDlPvNqdVM.jpeg", alt: "Salle de bains avec vasque posée sur un plan minéral" },
+  { id: "real-14", title: "Salle de bains contemporaine", category: "Salles d’eau", label: "Salle de bains · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/vTTAViBlwZuOQNRS.jpeg", alt: "Salle de bains contemporaine avec revêtement mural" },
+  { id: "real-15", title: "Faïence en détail", category: "Détails", label: "Faïence · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/VPunVBGsCvyqkaRa.jpeg", alt: "Détail de faïence verticale associé à un grand format" },
+  { id: "real-16", title: "Sol finition bois", category: "Sols", label: "Sol · Réalisation Casa Vostra", image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/meJZNCiZiWbtuwJW.jpeg", alt: "Sol intérieur avec finition bois" },
 ];
 
 const galleryFilters: GalleryFilter[] = ["Toutes", "Sols", "Salles d’eau", "Détails"];
@@ -91,7 +91,7 @@ export default function InstagramXXL() {
         <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
           <Link href="/" className="flex items-center group" aria-label="Retour à l'accueil Casa Vostra">
             <img
-              src="/manus-storage/casa-vostra-logo-hd_022938b1.png"
+              src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/sySKezAPlBbrenkg.png"
               alt="Casa Vostra — votre projet, notre savoir-faire"
               className="h-10 w-auto max-w-[190px] object-contain object-left sm:h-12 sm:max-w-[230px] transition-all duration-300 ease-out group-hover:scale-105 motion-safe:hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
             />
@@ -141,7 +141,7 @@ export default function InstagramXXL() {
             <div className="absolute -right-5 -top-6 h-28 w-28 rounded-full bg-[#e2d4c7] blur-3xl sm:-right-10 sm:-top-10 sm:h-44 sm:w-44" aria-hidden="true" />
             <div className="relative aspect-[0.86] overflow-hidden rounded-[28px] bg-[#e2ded8] shadow-[0_28px_70px_rgba(29,29,31,0.18)]">
               <img
-                src="/manus-storage/casa-vostra-bathroom-faience_55499b2e.jpg"
+                src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/YesvivlkXxEFqGRz.jpg"
                 alt="Salle d’eau contemporaine avec faïence grand format et niche habillée, Casa Vostra"
                 className="h-full w-full object-cover"
               />
@@ -256,7 +256,7 @@ export default function InstagramXXL() {
             </div>
             <div className="aspect-[1.15] overflow-hidden bg-[#d9d2cb]">
               <img
-                src="/manus-storage/casa-vostra-pose-detail_e9bca9f2.jpg"
+                src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663891614936/MKChYUrXhfDgBnol.jpg"
                 alt="Pose de carrelage grand format sur chape préparée avec système de nivellement, Casa Vostra"
                 className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
               />

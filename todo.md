@@ -135,3 +135,5 @@
 - [ ] Migrer le Web Service Casa Vostra vers Render en conservant le backend, la base de données, les médias S3, Brevo et Microsoft 365.
 - [ ] Rattacher casavostra.corsica au nouvel hébergement sans modifier les enregistrements Microsoft 365.
 - [ ] Tester l’URL personnalisée, le formulaire de brief, les notifications e-mail, la validation et l’accès Outlook avant bascule.
+- [x] Remplacer les chemins `/manus-storage` par des URL publiques stables pour afficher les visuels sur Render.
+- [ ] Renseigner les variables de production Render et retester les flux dépendant de Brevo et de la base de données.
