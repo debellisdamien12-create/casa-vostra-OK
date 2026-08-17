@@ -41,7 +41,8 @@ const getLeadErrorMessage = (message?: string) => {
   if (normalizedMessage.includes("email")) return "Vérifiez l’adresse e-mail renseignée.";
   if (normalizedMessage.includes("téléphone") || normalizedMessage.includes("phone")) return "Vérifiez le format du numéro de téléphone.";
   if (normalizedMessage.includes("storage") || normalizedMessage.includes("upload") || normalizedMessage.includes("fichier")) return "Une pièce jointe n’a pas pu être transmise. Vérifiez son format et sa taille.";
-  return "Votre demande n’a pas pu être transmise pour le moment. Vérifiez votre connexion puis réessayez.";
+  if (normalizedMessage.includes("timeout") || normalizedMessage.includes("network") || normalizedMessage.includes("fetch")) return "Le serveur s'est réveillé après une période d'inactivité. Veuillez patienter 10 secondes et relancer la transmission.";
+  return "Votre demande n’a pas pu être transmise pour le moment. Le serveur Render Free s’est peut-être endormi suite à une inactivité. Veuillez patienter 10 secondes et cliquer à nouveau sur 'Transmettre mon brief'.";
 };
 
 export default function Home() {
