@@ -57,10 +57,31 @@ const validatePayload = (input: NotificationPayload): NotificationPayload => {
   return { title, content };
 };
 
-async function sendBrevoEmail(toEmail: string, toName: string, title: string, content: string): Promise<boolean> {
+async function sendBrevoEmail(
+  toEmail: string,
+  toName: string,
+  title: string,
+  content: string,
+  attachments?: Array<{ name: string; content: string }>
+): Promise<boolean> {
   if (!ENV.brevoApiKey) {
     console.warn("[Brevo] BREVO_API_KEY is not configured.");
     return false;
+  }
+
+  const payload: Record<string, unknown> = {
+    sender: { email: OWNER_EMAIL, name: SENDER_NAME },
+    to: [{ email: toEmail, name: toName || "Client Casa Vostra" }],
+    subject: title,
+    textContent: content,
+    tags: ["casa-vostra", "transactional"],
+  };
+
+  if (attachments && attachments.length > 0) {
+    payload.attachment = attachments.map(att => ({
+      name: att.name,
+      content: att.content, // base64 string without data prefix
+    }));
   }
 
   const response = await fetch("https://api.brevo.com/v3/smtp/email", {
@@ -70,13 +91,7 @@ async function sendBrevoEmail(toEmail: string, toName: string, title: string, co
       "api-key": ENV.brevoApiKey,
       "content-type": "application/json",
     },
-    body: JSON.stringify({
-      sender: { email: OWNER_EMAIL, name: SENDER_NAME },
-      to: [{ email: toEmail, name: toName || "Client Casa Vostra" }],
-      subject: title,
-      textContent: content,
-      tags: ["casa-vostra", "transactional"],
-    }),
+    body: JSON.stringify(payload),
   });
 
   const responseText = await response.text();
@@ -90,11 +105,12 @@ async function sendBrevoEmail(toEmail: string, toName: string, title: string, co
 }
 
 export async function notifyOwner(
-  payload: NotificationPayload
+  payload: NotificationPayload,
+  attachments?: Array<{ name: string; content: string }>
 ): Promise<boolean> {
   const validatedPayload = validatePayload(payload);
   try {
-    return await sendBrevoEmail(OWNER_EMAIL, SENDER_NAME, validatedPayload.title, validatedPayload.content);
+    return await sendBrevoEmail(OWNER_EMAIL, SENDER_NAME, validatedPayload.title, validatedPayload.content, attachments);
   } catch (error) {
     console.warn("[Brevo] Error sending owner email:", error);
     return false;
@@ -104,11 +120,12 @@ export async function notifyOwner(
 export async function notifyClient(
   clientEmail: string,
   clientName: string,
-  payload: NotificationPayload
+  payload: NotificationPayload,
+  attachments?: Array<{ name: string; content: string }>
 ): Promise<boolean> {
   const validatedPayload = validatePayload(payload);
   try {
-    return await sendBrevoEmail(clientEmail, clientName, validatedPayload.title, validatedPayload.content);
+    return await sendBrevoEmail(clientEmail, clientName, validatedPayload.title, validatedPayload.content, attachments);
   } catch (error) {
     console.warn("[Brevo] Error sending client email:", error);
     return false;

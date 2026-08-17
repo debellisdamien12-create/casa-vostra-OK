@@ -138,5 +138,5 @@
 - [x] Remplacer les chemins `/manus-storage` par des URL publiques stables pour afficher les visuels sur Render.
 - [x] Renseigner les variables de production Render et retester les flux dépendant de Brevo et de la base de données.
 - [x] Ajouter la clé API REST Brevo dans Render sous `BREVO_API_KEY`, redéployer et vérifier la réception dans contact@casavostra.corsica.
-- [ ] Déclencher un vrai test de brief sur `https://casavostra.corsica` après redéploiement et vérifier l’affichage de la confirmation sans timeout.
-- [ ] Vérifier la réception effective de la notification dans `contact@casavostra.corsica`.
+- [x] Déclencher un vrai test de brief sur `https://casavostra.corsica` après redéploiement et vérifier l’affichage de la confirmation sans timeout.
+- [x] Vérifier la réception effective de la notification dans `contact@casavostra.corsica`.
