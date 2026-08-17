@@ -3,10 +3,15 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
   getDb: vi.fn(),
   storagePut: vi.fn(),
+  notifyOwner: vi.fn(),
 }));
 
 vi.mock("./db", () => ({ getDb: mocks.getDb }));
 vi.mock("./storage", () => ({ storagePut: mocks.storagePut }));
+vi.mock("./_core/notification", () => ({
+  notifyOwner: mocks.notifyOwner,
+  notifyClient: vi.fn(),
+}));
 
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
@@ -27,9 +32,10 @@ describe("leads.submit success flow", () => {
       url: "/manus-storage/leads/plan_abc123.pdf",
     });
             const values = vi.fn().mockResolvedValue([{ insertId: 42 }]);
-        mocks.getDb.mockResolvedValue({
+    mocks.getDb.mockResolvedValue({
           insert: vi.fn().mockReturnValue({ values }),
         });
+    mocks.notifyOwner.mockResolvedValue(true);
 
   });
 
@@ -61,5 +67,10 @@ describe("leads.submit success flow", () => {
     expect(mocks.storagePut).toHaveBeenCalledOnce();
     expect(mocks.storagePut.mock.calls[0]?.[2]).toBe("application/pdf");
     expect(mocks.getDb).toHaveBeenCalledOnce();
+    expect(mocks.notifyOwner).toHaveBeenCalledTimes(2);
+    expect(mocks.notifyOwner.mock.calls[0]?.[1]).toBeUndefined();
+    expect(mocks.notifyOwner.mock.calls[1]?.[1]).toEqual([
+      { name: "plan.pdf", content: "cGxhbg==" },
+    ]);
   });
 });

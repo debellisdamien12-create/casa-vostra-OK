@@ -140,13 +140,18 @@
 - [x] Ajouter la clé API REST Brevo dans Render sous `BREVO_API_KEY`, redéployer et vérifier la réception dans contact@casavostra.corsica.
 - [x] Déclencher un vrai test de brief sur `https://casavostra.corsica` après redéploiement et vérifier l’affichage de la confirmation sans timeout.
 - [x] Vérifier la réception effective de la notification dans `contact@casavostra.corsica`.
-- [ ] Créer et pousser sur GitHub un commit distinct contenant les corrections de pièces jointes Brevo et de validation client.
-- [ ] Vérifier que Render déploie ce nouveau commit avant de demander un unique test final.
+- [x] Créer et pousser sur GitHub un commit distinct contenant les corrections de pièces jointes Brevo et de validation client.
+- [x] Vérifier que Render déploie ce nouveau commit avant de demander un unique test final.
 - [ ] Analyser les logs Render du dernier brief et de la dernière validation afin d’identifier la cause exacte de l’absence de pièces jointes et d’e-mail client.
-- [ ] Vérifier et configurer DATABASE_URL sur Render afin que chaque brief soit enregistré avant la génération du lien de validation.
-- [ ] Remplacer le lien de validation dépendant de la base de données par un jeton signé et expirant, compatible avec Render sans DATABASE_URL.
+- [x] Rendre DATABASE_URL non nécessaire sur Render grâce au jeton de validation signé.
+- [x] Remplacer le lien de validation dépendant de la base de données par un jeton signé et expirant, compatible avec Render sans DATABASE_URL.
 - [ ] Diagnostiquer et corriger l’absence d’e-mail Brevo après le déploiement Render du commit 41e58c7.
-- [ ] Relever dans Render le résultat Brevo du brief de test signalé comme non reçu par le propriétaire.
-- [ ] Acheminer les notifications Brevo vers Gestion@casavostra.corsica, boîte principale de l’alias contact@casavostra.corsica.
+- [x] Relever dans Render le résultat Brevo du brief de test signalé comme non reçu par le propriétaire.
+- [x] Acheminer les notifications Brevo vers Gestion@casavostra.corsica, boîte principale de l’alias contact@casavostra.corsica.
 - [ ] Comparer le brief reçu #270884 aux briefs non visibles #406350 et #467108 afin d’isoler l’impact des pièces jointes Brevo.
-- [ ] Remplacer le destinataire opérationnel des briefs par Gestion@casavostra.corsica et conserver contact@casavostra.corsica comme adresse publique.
+- [x] Remplacer le destinataire opérationnel des briefs par Gestion@casavostra.corsica et conserver contact@casavostra.corsica comme adresse publique.
+- [ ] Finaliser le déploiement Render du commit ae7db05 et vérifier qu’il sert le routage vers Gestion@casavostra.corsica.
+- [ ] Confirmer techniquement que Render sert le commit f52e17f incluant le routage vers Gestion@casavostra.corsica.
+- [ ] Faire un test final unique : brief avec photo, réception dans Gestion@casavostra.corsica puis validation client avec validationToken.
+- [ ] Dissocier la notification e-mail prioritaire de la transmission des pièces jointes afin de garantir la réception dans Gestion@casavostra.corsica.
+- [ ] Contrôler de manière autonome Outlook, Brevo et Render avant de demander toute nouvelle action à l’utilisateur.
