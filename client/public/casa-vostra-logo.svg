@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 170" role="img" aria-labelledby="title desc">
+  <title id="title">Casa Vostra</title>
+  <desc id="desc">Casa Vostra — votre projet, notre savoir-faire</desc>
+  <rect width="620" height="170" fill="#fbfbfa"/>
+  <path d="M28 128H592" stroke="#8c6d53" stroke-width="3"/>
+  <text x="28" y="82" fill="#1d1d1f" font-family="Georgia,Times New Roman,serif" font-size="61" font-weight="700" letter-spacing="1">Casa Vostra</text>
+  <text x="30" y="116" fill="#8c6d53" font-family="Arial,sans-serif" font-size="15" font-weight="600" letter-spacing="4">NEUF • RÉNOVATION • CORSE-DU-SUD</text>
+</svg>
